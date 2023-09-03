@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'AccountScreen.dart';
 import 'HomeScreen.dart';
 import 'LearnScreen.dart';
@@ -17,6 +16,7 @@ class Home extends StatefulWidget {
 
 class _Home extends State<Home> {
   int _selectedIndex = 0;
+  final PageController _pageController = PageController();
 
   final List<Widget> _screens = [
     HomeScreen(),
@@ -29,13 +29,15 @@ class _Home extends State<Home> {
     setState(() {
       _selectedIndex = index;
     });
+    _pageController.jumpToPage(index);
   }
 
-  void _onDrawerNavItemTapped(int index) {
+  void _onSidebarItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    Navigator.of(context).pop();
+    _pageController.jumpToPage(index);
+    Navigator.pop(context); // Close the sidebar
   }
 
   @override
@@ -46,12 +48,23 @@ class _Home extends State<Home> {
         height: 170,
       ), // Adjust the height as needed
 
-      body: _screens[_selectedIndex],
       bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: _selectedIndex,
         onItemTapped: _onBottomNavItemTapped,
       ),
-      drawer: CustomSidebar(),
+      drawer: CustomSidebar(
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onSidebarItemTapped,
+      ),
+      body: PageView(
+        controller: _pageController,
+        children: _screens,
+        onPageChanged: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+      ),
     );
   }
 }

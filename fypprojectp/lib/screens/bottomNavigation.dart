@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -32,10 +31,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            buildNavItem(Icons.home, "Home", 0),
-            buildNavItem(Icons.bike_scooter, "Learn", 1),
-            buildNavItem(Icons.check_circle, "Signs", 2),
-            buildNavItem(Icons.account_circle, "Account", 3),
+            buildNavItem(Icons.home_filled, "Home", 0),
+            buildNavItem(Icons.electric_bike_rounded, "Learn", 1),
+            buildNavItem(Icons.sign_language, "Signs", 2),
+            buildNavItem(Icons.person_4_rounded, "Account", 3),
           ],
         ),
       ),

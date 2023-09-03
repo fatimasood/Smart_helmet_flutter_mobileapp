@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -20,8 +19,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Builder(
         builder: (context) {
           return IconButton(
-            alignment: Alignment.bottomLeft,
-            padding: EdgeInsets.only(top: 45.0, bottom: 30.0, left: 20.0),
+            alignment: Alignment.bottomRight,
+            padding: EdgeInsets.only(top: 45.0, bottom: 30.0, right: 20.0),
             icon: Icon(
               Icons.menu,
               color: Colors.white54,
