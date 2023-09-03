@@ -1,26 +1,42 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  var actions;
-
+class HomeScreen extends StatelessWidget {
   //function to open blutooth settings
-
   Future<void> openBluetoothSettings() async {
-    await SystemChannels.platform.invokeListMethod('Bluetooth.openSettings');
+    // The Bluetooth settings deep link for Android
+    const String androidBluetoothSettings = "package:com.android.settings"
+        "/widget/com.android.settings.bluetooth.BluetoothSettings";
+
+    // The Bluetooth settings deep link for iOS
+    const String iosBluetoothSettings = "App-Prefs:Bluetooth";
+
+    if (await canLaunch(androidBluetoothSettings)) {
+      // For Android, open the Bluetooth settings page
+      launch(androidBluetoothSettings);
+    } else if (await canLaunch(iosBluetoothSettings)) {
+      // For iOS, open the Bluetooth settings page
+      launch(iosBluetoothSettings);
+    } else {
+      // If the deep link is not available on the device, show an error message
+      throw 'Could not open Bluetooth settings.';
+    }
+  }
+
+  void onTap() {
+    Future.delayed(Duration(milliseconds: 50), () {
+      openBluetoothSettings();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Container(
@@ -39,16 +55,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          Container(
-            child: InkWell(
-              onTap: openBluetoothSettings,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+          GestureDetector(
+            onTap: onTap,
+            child: Container(
+              width: 180,
+              height: 180,
+              child: Center(
                 child: Image.asset(
-                  'lib/assets/bluetooth.png', // Replace with the actual path to your Bluetooth image
-                  width: 24, // Adjust the size as needed
-                  height: 24,
-                  color: Colors.white, // Optional: Apply a color to the image
+                  "lib/assets/blueooth.png", // Update the image path
+                  height: 165,
+                  width: 165,
                 ),
               ),
             ),

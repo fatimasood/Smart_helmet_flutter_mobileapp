@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'firstScreen.dart';
 
@@ -26,29 +27,66 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-        padding:
-            const EdgeInsets.fromLTRB(74 * 1.0, 264 * 1.0, 63 * 1.0, 384 * 1.0),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(1 * 1.0),
-          gradient: const LinearGradient(
-              begin: Alignment(-0.951, -1),
-              end: Alignment(1.508, 1.437),
-              colors: <Color>[
-                Color(0xff6617ff),
-                Color(0xff9d6bff),
-                Color(0xffffffff),
-                Color(0xff8048ec)
-              ],
-              stops: <double>[
-                0,
-                0.792,
-                1,
-                1
-              ]),
-        ),
+      body: Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.fromLTRB(
+                74 * 1.0, 264 * 1.0, 63 * 1.0, 384 * 1.0),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(1 * 1.0),
+              gradient: const LinearGradient(
+                begin: Alignment(-0.951, -1),
+                end: Alignment(1.508, 1.437),
+                colors: <Color>[
+                  Color(0xff6617ff),
+                  Color(0xff9d6bff),
+                  Color(0xffffffff),
+                  Color(0xff8048ec)
+                ],
+                stops: <double>[0, 0.792, 1, 1],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 130,
+                width: 130,
+                child: Image.asset("lib/assets/helmet.png"),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "SMART",
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    "HELMET",
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xffd8a7ff),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
