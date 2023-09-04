@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fypprojectp/screens/SignUp.dart';
 import 'package:fypprojectp/screens/ThirdScreen.dart';
-
 import 'SecondScreen.dart';
 import 'firstScreen.dart';
 
@@ -18,6 +18,7 @@ class PageSlider extends StatelessWidget {
           firstScreen(),
           SecondScreen(),
           ThirdScreen(),
+          SignUp(),
           // Add more screens if needed
         ],
       ),
