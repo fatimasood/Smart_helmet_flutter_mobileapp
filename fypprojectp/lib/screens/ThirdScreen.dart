@@ -1,6 +1,7 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:fypprojectp/screens/SignUp.dart';
+import 'package:page_transition/page_transition.dart';
 
 // ignore: camel_case_types
 class ThirdScreen extends StatelessWidget {
@@ -153,8 +154,9 @@ class ThirdScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => SignUp(),
+                            PageTransition(
+                              type: PageTransitionType.bottomToTop,
+                              child: SignUp(),
                             ),
                           );
                         },

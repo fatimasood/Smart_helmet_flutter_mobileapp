@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'SecondScreen.dart';
 
 // ignore: camel_case_types
@@ -152,8 +153,9 @@ class firstScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => SecondScreen()));
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: SecondScreen()));
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(

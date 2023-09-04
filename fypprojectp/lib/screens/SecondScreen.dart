@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 import 'ThirdScreen.dart';
 
@@ -153,8 +154,9 @@ class SecondScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => ThirdScreen()));
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: ThirdScreen()));
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(

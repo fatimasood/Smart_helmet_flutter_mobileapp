@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fypprojectp/screens/pageSlider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'firstScreen.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key, required String title});
@@ -17,9 +17,12 @@ class _SplashScreenState extends State<SplashScreen> {
     // Simulate a delay for demonstration purpose
     Future.delayed(const Duration(seconds: 6), () {
       // After the delay, navigate to the next screen
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => PageSlider()),
+        PageTransition(
+          type: PageTransitionType.fade,
+          child: PageSlider(),
+        ),
       );
     });
   }
