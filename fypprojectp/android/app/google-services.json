@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "146550425172",
+    "project_id": "smarthelmet-e6afa",
+    "storage_bucket": "smarthelmet-e6afa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146550425172:android:8ceeee66529c4c2c46cfc1",
+        "android_client_info": {
+          "package_name": "com.example.fypprojectp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8QgK_MYDNMHRD5Y1r8BK3za9jzejCn1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
