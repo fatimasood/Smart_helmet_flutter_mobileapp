@@ -14,6 +14,16 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   bool _passwordVisible = false; //for password state saving
 
+  final _formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -110,18 +120,43 @@ class _SignInState extends State<SignIn> {
               const SizedBox(
                 height: 61,
               ),
-              buildInputField(
-                hintText: 'Email',
-                prefixIcon: Icons.mail_outline_rounded,
-              ),
-              SizedBox(height: 22),
-              buildInputField(
-                hintText: 'Password',
-                prefixIcon: Icons.lock_outline,
-                isPassword: true,
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: emailController,
+                      decoration: const InputDecoration(
+                        hintText: 'Email',
+                        prefixIcon: Icon(Icons.mail_outline_rounded),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Enter Email';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 22),
+                    TextFormField(
+                      controller: passwordController,
+                      decoration: const InputDecoration(
+                        hintText: 'Password',
+                        prefixIcon: Icon(Icons.lock_outline),
+                      ),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Enter Password';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 70),
+                padding: const EdgeInsets.only(top: 70),
                 child: SizedBox(
                   height: 40,
                   width: 140,

@@ -3,6 +3,8 @@ import 'package:fypprojectp/screens/pageSlider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../firebase_services/splash_services.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key, required String title});
 
@@ -11,9 +13,12 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  SplashServices splashScreen =
+      SplashServices(); //firebase splashscreen services
   @override
   void initState() {
     super.initState();
+    splashScreen.isLogin(context);
     // Simulate a delay for demonstration purpose
     Future.delayed(const Duration(seconds: 6), () {
       // After the delay, navigate to the next screen
