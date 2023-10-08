@@ -7,14 +7,14 @@ import 'SignUp.dart';
 import 'home.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+  const SignIn({Key? key}) : super(key: key);
 
   @override
   State<SignIn> createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
-  bool _passwordVisible = false; //for password state saving
+  bool _isPasswordVisible = false; //for password state saving
 
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -134,37 +134,19 @@ class _SignInState extends State<SignIn> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        controller: emailController,
-                        decoration: const InputDecoration(
-                          hintText: 'Email',
-                          prefixIcon: Icon(Icons.mail_outline_rounded),
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return '\aKindly Enter Valid mail';
-                          }
-                          if (!value.endsWith('@gmail.com')) {
-                            return 'Kindly Enter Valid mail';
-                          }
-                          return null;
-                        },
+                      buildInputField(
+                        hintText: 'Email',
+                        prefixIcon: Icons.mail_outline_rounded,
                       ),
-                      const SizedBox(height: 22),
-                      TextFormField(
-                        keyboardType: TextInputType.visiblePassword,
-                        controller: passwordController,
-                        decoration: const InputDecoration(
-                          hintText: 'Password',
-                          prefixIcon: Icon(Icons.lock_outline),
-                        ),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Enter Password';
-                          }
-                          return null;
+                      const SizedBox(height: 12),
+                      buildInputField(
+                        hintText: 'Password',
+                        prefixIcon: Icons.lock_outline,
+                        isPassword: true,
+                        onTogglePassword: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
                         },
                       ),
                     ],
@@ -176,11 +158,9 @@ class _SignInState extends State<SignIn> {
                     height: 40,
                     width: 140,
                     child: InkWell(
-                      // onTap: onTap(){},
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: Color(0xffc780ff),
-                          // Set the button color to purple
                         ),
                         child: Text(
                           "Log in",
@@ -235,7 +215,7 @@ class _SignInState extends State<SignIn> {
                             textStyle: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xff6617ff),
+                              color: Color(0xff66117ff),
                             ),
                           ),
                         ),
@@ -245,7 +225,7 @@ class _SignInState extends State<SignIn> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SignUp(),
-                              ), // Replace SignIn with the actual name of your sign-in screen widget
+                              ),
                             );
                           },
                           child: Text(
@@ -275,64 +255,74 @@ class _SignInState extends State<SignIn> {
     required String hintText,
     required IconData prefixIcon,
     bool isPassword = false,
+    Function? onTogglePassword,
   }) {
     return Container(
       padding: EdgeInsets.fromLTRB(12, 12, 21, 9),
-      width: 326,
-      height: 42,
-      decoration: BoxDecoration(
-        color: Color(0xffffffff),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x3f000000),
-            offset: Offset(0, 4),
-            blurRadius: 2,
-          ),
-        ],
-      ),
-      child: TextField(
-        obscureText: isPassword && !_passwordVisible,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(bottom: 11.0),
-          border: InputBorder.none,
-          hintText: hintText,
-          hintStyle: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: Color(0xffc780ff),
-          ),
-          prefixIcon: Icon(
-            prefixIcon,
-            size: 20,
-            color: Colors.black45,
-          ),
-          suffixIcon: isPassword
-              ? IconButton(
-                  padding: EdgeInsets.only(bottom: 11.0),
-                  icon: Icon(
-                    _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.black45,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _passwordVisible = !_passwordVisible;
-                    });
-                  },
-                )
-              : null,
-        ),
-      ),
-    );
-  }
-
-  Widget buildSocialIcon({required String imagePath}) {
-    return Align(
-      child: SizedBox(
-        width: 50,
+      child: Container(
+        width: 326,
         height: 50,
-        child: Image.asset(
-          imagePath,
+        decoration: BoxDecoration(
+          color: Color(0xffffffff),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x3f000000),
+              offset: Offset(0, 4),
+              blurRadius: 2,
+            ),
+          ],
+        ),
+        child: TextFormField(
+          keyboardType: isPassword
+              ? TextInputType.visiblePassword
+              : TextInputType.emailAddress,
+          controller: isPassword ? passwordController : emailController,
+          obscureText: isPassword && !_isPasswordVisible,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(top: 11.28),
+            hintText: hintText,
+            hintStyle: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: Color(0xffc780ff),
+            ),
+            prefixIcon: Icon(
+              prefixIcon,
+              size: 20,
+              color: Colors.black45,
+            ),
+            border: InputBorder.none,
+            suffixIcon: isPassword
+                ? IconButton(
+                    onPressed: () {
+                      if (onTogglePassword != null) {
+                        onTogglePassword();
+                      }
+                    },
+                    icon: Icon(
+                      _isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Colors.grey,
+                    ),
+                  )
+                : null,
+          ),
+          validator: (value) {
+            if (value!.isEmpty) {
+              return isPassword
+                  ? 'Please enter a password'
+                  : 'Please enter a valid email';
+            }
+            if (isPassword && value.length < 6) {
+              return 'Password should be at least 6 characters long';
+            }
+            if (!isPassword && !value.endsWith('@gmail.com')) {
+              return 'Please enter your gmail address';
+            }
+            return null;
+          },
         ),
       ),
     );
