@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'SignUp.dart';
 import 'home.dart';
@@ -23,10 +24,30 @@ class _SignInState extends State<SignIn> {
   bool loading = false;
   final _auth = FirebaseAuth.instance;
 
+  @override
   void dispose() {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+  }
+
+  void login() {
+    _auth
+        .signInWithEmailAndPassword(
+            email: emailController.text.toString(),
+            password: passwordController.text.toString())
+        .then((value) {
+      Utils().toastMessage(value.user!.email.toString());
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Home(),
+        ),
+      );
+    }).onError((error, stackTrace) {
+      debugPrint(error.toString());
+      Utils().toastMessage(error.toString());
+    });
   }
 
   @override
@@ -174,12 +195,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Home(),
-                              ),
-                            );
+                            login();
                           } else {}
                         },
                       ),

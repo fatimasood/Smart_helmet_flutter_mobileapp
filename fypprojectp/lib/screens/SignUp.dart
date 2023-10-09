@@ -278,88 +278,93 @@ class _SignUpState extends State<SignUp> {
     bool isNameField = false,
   }) {
     return Container(
-      height: 70.23,
+      height: 76.23,
       padding: const EdgeInsets.fromLTRB(12, 12, 21, 9),
-      child: Container(
-        width: 326,
-        height: 50,
-        decoration: BoxDecoration(
-          color: const Color(0xffffffff),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x3f000000),
-              offset: Offset(0, 4),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: Icon(
-                prefixIcon,
-                size: 20,
-                color: Colors.black45,
-              ),
-            ),
-            Expanded(
-              child: TextFormField(
-                keyboardType: isPassword
-                    ? TextInputType.visiblePassword
-                    : TextInputType.emailAddress,
-                controller: controller,
-                obscureText: isPassword && !_passwordVisible,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(left: 9),
-                  hintText: hintText,
-                  hintStyle: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xffc780ff),
-                  ),
-                  border: InputBorder.none,
-                  suffixIcon: isPassword
-                      ? IconButton(
-                          onPressed: () {
-                            if (onTogglePassword != null) {
-                              onTogglePassword();
-                            }
-                          },
-                          icon: Icon(
-                            _passwordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Colors.grey,
-                            size: 20,
-                          ),
-                        )
-                      : null,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 326,
+            height: 50,
+            decoration: BoxDecoration(
+              color: const Color(0xffffffff),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x3f000000),
+                  offset: Offset(0, 4),
+                  blurRadius: 10,
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return isPassword
-                        ? 'Please enter a password'
-                        : isNameField
-                            ? 'Please enter your name'
-                            : 'Please enter your mail address';
-                  }
-                  if (isPassword && value.length < 6) {
-                    return 'Enter at least 6 characters long';
-                  }
-                  if (!isPassword &&
-                      !isNameField &&
-                      !value.contains('@') &&
-                      !value.endsWith('.com')) {
-                    return 'Kindly enter valid mail';
-                  }
-                  return null;
-                },
-              ),
+              ],
             ),
-          ],
-        ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Icon(
+                    prefixIcon,
+                    size: 20,
+                    color: Colors.black45,
+                  ),
+                ),
+                Expanded(
+                  child: TextFormField(
+                    keyboardType: isPassword
+                        ? TextInputType.visiblePassword
+                        : TextInputType.emailAddress,
+                    controller: controller,
+                    obscureText: isPassword && !_passwordVisible,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.only(left: 9),
+                      hintText: hintText,
+                      hintStyle: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xffc780ff),
+                      ),
+                      border: InputBorder.none,
+                      suffixIcon: isPassword
+                          ? IconButton(
+                              onPressed: () {
+                                if (onTogglePassword != null) {
+                                  onTogglePassword();
+                                }
+                              },
+                              icon: Icon(
+                                _passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.grey,
+                                size: 20,
+                              ),
+                            )
+                          : null,
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return isPassword
+                            ? 'Please enter a password'
+                            : isNameField
+                                ? 'Please enter your name'
+                                : 'Please enter your mail address';
+                      }
+                      if (isPassword && value.length < 6) {
+                        return 'Enter at least 6 characters long';
+                      }
+                      if (!isPassword &&
+                          !isNameField &&
+                          !value.contains('@') &&
+                          !value.endsWith('.com')) {
+                        return 'Kindly enter valid mail';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
