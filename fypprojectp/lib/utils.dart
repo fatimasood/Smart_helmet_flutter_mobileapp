@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -81,5 +82,18 @@ TextStyle SafeGoogleFont(
       decorationStyle: decorationStyle,
       decorationThickness: decorationThickness,
     );
+  }
+}
+
+class Utils {
+  void toastMessage(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 }
