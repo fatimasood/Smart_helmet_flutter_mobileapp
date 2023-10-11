@@ -171,6 +171,12 @@ class _SignUpState extends State<SignUp> {
                             ),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Home(),
+                                  ),
+                                );
                                 _auth
                                     .createUserWithEmailAndPassword(
                                         email: emailController.text.toString(),
@@ -180,13 +186,6 @@ class _SignUpState extends State<SignUp> {
                                     .onError((error, stackTrace) {
                                   Utils().toastMessage(error.toString());
                                 });
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Home(),
-                                  ),
-                                );
                               } else {}
                             },
                           ),

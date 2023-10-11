@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'SignUp.dart';
 import 'home.dart';
+import 'package:audioplayers/audioplayers.dart';
+
+final AudioPlayer _audioPlayer = AudioPlayer();
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -64,7 +67,7 @@ class _SignInState extends State<SignIn> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 Row(
@@ -80,7 +83,7 @@ class _SignInState extends State<SignIn> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10.0,
                     ),
                     Text(
@@ -181,7 +184,7 @@ class _SignInState extends State<SignIn> {
                     child: InkWell(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xffc780ff),
+                          primary: const Color(0xffc780ff),
                         ),
                         child: Text(
                           "Log in",
@@ -231,7 +234,7 @@ class _SignInState extends State<SignIn> {
                             textStyle: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xff66117ff),
+                              color: const Color(0xff66117ff),
                             ),
                           ),
                         ),
@@ -274,12 +277,12 @@ class _SignInState extends State<SignIn> {
     Function? onTogglePassword,
   }) {
     return Container(
-      padding: EdgeInsets.fromLTRB(12, 12, 21, 9),
+      padding: const EdgeInsets.fromLTRB(12, 12, 21, 9),
       child: Container(
         width: 326,
         height: 50,
         decoration: BoxDecoration(
-          color: Color(0xffffffff),
+          color: const Color(0xffffffff),
           borderRadius: BorderRadius.circular(12),
           boxShadow: const [
             BoxShadow(
@@ -296,9 +299,9 @@ class _SignInState extends State<SignIn> {
           controller: isPassword ? passwordController : emailController,
           obscureText: isPassword && !_isPasswordVisible,
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(top: 11.28),
+            contentPadding: const EdgeInsets.only(top: 11.28),
             hintText: hintText,
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: Color(0xffc780ff),
@@ -327,15 +330,47 @@ class _SignInState extends State<SignIn> {
           ),
           validator: (value) {
             if (value!.isEmpty) {
-              return isPassword
-                  ? 'Please enter a password'
-                  : 'Please enter a valid email';
+              Fluttertoast.showToast(
+                msg: isPassword
+                    ? 'Please enter a password'
+                    : 'Please enter a valid email',
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.deepPurple,
+                textColor: Colors.white54,
+                fontSize: 16.0,
+              );
+              return null;
+              //play sound
+              //_audioPlayer.play('assets/beep.mp3', isLocal: true');
             }
             if (isPassword && value.length < 6) {
-              return 'Password should be at least 6 characters long';
+              Fluttertoast.showToast(
+                msg: 'Password should be at least 6 characters long',
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.transparent,
+                textColor: Colors.black,
+                fontSize: 16.0,
+              );
+              return null;
+              // Play the beep sound
+              //  await _audioPlayer.play('assets/beep.mp3', isLocal: true);
             }
             if (!isPassword && !value.endsWith('@gmail.com')) {
-              return 'Please enter your gmail address';
+              Fluttertoast.showToast(
+                msg: 'Please enter your gmail address',
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.transparent,
+                textColor: Colors.black,
+                fontSize: 16.0,
+              );
+              // Play the beep sound
+              // await _audioPlayer.play('assets/beep.mp3', isLocal: true);
             }
             return null;
           },

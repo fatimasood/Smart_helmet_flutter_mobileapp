@@ -92,7 +92,7 @@ class Utils {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.deepPurple,
         textColor: Colors.white,
         fontSize: 16.0);
   }
