@@ -288,7 +288,7 @@ class _SignInState extends State<SignIn> {
             BoxShadow(
               color: Color(0x3f000000),
               offset: Offset(0, 4),
-              blurRadius: 2,
+              blurRadius: 6,
             ),
           ],
         ),
@@ -351,8 +351,8 @@ class _SignInState extends State<SignIn> {
                 toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
-                backgroundColor: Colors.transparent,
-                textColor: Colors.black,
+                backgroundColor: Colors.deepPurple,
+                textColor: Colors.white54,
                 fontSize: 16.0,
               );
               return null;
@@ -361,12 +361,12 @@ class _SignInState extends State<SignIn> {
             }
             if (!isPassword && !value.endsWith('@gmail.com')) {
               Fluttertoast.showToast(
-                msg: 'Please enter your gmail address',
+                msg: 'Kindly Enter Proper mail',
                 toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
-                backgroundColor: Colors.transparent,
-                textColor: Colors.black,
+                backgroundColor: Colors.deepPurple,
+                textColor: Colors.white54,
                 fontSize: 16.0,
               );
               // Play the beep sound

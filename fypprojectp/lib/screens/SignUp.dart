@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fypprojectp/screens/home.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,6 +27,25 @@ class _SignUpState extends State<SignUp> {
     emailController.dispose();
     passwordController.dispose();
     fullNameController.dispose();
+  }
+
+  void signup() {
+    _auth
+        .createUserWithEmailAndPassword(
+            email: emailController.text.toString(),
+            password: passwordController.text.toString())
+        .then((value) {
+      Utils().toastMessage(value.user!.email.toString());
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Home(),
+        ),
+      );
+    }).onError((error, stackTrace) {
+      debugPrint(error.toString());
+      Utils().toastMessage(error.toString());
+    });
   }
 
   @override
@@ -171,21 +191,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Home(),
-                                  ),
-                                );
-                                _auth
-                                    .createUserWithEmailAndPassword(
-                                        email: emailController.text.toString(),
-                                        password:
-                                            passwordController.text.toString())
-                                    .then((value) {})
-                                    .onError((error, stackTrace) {
-                                  Utils().toastMessage(error.toString());
-                                });
+                                signup();
                               } else {}
                             },
                           ),
@@ -256,6 +262,7 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
+//for images
   Widget buildSocialIcon({required String imagePath}) {
     return Align(
       child: SizedBox(
@@ -277,93 +284,106 @@ class _SignUpState extends State<SignUp> {
     bool isNameField = false,
   }) {
     return Container(
-      height: 76.23,
+      //    height: 76.23,
       padding: const EdgeInsets.fromLTRB(12, 12, 21, 9),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 326,
-            height: 50,
-            decoration: BoxDecoration(
-              color: const Color(0xffffffff),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0x3f000000),
-                  offset: Offset(0, 4),
-                  blurRadius: 10,
-                ),
-              ],
+      child: Container(
+        width: 326,
+        height: 50,
+        decoration: BoxDecoration(
+          color: const Color(0xffffffff),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x3f000000),
+              offset: Offset(0, 4),
+              blurRadius: 6,
             ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: Icon(
-                    prefixIcon,
-                    size: 20,
-                    color: Colors.black45,
-                  ),
-                ),
-                Expanded(
-                  child: TextFormField(
-                    keyboardType: isPassword
-                        ? TextInputType.visiblePassword
-                        : TextInputType.emailAddress,
-                    controller: controller,
-                    obscureText: isPassword && !_passwordVisible,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.only(left: 9),
-                      hintText: hintText,
-                      hintStyle: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xffc780ff),
-                      ),
-                      border: InputBorder.none,
-                      suffixIcon: isPassword
-                          ? IconButton(
-                              onPressed: () {
-                                if (onTogglePassword != null) {
-                                  onTogglePassword();
-                                }
-                              },
-                              icon: Icon(
-                                _passwordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Colors.grey,
-                                size: 20,
-                              ),
-                            )
-                          : null,
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return isPassword
-                            ? 'Please enter a password'
-                            : isNameField
-                                ? 'Please enter your name'
-                                : 'Please enter your mail address';
+          ],
+        ),
+        child: TextFormField(
+          keyboardType: isPassword
+              ? TextInputType.visiblePassword
+              : TextInputType.emailAddress,
+          controller: controller,
+          obscureText: isPassword && !_passwordVisible,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.only(top: 11.28),
+            hintText: hintText,
+            hintStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: Color(0xffc780ff),
+            ),
+            prefixIcon: Icon(
+              prefixIcon,
+              size: 20,
+              color: Colors.black45,
+            ),
+            border: InputBorder.none,
+            suffixIcon: isPassword
+                ? IconButton(
+                    onPressed: () {
+                      if (onTogglePassword != null) {
+                        onTogglePassword();
                       }
-                      if (isPassword && value.length < 6) {
-                        return 'Enter at least 6 characters long';
-                      }
-                      if (!isPassword &&
-                          !isNameField &&
-                          !value.contains('@') &&
-                          !value.endsWith('.com')) {
-                        return 'Kindly enter valid mail';
-                      }
-                      return null;
                     },
-                  ),
-                ),
-              ],
-            ),
+                    icon: Icon(
+                      _passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Colors.grey,
+                      size: 20,
+                    ),
+                  )
+                : null,
           ),
-        ],
+          validator: (value) {
+            if (value!.isEmpty) {
+              Fluttertoast.showToast(
+                msg: isPassword
+                    ? 'Kindly set any password'
+                    : isNameField
+                        ? 'Enter your name'
+                        : 'Enter your gmail',
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.deepPurple,
+                textColor: Colors.white54,
+                fontSize: 16.0,
+              );
+              return null;
+            }
+
+            if (isPassword && value.length < 6) {
+              Fluttertoast.showToast(
+                msg: 'Password should be at least 6 characters long',
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.deepPurple,
+                textColor: Colors.white54,
+                fontSize: 16.0,
+              );
+              return null;
+            }
+            /* if (!isPassword && !value.endsWith('@gmail.com')) {
+              Fluttertoast.showToast(
+                msg: 'Enter proper gmail address',
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.deepPurple,
+                textColor: Colors.white54,
+                fontSize: 16.0,
+              );
+
+              // Play the beep sound
+              // await _audioPlayer.play('assets/beep.mp3', isLocal: true);
+            }*/
+            return null;
+          },
+        ),
       ),
     );
   }
