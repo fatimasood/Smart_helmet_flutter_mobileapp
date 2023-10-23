@@ -7,6 +7,8 @@ import 'firstScreen.dart';
 class PageSlider extends StatelessWidget {
   final PageController _pageController = PageController();
 
+  PageSlider({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
