@@ -16,7 +16,7 @@ class _SignsScreenState extends State<SignsScreen> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 20, left: 15),
+            padding: EdgeInsets.only(top: 30, left: 15),
             child: Row(
               children: [
                 Container(
@@ -30,31 +30,62 @@ class _SignsScreenState extends State<SignsScreen> {
                   child: Image.asset('lib/assets/pic2.png'),
                 ),
                 Container(
-                  width: 120,
+                  width: 100,
                   height: 120,
                   child: Image.asset('lib/assets/pic3.png'),
                 ),
               ],
             ),
           ),
-          Row(
-            children: [
-              Container(
-                width: 120,
-                height: 120,
-                child: Image.asset('lib/assets/pic4.png'),
-              ),
-              Container(
-                width: 120,
-                height: 120,
-                child: Image.asset('lib/assets/pic5.png'),
-              ),
-              Container(
-                width: 120,
-                height: 120,
-                child: Image.asset('lib/assets/pic6.png'),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Row(
+              children: [
+                Container(
+                  width: 120,
+                  height: 120,
+                  child: Image.asset('lib/assets/pic4.png'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 7),
+                  child: Container(
+                    width: 120,
+                    height: 120,
+                    child: Image.asset('lib/assets/pic5.png'),
+                  ),
+                ),
+                Container(
+                  width: 108,
+                  height: 120,
+                  child: Image.asset('lib/assets/pic6.png'),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Row(
+              children: [
+                Container(
+                  width: 120,
+                  height: 120,
+                  child: Image.asset('lib/assets/pic7.png'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 7),
+                  child: Container(
+                    width: 120,
+                    height: 120,
+                    child: Image.asset('lib/assets/pic8.png'),
+                  ),
+                ),
+                Container(
+                  width: 108,
+                  height: 120,
+                  child: Image.asset('lib/assets/pic9.png'),
+                ),
+              ],
+            ),
           ),
         ],
       ),
