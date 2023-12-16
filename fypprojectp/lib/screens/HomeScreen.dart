@@ -1,9 +1,6 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatelessWidget {
   //function to open blutooth settings
@@ -36,7 +33,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       body: Column(
         children: [
           Container(
@@ -46,7 +43,7 @@ class HomeScreen extends StatelessWidget {
               child: Text(
                 "Please switch on your bluetooth for tracking your ride ",
                 style: GoogleFonts.inter(
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: Color(0xff9d6bff),
@@ -62,7 +59,7 @@ class HomeScreen extends StatelessWidget {
               height: 180,
               child: Center(
                 child: Image.asset(
-                  "lib/assets/blueooth.png", // Update the image path
+                  "lib/assets/blueooth.png",
                   height: 165,
                   width: 165,
                 ),

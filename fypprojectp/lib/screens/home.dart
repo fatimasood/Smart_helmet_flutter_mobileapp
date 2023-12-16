@@ -43,7 +43,7 @@ class _Home extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       appBar: CustomAppBar(
         height: 170,
       ), // Adjust the height as needed

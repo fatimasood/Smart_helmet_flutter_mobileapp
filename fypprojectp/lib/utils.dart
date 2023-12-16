@@ -1,8 +1,9 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
@@ -64,7 +65,6 @@ TextStyle SafeGoogleFont(
       "Source Sans Pro",
       textStyle: textStyle,
       color: color,
-      backgroundColor: backgroundColor,
       fontSize: fontSize,
       fontWeight: fontWeight,
       fontStyle: fontStyle,
