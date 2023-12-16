@@ -28,7 +28,7 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.purpleAccent.shade100,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
