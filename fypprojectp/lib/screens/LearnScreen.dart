@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/GamingScreen.dart';
+import 'package:fypprojectp/screens/QuizScreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LearnScreen extends StatefulWidget {
   const LearnScreen({super.key});
+  static const routeName = '/result_screen';
 
   @override
   State<LearnScreen> createState() => _LearnScreenState();
@@ -17,7 +18,7 @@ class _LearnScreenState extends State<LearnScreen> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(15),
             child: Column(
               children: [
                 Padding(
@@ -33,7 +34,7 @@ class _LearnScreenState extends State<LearnScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 LearningModuleCard(
@@ -41,11 +42,13 @@ class _LearnScreenState extends State<LearnScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => GamingScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => QuizScreen(),
+                      ),
                     );
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 LearningModuleCard(
@@ -53,11 +56,41 @@ class _LearnScreenState extends State<LearnScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => GamingScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => QuizScreen(),
+                      ),
                     );
                   },
                 ),
-                SizedBox(
+                const SizedBox(
+                  height: 15,
+                ),
+                LearningModuleCard(
+                  title: 'Vehicle Maintenance',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuizScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                LearningModuleCard(
+                  title: 'Minor Slip & Fall',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuizScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(
                   height: 15,
                 ),
                 LearningModuleCard(
@@ -65,31 +98,9 @@ class _LearnScreenState extends State<LearnScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => GamingScreen()),
-                    );
-                  },
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                LearningModuleCard(
-                  title: 'Traffic Rules',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => GamingScreen()),
-                    );
-                  },
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                LearningModuleCard(
-                  title: 'Traffic Rules',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => GamingScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => QuizScreen(),
+                      ),
                     );
                   },
                 ),
@@ -112,6 +123,7 @@ class LearningModuleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        textColor: Colors.black,
         title: Text(title),
         onTap: onTap,
       ),
