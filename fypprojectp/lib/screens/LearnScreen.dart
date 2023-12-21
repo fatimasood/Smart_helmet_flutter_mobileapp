@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/QuizScreen.dart';
+import 'package:fypprojectp/screens/LearningModule/QuizScreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LearnScreen extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/SignUp.dart';
-import 'package:fypprojectp/screens/ThirdScreen.dart';
+import 'package:fypprojectp/screens/signInup/SignUp.dart';
+import 'package:fypprojectp/screens/EntryScreens/ThirdScreen.dart';
 
-import 'SecondScreen.dart';
-import 'firstScreen.dart';
+import '../EntryScreens/SecondScreen.dart';
+import '../EntryScreens/firstScreen.dart';
 
 class PageSlider extends StatefulWidget {
   PageSlider() : super();

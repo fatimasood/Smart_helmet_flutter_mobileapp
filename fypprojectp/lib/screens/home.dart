@@ -3,9 +3,9 @@ import 'AccountScreen.dart';
 import 'HomeScreen.dart';
 import 'LearnScreen.dart';
 import 'SignsScreen.dart';
-import 'bottomNavigation.dart';
-import 'customAppbar.dart';
-import 'customSidebar.dart';
+import 'NavigationScreens/bottomNavigation.dart';
+import 'NavigationScreens/customAppbar.dart';
+import 'NavigationScreens/customSidebar.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

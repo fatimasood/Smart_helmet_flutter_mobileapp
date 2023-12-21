@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/pageSlider.dart';
+import 'package:fypprojectp/screens/PageSlider/pageSlider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
