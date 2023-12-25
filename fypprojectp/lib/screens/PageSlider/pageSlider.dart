@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/signInup/SignUp.dart';
+import 'package:fypprojectp/screens/NavigationScreens/SignUp.dart';
 import 'package:fypprojectp/screens/EntryScreens/ThirdScreen.dart';
 
 import '../EntryScreens/SecondScreen.dart';

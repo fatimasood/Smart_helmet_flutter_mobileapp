@@ -1,15 +1,12 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:fypprojectp/screens/home.dart';
+import 'package:fypprojectp/screens/EditInformation.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 
-import 'SignIn.dart';
+import '../signInup/SignIn.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -17,18 +14,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  File? _image;
-
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().getImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
-  }
-
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -50,177 +35,12 @@ class _SignUpState extends State<SignUp> {
             password: passwordController.text.toString())
         .then((value) {
       Utils().toastMessage(value.user!.email.toString());
-
-      showDialog(
-          context: context,
-          builder: (context) {
-            return SingleChildScrollView(
-              child: Dialog(
-                child: Container(
-                  padding: EdgeInsets.all(16.0),
-                  height: 545.0,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 12, bottom: 5),
-                        child: GestureDetector(
-                          onTap: _pickImage,
-                          child: CircleAvatar(
-                            radius: 35.0,
-                            backgroundColor: Colors.grey.shade400,
-                            backgroundImage:
-                                _image != null ? FileImage(_image!) : null,
-                            child: Icon(
-                              Icons.add_a_photo,
-                              size: 20.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "Create Profile",
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff9d6bff),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20.0),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25.0),
-                          border:
-                              Border.all(color: Color(0xff6617ff), width: 2.0),
-                          color: Colors.grey.shade50,
-                        ),
-                        height: 50,
-                        width: 250,
-                        child: Padding(
-                          padding:
-                              EdgeInsets.only(left: 20, bottom: 10, top: 10),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Name',
-                              hintStyle: TextStyle(
-                                  color: Color(0xff9d6bff),
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 13),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 16.0),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25.0),
-                          border:
-                              Border.all(color: Color(0xff6617ff), width: 2.0),
-                          color: Colors.grey.shade50,
-                        ),
-                        height: 50,
-                        width: 250,
-                        child: Padding(
-                          padding:
-                              EdgeInsets.only(left: 20, bottom: 10, top: 10),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Blood Type',
-                              hintStyle: TextStyle(
-                                  color: Color(0xff9d6bff),
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 13),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 16.0),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25.0),
-                          border:
-                              Border.all(color: Color(0xff6617ff), width: 2.0),
-                          color: Colors.grey.shade50,
-                        ),
-                        height: 50,
-                        width: 250,
-                        child: Padding(
-                          padding:
-                              EdgeInsets.only(left: 20, bottom: 10, top: 10),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Address',
-                              hintStyle: TextStyle(
-                                  color: Color(0xff9d6bff),
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 13),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 16.0),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25.0),
-                          border:
-                              Border.all(color: Color(0xff6617ff), width: 2.0),
-                          color: Colors.grey.shade50,
-                        ),
-                        height: 50,
-                        width: 250,
-                        child: Padding(
-                          padding:
-                              EdgeInsets.only(left: 20, bottom: 10, top: 10),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Emergency Contacts',
-                              hintStyle: TextStyle(
-                                  color: Color(0xff9d6bff),
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 13),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 37.0,
-                      ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xffc780ff),
-                          ),
-                          child: Text(
-                            "Save",
-                            style: GoogleFonts.inter(
-                              textStyle: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xffdde6ed),
-                              ),
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Home()),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditInformation(),
+        ),
+      );
     }).onError((error, stackTrace) {
       debugPrint(error.toString());
       Utils().toastMessage(error.toString());

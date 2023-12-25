@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'SignUp.dart';
+import '../NavigationScreens/SignUp.dart';
 import '../home.dart';
 import 'package:audioplayers/audioplayers.dart';
 

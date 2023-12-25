@@ -6,26 +6,30 @@ class HomeScreen extends StatelessWidget {
   //function to open blutooth settings
   Future<void> openBluetoothSettings() async {
     // The Bluetooth settings deep link for Android
-    const String androidBluetoothSettings = "package:com.android.settings"
-        "/widget/com.android.settings.bluetooth.BluetoothSettings";
+    const String androidBluetoothSettings =
+        "package:com.android.settings/com.android.settings.bluetooth.BluetoothSettings";
 
     // The Bluetooth settings deep link for iOS
     const String iosBluetoothSettings = "App-Prefs:Bluetooth";
 
-    if (await canLaunch(androidBluetoothSettings)) {
-      // For Android, open the Bluetooth settings page
-      launch(androidBluetoothSettings);
-    } else if (await canLaunch(iosBluetoothSettings)) {
-      // For iOS, open the Bluetooth settings page
-      launch(iosBluetoothSettings);
-    } else {
-      // If the deep link is not available on the device, show an error message
-      throw 'Could not open Bluetooth settings.';
+    try {
+      if (await canLaunch(androidBluetoothSettings)) {
+        // For Android, open the Bluetooth settings page
+        await launch(androidBluetoothSettings);
+      } else if (await canLaunch(iosBluetoothSettings)) {
+        // For iOS, open the Bluetooth settings page
+        await launch(iosBluetoothSettings);
+      } else {
+        // If the deep link is not available on the device, show an error message
+        throw 'Could not open Bluetooth settings.';
+      }
+    } catch (e) {
+      print('Error opening Bluetooth settings: $e');
     }
   }
 
   void onTap() {
-    Future.delayed(Duration(milliseconds: 50), () {
+    Future.delayed(Duration(milliseconds: 100), () {
       openBluetoothSettings();
     });
   }

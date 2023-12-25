@@ -1,6 +1,6 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/signInup/SignUp.dart';
+import 'package:fypprojectp/screens/NavigationScreens/SignUp.dart';
 import 'package:page_transition/page_transition.dart';
 
 // ignore: camel_case_types

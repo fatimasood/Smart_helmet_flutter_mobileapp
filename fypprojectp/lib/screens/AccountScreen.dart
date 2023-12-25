@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'EditInformation.dart';
+
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
 
@@ -43,25 +45,28 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                       ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          "Edit Information",
-                          style: GoogleFonts.inter(
-                            textStyle: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w300,
-                              color: Color(0xff9d6bff),
+                    GestureDetector(
+                      onTap: navigateToEditInformationScreen,
+                      child: Row(
+                        children: [
+                          Text(
+                            "Edit Information",
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300,
+                                color: Color(0xff9d6bff),
+                              ),
                             ),
                           ),
-                        ),
-                        Icon(
-                          Icons.add,
-                          color: Color.fromARGB(255, 180, 147, 247),
-                          size: 17,
-                        ),
-                      ],
-                    )
+                          Icon(
+                            Icons.add,
+                            color: Color.fromARGB(255, 180, 147, 247),
+                            size: 17,
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -267,5 +272,10 @@ class _AccountScreenState extends State<AccountScreen> {
         ),
       ),
     );
+  }
+
+  void navigateToEditInformationScreen() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => EditInformation()));
   }
 }
