@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -12,19 +9,6 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  File? _image;
-  bool isOverlayVisible = false;
-
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().getImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,143 +16,250 @@ class _AccountScreenState extends State<AccountScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 5),
-              child: Center(
-                child: GestureDetector(
-                  onTap: _pickImage,
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20, top: 10, bottom: 3, right: 10),
                   child: CircleAvatar(
-                    radius: 40.0,
-                    backgroundColor: Colors.grey.shade400,
-                    backgroundImage: _image != null ? FileImage(_image!) : null,
+                    radius: 35.0,
+                    backgroundColor: Color(0xffede5fd),
                     child: Icon(
-                      Icons.add_a_photo,
-                      size: 30.0,
-                      //color: Colors.white,
+                      Icons.person,
+                      size: 40,
                     ),
                   ),
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "John",
+                      style: GoogleFonts.inter(
+                        textStyle: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xff6617ff),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Edit Information",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300,
+                              color: Color(0xff9d6bff),
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.add,
+                          color: Color.fromARGB(255, 180, 147, 247),
+                          size: 17,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(
+              width: 350,
+              child: Center(
+                child: Divider(
+                  height: 18.5,
+                  thickness: 2.0,
+                  color: Color(0xff6617ff).withOpacity(0.1),
+                ),
               ),
             ),
-            Center(
+            Padding(
+              padding: const EdgeInsets.all(15),
               child: Text(
-                "Create Profile",
+                "Personal Information",
                 style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                    fontSize: 25,
+                  textStyle: const TextStyle(
+                    fontSize: 20,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xff9d6bff),
+                    color: Color(0xff6617ff),
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, top: 30),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.0),
-                    border: Border.all(color: Color(0xff6617ff), width: 2.0),
-                    color: Colors.transparent),
-                height: 50,
-                width: 310,
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        hintText: 'Name',
-                        hintStyle: TextStyle(
-                            color: Color(0xff9d6bff),
-                            fontWeight: FontWeight.w300),
-                        border: InputBorder.none),
-                  ),
-                ),
+            Container(
+              height: 340,
+              width: 340,
+              decoration: BoxDecoration(
+                color: Color(0xffede5fd),
+                borderRadius: BorderRadius.all(Radius.circular(35)),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, top: 5),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.0),
-                    border: Border.all(color: Color(0xff6617ff), width: 2.0),
-                    color: Colors.transparent),
-                height: 50,
-                width: 310,
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        hintText: 'CNIC',
-                        hintStyle: TextStyle(
-                            color: Color(0xff9d6bff),
-                            fontWeight: FontWeight.w300),
-                        border: InputBorder.none),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, top: 5),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.0),
-                    border: Border.all(color: Color(0xff6617ff), width: 2.0),
-                    color: Colors.transparent),
-                height: 50,
-                width: 310,
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        hintText: 'Address',
-                        hintStyle: TextStyle(
-                            color: Color(0xff9d6bff),
-                            fontWeight: FontWeight.w300),
-                        border: InputBorder.none),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, top: 5),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.0),
-                    border: Border.all(color: Color(0xff6617ff), width: 2.0),
-                    color: Colors.transparent),
-                height: 50,
-                width: 310,
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        hintText: 'Blood Group',
-                        hintStyle: TextStyle(
-                            color: Color(0xff9d6bff),
-                            fontWeight: FontWeight.w300),
-                        border: InputBorder.none),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, top: 5),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.0),
-                    border: Border.all(color: Color(0xff6617ff), width: 2.0),
-                    color: Colors.transparent),
-                height: 50,
-                width: 310,
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        hintText: 'Emergency Contact',
-                        hintStyle: TextStyle(
-                            color: Color(0xff9d6bff),
-                            fontWeight: FontWeight.w300),
-                        border: InputBorder.none),
-                  ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Name",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "CNIC",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Blood Group",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Address",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "SOS Contacts",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      width: 2.0,
+                      height: double.infinity,
+                      color: Color(0xff6617ff).withOpacity(0.1),
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "John",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "22398-7593793-9",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "A+",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Attock City",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "37567567667",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 3),
+                        Text(
+                          "03756746776",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 3),
+                        Text(
+                          "03756746776",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 3),
+                        Text(
+                          "03756746776",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffa678ff),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
