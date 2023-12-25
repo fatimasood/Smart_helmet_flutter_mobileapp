@@ -18,7 +18,7 @@ class QuizScreen extends StatelessWidget {
             color: Color(0xffffffff),
           ),
         ),
-        backgroundColor: Color(0xff9d6bff),
+        backgroundColor: Color(0xff8048ec),
       ),
       backgroundColor: Colors.white,
       body: Align(
@@ -27,14 +27,24 @@ class QuizScreen extends StatelessWidget {
           height: 580,
           width: 400,
           decoration: BoxDecoration(
-            color: Color(0xffc780ff),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(80),
               topRight: Radius.circular(80),
             ),
+            gradient: const LinearGradient(
+              begin: Alignment(-0.951, -1),
+              end: Alignment(1.508, 1.437),
+              colors: <Color>[
+                Color(0xff9d6bff),
+                Color(0xff6617ff),
+                Color(0xff8048ec),
+                Color(0xffffffff)
+              ],
+              stops: <double>[0, 0.5, 1, 2],
+            ),
           ),
-          // child: Text("gdhgfshj"),
         ),
+        // child: Text("gdhgfshj"),
       ),
     );
   }

@@ -70,20 +70,20 @@ class _SplashScreenState extends State<SplashScreen> {
                   Text(
                     "SMART",
                     style: GoogleFonts.inter(
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w800,
                         color: Colors.black,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10.0,
                   ),
                   Text(
                     "HELMET",
                     style: GoogleFonts.inter(
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w800,
                         color: Color(0xffd8a7ff),
