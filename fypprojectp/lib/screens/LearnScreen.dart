@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/LearningModule/QuizScreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LearnScreen extends StatefulWidget {
@@ -39,70 +38,35 @@ class _LearnScreenState extends State<LearnScreen> {
                 ),
                 LearningModuleCard(
                   title: 'Basic Riding Techniques',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuizScreen(),
-                      ),
-                    );
-                  },
+                  onTap: () {},
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 LearningModuleCard(
                   title: 'Traffic Rules',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuizScreen(),
-                      ),
-                    );
-                  },
+                  onTap: () {},
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 LearningModuleCard(
                   title: 'Vehicle Maintenance',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuizScreen(),
-                      ),
-                    );
-                  },
+                  onTap: () {},
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 LearningModuleCard(
                   title: 'Minor Slip & Fall',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuizScreen(),
-                      ),
-                    );
-                  },
+                  onTap: () {},
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 LearningModuleCard(
                   title: 'Traffic Rules',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuizScreen(),
-                      ),
-                    );
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
