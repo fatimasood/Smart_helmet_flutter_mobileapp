@@ -130,7 +130,13 @@ class ThirdScreen extends StatelessWidget {
                     children: [
                       Container(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: SignUp()));
+                          },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                           ),

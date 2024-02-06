@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+
+import '../NavigationScreens/SignUp.dart';
 import 'SecondScreen.dart';
 
 // ignore: camel_case_types
@@ -129,7 +131,13 @@ class firstScreen extends StatelessWidget {
                     children: [
                       Container(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: SignUp()));
+                          },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                           ),
