@@ -30,7 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
   url_launcher: ^6.0.10
+  android_intent: 
   permission_handler: ^10.4.3
   animated_text_kit: ^4.2.2
   animate_navigator_transition_do: ^1.1.0
@@ -53,7 +55,8 @@ dependencies:
   image_picker: ^0.8.5+3
   audioplayers: ^5.2.0
   get: ^4.6.5
-  app_settings:
+  app_settings: ^5.1.1
+  flutter_blue: ^0.8.0
 
 dev_dependencies:
   flutter_test:
