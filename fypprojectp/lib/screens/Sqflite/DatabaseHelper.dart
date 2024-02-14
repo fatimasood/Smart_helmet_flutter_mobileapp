@@ -30,14 +30,25 @@ class DatabaseHelper {
   }
 
 //insert record
-  Future<void> insertUserData(UserRecord record) async {
+  /*Future<void> insertUserData(UserRecord record) async {
     await _database.insert('user_records', record.toMap());
+  }*/
+
+  Future<void> insertUserData(UserRecord record) async {
+    await _database.insert('user_records', {
+      'fullName': record.fullName,
+      'cnic': record.cnic,
+      'bloodGroup': record.bloodGroup,
+      'address': record.address,
+      'emerContact': record.emerContact,
+      'imageBytes': record.imageBytes,
+    });
   }
 
 //update record
   Future<void> updateUserRecord(UserRecord record) async {
     await _database.update(
-      'attendence_records',
+      'user_records',
       {
         'fullName': record.fullName,
         'cnic': record.cnic,
