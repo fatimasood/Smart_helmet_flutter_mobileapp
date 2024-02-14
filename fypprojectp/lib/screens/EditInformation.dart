@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
+import 'package:fypprojectp/screens/home.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -51,11 +52,11 @@ class _EditInformationState extends State<EditInformation> {
   }
 
   void saveInformation() {
-    /*Navigator.push(
+    _addUser();
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => Home()),
-    );*/
-    _addUser();
+    );
   }
 
   @override

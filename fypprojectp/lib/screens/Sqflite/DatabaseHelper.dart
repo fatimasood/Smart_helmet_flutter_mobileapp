@@ -20,9 +20,7 @@ class DatabaseHelper {
             cnic TEXT,
             bloodGroup TEXT,
             address TEXT,
-            phoneNumber TEXT,
-
-      
+            emerContact TEXT
           )
         ''');
       },
