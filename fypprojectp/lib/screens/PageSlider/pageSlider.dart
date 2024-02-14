@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/NavigationScreens/SignUp.dart';
+import 'package:fypprojectp/screens/EditInformation.dart';
 import 'package:fypprojectp/screens/EntryScreens/ThirdScreen.dart';
+import 'package:fypprojectp/screens/NavigationScreens/SignUp.dart';
 
 import '../EntryScreens/SecondScreen.dart';
 import '../EntryScreens/firstScreen.dart';
@@ -22,6 +23,8 @@ class _PageSliderState extends State<PageSlider> {
         controller: _pageController,
         scrollDirection: Axis.horizontal,
         children: [
+          // for testing
+          EditInformation(),
           firstScreen(),
           SecondScreen(),
           ThirdScreen(),

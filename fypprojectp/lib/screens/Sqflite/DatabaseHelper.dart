@@ -20,7 +20,8 @@ class DatabaseHelper {
             cnic TEXT,
             bloodGroup TEXT,
             address TEXT,
-            emerContact TEXT
+            emerContact TEXT,
+            imageBytes BLOB
           )
         ''');
       },
@@ -43,6 +44,7 @@ class DatabaseHelper {
         'bloodgroup': record.bloodGroup,
         'address': record.address,
         'phoneNumber': record.emerContact,
+        'imageBytes': record.imageBytes,
       },
       where: 'fullName = ? ',
       whereArgs: [
@@ -101,6 +103,7 @@ class DatabaseHelper {
         bloodGroup: records[0]['bloodgroup'],
         emerContact: records[0]['emercontact'],
         address: records[0]['address'],
+        imageBytes: records[0]['imageBytes'],
       );
     } else {
       return null;

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
@@ -28,6 +29,15 @@ class _EditInformationState extends State<EditInformation> {
   late TextEditingController _addressController;
   late TextEditingController _emerContactController;
 
+  UserRecord _userRecord = UserRecord(
+    fullName: '',
+    cnic: '',
+    bloodGroup: '',
+    address: '',
+    emerContact: '',
+    imageBytes: Uint8List(0),
+  );
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +57,10 @@ class _EditInformationState extends State<EditInformation> {
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
+      });
+      List<int> imageBytes = await _image!.readAsBytes();
+      setState(() {
+        _userRecord.imageBytes = Uint8List.fromList(imageBytes);
       });
     }
   }
@@ -238,22 +252,22 @@ class _EditInformationState extends State<EditInformation> {
                         height: 22,
                       ),
                       GestureDetector(
-                          onTap: saveInformation,
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              "Save",
-                              style: GoogleFonts.inter(
-                                textStyle: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(
-                                      0xff6617ff), // Change color if needed
-                                  decoration: TextDecoration.underline,
-                                ),
+                        onTap: saveInformation,
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: Text(
+                            "Save",
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff6617ff),
+                                decoration: TextDecoration.underline,
                               ),
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -274,6 +288,7 @@ class _EditInformationState extends State<EditInformation> {
       bloodGroup: _bloodgroupController.text,
       address: _addressController.text,
       emerContact: _emerContactController.text,
+      imageBytes: _userRecord.imageBytes,
     );
     try {
       await _databaseHelper.initializeDatabase();
@@ -288,6 +303,7 @@ class _EditInformationState extends State<EditInformation> {
 
 class UserRecord {
   String fullName, cnic, bloodGroup, emerContact, address;
+  Uint8List imageBytes;
 
   UserRecord({
     required this.fullName,
@@ -295,6 +311,7 @@ class UserRecord {
     required this.bloodGroup,
     required this.address,
     required this.emerContact,
+    required this.imageBytes,
   });
 
   Map<String, dynamic> toMap() {
@@ -303,7 +320,8 @@ class UserRecord {
       'cnic': cnic,
       'bloodGroup': bloodGroup,
       'address': address,
-      'emerContact': emerContact
+      'emerContact': emerContact,
+      'imageBytes': imageBytes,
     };
     return map;
   }
