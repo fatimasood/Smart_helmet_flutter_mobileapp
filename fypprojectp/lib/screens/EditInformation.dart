@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
+import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'NavigationScreens/SignUp.dart';
-import 'home.dart';
 
 String? loggedInUserEmail = userMail;
 
@@ -27,6 +27,17 @@ class _EditInformationState extends State<EditInformation> {
   late TextEditingController _addressController;
   late TextEditingController _emerContactController;
 
+  @override
+  void initState() {
+    super.initState();
+    //_databaseHelper.initializeDatabase();
+    _fullNameController = TextEditingController();
+    _cnicController = TextEditingController();
+    _bloodgroupController = TextEditingController();
+    _addressController = TextEditingController();
+    _emerContactController = TextEditingController();
+  }
+
   File? _image;
 
   Future<void> _pickImage() async {
@@ -40,10 +51,11 @@ class _EditInformationState extends State<EditInformation> {
   }
 
   void saveInformation() {
-    Navigator.push(
+    /*Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => Home()),
-    );
+    );*/
+    _addUser();
   }
 
   @override
@@ -110,6 +122,7 @@ class _EditInformationState extends State<EditInformation> {
                             )),
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
+                          controller: _fullNameController,
                           decoration: InputDecoration(
                             hintText: 'Full Name',
                             hintStyle: TextStyle(
@@ -134,6 +147,7 @@ class _EditInformationState extends State<EditInformation> {
                             )),
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
+                          controller: _cnicController,
                           decoration: InputDecoration(
                             hintText: 'CNIC',
                             hintStyle: TextStyle(
@@ -158,6 +172,7 @@ class _EditInformationState extends State<EditInformation> {
                             )),
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
+                          controller: _bloodgroupController,
                           decoration: InputDecoration(
                             hintText: 'Blood Group',
                             hintStyle: TextStyle(
@@ -182,6 +197,7 @@ class _EditInformationState extends State<EditInformation> {
                             )),
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
+                          controller: _addressController,
                           decoration: InputDecoration(
                             hintText: 'Address',
                             hintStyle: TextStyle(
@@ -206,6 +222,7 @@ class _EditInformationState extends State<EditInformation> {
                             )),
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
+                          controller: _emerContactController,
                           decoration: InputDecoration(
                             hintText: 'Emergency Contact',
                             hintStyle: TextStyle(
@@ -245,5 +262,48 @@ class _EditInformationState extends State<EditInformation> {
         ),
       ),
     );
+  }
+
+  void _addUser() async {
+    // String fullName = _fullNameController.text;
+
+    final record = UserRecord(
+      fullName: _fullNameController.text,
+      cnic: _cnicController.text,
+      bloodGroup: _bloodgroupController.text,
+      address: _addressController.text,
+      emerContact: _emerContactController.text,
+    );
+    try {
+      await _databaseHelper.initializeDatabase();
+      await _databaseHelper.insertUserData(record);
+
+      Utils().toastMessage('Saved Successfully!');
+    } catch (e) {
+      Utils().toastMessage('Error! data not saved');
+    }
+  }
+}
+
+class UserRecord {
+  String fullName, cnic, bloodGroup, emerContact, address;
+
+  UserRecord({
+    required this.fullName,
+    required this.cnic,
+    required this.bloodGroup,
+    required this.address,
+    required this.emerContact,
+  });
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {
+      'fullName': fullName,
+      'cnic': cnic,
+      'bloodGroup': bloodGroup,
+      'address': address,
+      'emerContact': emerContact
+    };
+    return map;
   }
 }

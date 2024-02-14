@@ -12,7 +12,8 @@ class DatabaseHelper {
     _database = await openDatabase(
       join(path, 'smarthelmet.db'),
       onCreate: (db, version) {
-        return db.execute('''
+        return db.execute(
+            '''
           CREATE TABLE user_records(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             fullName TEXT,
@@ -39,15 +40,15 @@ class DatabaseHelper {
     await _database.update(
       'attendence_records',
       {
-        'fullName': record.fullname,
+        'fullName': record.fullName,
         'cnic': record.cnic,
-        'bloodgroup': record.bloodgroup,
+        'bloodgroup': record.bloodGroup,
         'address': record.address,
-        'phoneNumber': record.emercontact,
+        'phoneNumber': record.emerContact,
       },
       where: 'fullName = ? ',
       whereArgs: [
-        record.fullname,
+        record.fullName,
       ],
     );
   }
@@ -97,10 +98,10 @@ class DatabaseHelper {
 
     if (records.isNotEmpty) {
       return UserRecord(
-        fullname: records[0]['fullName'],
+        fullName: records[0]['fullName'],
         cnic: records[0]['cnic'],
-        bloodgroup: records[0]['bloodgroup'],
-        emercontact: records[0]['emercontact'],
+        bloodGroup: records[0]['bloodgroup'],
+        emerContact: records[0]['emercontact'],
         address: records[0]['address'],
       );
     } else {
