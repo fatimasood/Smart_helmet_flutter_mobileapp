@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../signInup/SignIn.dart';
 
+String? userMail;
+
 class SignUp extends StatefulWidget {
   @override
   State<SignUp> createState() => _SignUpState();
@@ -35,6 +37,7 @@ class _SignUpState extends State<SignUp> {
             password: passwordController.text.toString())
         .then((value) {
       Utils().toastMessage(value.user!.email.toString());
+      userMail = emailController.text;
       Navigator.push(
         context,
         MaterialPageRoute(

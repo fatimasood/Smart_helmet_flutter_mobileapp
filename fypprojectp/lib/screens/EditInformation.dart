@@ -1,10 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'NavigationScreens/SignUp.dart';
 import 'home.dart';
+
+String? loggedInUserEmail = userMail;
 
 class EditInformation extends StatefulWidget {
   const EditInformation({super.key});
@@ -14,6 +18,15 @@ class EditInformation extends StatefulWidget {
 }
 
 class _EditInformationState extends State<EditInformation> {
+  final _databaseHelper = DatabaseHelper();
+  final _formKey = GlobalKey<FormState>();
+
+  late TextEditingController _fullNameController;
+  late TextEditingController _cnicController;
+  late TextEditingController _bloodgroupController;
+  late TextEditingController _addressController;
+  late TextEditingController _emerContactController;
+
   File? _image;
 
   Future<void> _pickImage() async {
