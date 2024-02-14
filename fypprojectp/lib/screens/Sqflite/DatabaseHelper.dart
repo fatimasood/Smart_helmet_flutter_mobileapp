@@ -30,7 +30,7 @@ class DatabaseHelper {
 
 //insert record
   Future<void> insertUserData(UserRecord record) async {
-    await _database.insert('smarthelmet', record.toMap());
+    await _database.insert('user_records', record.toMap());
   }
 
 //update record
@@ -86,7 +86,7 @@ class DatabaseHelper {
 
   Future<UserRecord?> getUserRecordByName(String fullName) async {
     final List<Map<String, dynamic>> records = await _database.query(
-      'smarthelmet',
+      'user_records',
       where: 'LOWER(fullName) = ? ',
       whereArgs: [fullName.toLowerCase()],
 
