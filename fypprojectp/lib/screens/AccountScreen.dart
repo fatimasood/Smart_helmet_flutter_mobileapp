@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fypprojectp/screens/NavigationScreens/SignUp.dart';
+import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'EditInformation.dart';
@@ -11,6 +13,28 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
+  List<UserRecord> userRecord = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserRecords();
+  }
+
+  Future<void> _loadUserRecords() async {
+    String? loggedInUserEmail = userMail;
+    if (loggedInUserEmail != null) {
+      String loggedInUserName = loggedInUserEmail.split('@').first;
+
+      final records =
+          await _databaseHelper.getUserRecordByName(loggedInUserName);
+      setState(() {
+        userRecord = records as List<UserRecord>;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
