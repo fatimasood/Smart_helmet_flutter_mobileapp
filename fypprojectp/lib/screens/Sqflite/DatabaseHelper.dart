@@ -12,7 +12,8 @@ class DatabaseHelper {
     _database = await openDatabase(
       join(path, 'smarthelmet.db'),
       onCreate: (db, version) {
-        return db.execute('''
+        return db.execute(
+            '''
         CREATE TABLE user_records(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           fullName TEXT,
@@ -28,11 +29,6 @@ class DatabaseHelper {
     );
   }
 
-//insert record
-  /*Future<void> insertUserData(UserRecord record) async {
-    await _database.insert('user_records', record.toMap());
-  }*/
-
   Future<void> insertUserData(UserRecord record) async {
     await _database.insert('user_records', {
       'fullName': record.fullName,
@@ -44,79 +40,22 @@ class DatabaseHelper {
     });
   }
 
-//update record
-  Future<void> updateUserRecord(UserRecord record) async {
-    await _database.update(
-      'user_records',
-      {
-        'fullName': record.fullName,
-        'cnic': record.cnic,
-        'bloodgroup': record.bloodGroup,
-        'address': record.address,
-        'phoneNumber': record.emerContact,
-        'imageBytes': record.imageBytes,
-      },
-      where: 'fullName = ? ',
-      whereArgs: [
-        record.fullName,
-      ],
-    );
-  }
-
-  /*Future<UserRecord?> getAttendanceRecordByNameAndDate(
-      String firstName,) async {
-    print('Searching for: $firstName $lastName on $date');
-
-    final List<Map<String, dynamic>> records = await _database.query(
-      'attendence_records',
-      where: 'LOWER(firstName) = ? AND LOWER(lastName) = ? AND date = ?',
-      whereArgs: [
-        firstName.toLowerCase(),
-        lastName.toLowerCase(),
-        DateFormat('yyyy-MM-dd').format(date),
-      ],
-      limit: 1,
-    );
-
-    if (records.isNotEmpty) {
-      print('Record found:');
-      print(records[0]); // Print the found record for more details
-      return UserRecord(
-        firstName: records[0]['firstName'],
-        lastName: records[0]['lastName'],
-        regNum: records[0]['registrationNumber'],
-        className: records[0]['className'],
-        //req: records[0]['req'],
-        date: DateTime.parse(records[0]['date']),
-        isPresent: records[0]['isPresent'] == 1,
-      );
-    } else {
-      print('No record found for: $firstName $lastName on $date');
-      return null;
-    }
-  }*/
-
-  Future<UserRecord?> getUserRecordByName(String fullName) async {
+  Future<List<UserRecord>> getAllUserRecordForUser(String userName) async {
     final List<Map<String, dynamic>> records = await _database.query(
       'user_records',
-      where: 'LOWER(fullName) = ? ',
-      whereArgs: [fullName.toLowerCase()],
-
-      orderBy: 'id DESC',
-      limit: 1, // Limit set
+      where: 'fullName = ?',
+      whereArgs: [userName],
     );
 
-    if (records.isNotEmpty) {
+    return records.map((record) {
       return UserRecord(
-        fullName: records[0]['fullName'],
-        cnic: records[0]['cnic'],
-        bloodGroup: records[0]['bloodgroup'],
-        emerContact: records[0]['emercontact'],
-        address: records[0]['address'],
-        imageBytes: records[0]['imageBytes'],
+        fullName: record['fullName'],
+        cnic: record['cnic'],
+        bloodGroup: record['bloodGroup'],
+        emerContact: record['emerContact'],
+        address: record['address'],
+        imageBytes: record['imageBytes'],
       );
-    } else {
-      return null;
-    }
+    }).toList();
   }
 }

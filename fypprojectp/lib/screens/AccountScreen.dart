@@ -13,7 +13,7 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  final DatabaseHelper _databaseHelper = DatabaseHelper();
+  DatabaseHelper _databaseHelper = DatabaseHelper();
   List<UserRecord> userRecord = [];
 
   @override
@@ -28,9 +28,9 @@ class _AccountScreenState extends State<AccountScreen> {
       String loggedInUserName = loggedInUserEmail.split('@').first;
 
       final records =
-          await _databaseHelper.getUserRecordByName(loggedInUserName);
+          await _databaseHelper.getAllUserRecordForUser(loggedInUserName);
       setState(() {
-        userRecord = records as List<UserRecord>;
+        userRecord = records;
       });
     }
   }
