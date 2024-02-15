@@ -65,8 +65,10 @@ class _EditInformationState extends State<EditInformation> {
     }
   }
 
-  void saveInformation() {
+  void saveInformation() async {
     _addUser();
+    //delay for few second
+    await Future.delayed(Duration(seconds: 3));
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => Home()),

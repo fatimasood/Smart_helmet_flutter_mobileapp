@@ -12,18 +12,17 @@ class DatabaseHelper {
     _database = await openDatabase(
       join(path, 'smarthelmet.db'),
       onCreate: (db, version) {
-        return db.execute(
-            '''
-          CREATE TABLE user_records(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            fullName TEXT,
-            cnic TEXT,
-            bloodGroup TEXT,
-            address TEXT,
-            emerContact TEXT,
-            imageBytes BLOB
-          )
-        ''');
+        return db.execute('''
+        CREATE TABLE user_records(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          fullName TEXT,
+          cnic TEXT,
+          bloodGroup TEXT,
+          address TEXT,
+          emerContact TEXT,
+          imageBytes BLOB
+        )
+      ''');
       },
       version: 2,
     );
