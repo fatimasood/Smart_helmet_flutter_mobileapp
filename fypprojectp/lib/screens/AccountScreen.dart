@@ -23,15 +23,24 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Future<void> _loadUserRecords() async {
-    String? loggedInUserEmail = userMail;
-    if (loggedInUserEmail != null) {
-      String loggedInUserName = loggedInUserEmail.split('@').first;
+    try {
+      String? loggedInUserEmail = userMail;
+      print('loggedInUserEmail: $loggedInUserEmail');
 
-      final records =
-          await _databaseHelper.getAllUserRecordForUser(loggedInUserName);
-      setState(() {
-        userRecord = records;
-      });
+      if (loggedInUserEmail != null) {
+        String loggedInUserName = loggedInUserEmail.split('@').first;
+        print('loggedInUserName: $loggedInUserName');
+
+        final records =
+            await _databaseHelper.getAllUserRecordForUser(loggedInUserName);
+        print('Records loaded successfully: $records');
+
+        setState(() {
+          userRecord = records;
+        });
+      }
+    } catch (e) {
+      print('Error loading user records: $e');
     }
   }
 
@@ -59,16 +68,18 @@ class _AccountScreenState extends State<AccountScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "John",
-                      style: GoogleFonts.inter(
-                        textStyle: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xff6617ff),
+                    for (var record in userRecord)
+                      Container(
+                        width: 200,
+                        height: 90,
+                        decoration: BoxDecoration(color: Colors.white),
+                        child: ListTile(
+                          title: Text(
+                            '${record.fullName}',
+                            style: TextStyle(color: Color(0xff9d6bff)),
+                          ),
                         ),
                       ),
-                    ),
                     GestureDetector(
                       onTap: navigateToEditInformationScreen,
                       child: Row(

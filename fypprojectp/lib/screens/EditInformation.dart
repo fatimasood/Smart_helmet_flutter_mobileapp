@@ -296,6 +296,15 @@ class _EditInformationState extends State<EditInformation> {
       await _databaseHelper.initializeDatabase();
       await _databaseHelper.insertUserData(record);
 
+      // Print statements to check if data is saved correctly
+      print('Data saved successfully:');
+      print('Full Name: ${record.fullName}');
+      print('CNIC: ${record.cnic}');
+      print('Blood Group: ${record.bloodGroup}');
+      print('Address: ${record.address}');
+      print('Emergency Contact: ${record.emerContact}');
+      print('Image Bytes: ${record.imageBytes}');
+
       Utils().toastMessage('Saved Successfully!');
     } catch (e) {
       Utils().toastMessage('Error! data not saved');
