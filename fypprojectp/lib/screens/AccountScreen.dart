@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:fypprojectp/screens/NavigationScreens/SignUp.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
@@ -45,6 +47,12 @@ class _AccountScreenState extends State<AccountScreen> {
     }
   }
 
+//Image
+
+  ImageProvider imageProviderFromBytes(Uint8List bytes) {
+    return MemoryImage(bytes);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,30 +62,40 @@ class _AccountScreenState extends State<AccountScreen> {
           children: [
             Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20, top: 10, bottom: 3, right: 10),
-                  child: CircleAvatar(
-                    radius: 35.0,
-                    backgroundColor: Color(0xffede5fd),
-                    child: Icon(
-                      Icons.person,
-                      size: 40,
+                for (var record in userRecord)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20, top: 10, bottom: 3, right: 10),
+                    child: CircleAvatar(
+                      radius: 35.0,
+                      backgroundColor: Color(0xffede5fd),
+                      child: ClipOval(
+                        child: Image(
+                          image: imageProviderFromBytes(
+                              record.imageBytes), // Use the correct field
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
-                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     for (var record in userRecord)
                       Container(
                         width: 200,
-                        height: 90,
+                        height: 40,
                         decoration: BoxDecoration(color: Colors.white),
-                        child: ListTile(
-                          title: Text(
-                            '${record.fullName}',
-                            style: TextStyle(color: Color(0xff9d6bff)),
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Text(
+                              '${record.fullName}',
+                              style: TextStyle(color: Color(0xff9d6bff)),
+                            ),
                           ),
                         ),
                       ),
@@ -208,98 +226,99 @@ class _AccountScreenState extends State<AccountScreen> {
                       color: Color(0xff6617ff).withOpacity(0.1),
                       margin: EdgeInsets.symmetric(horizontal: 20),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "John",
-                          style: GoogleFonts.inter(
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffa678ff),
+                    for (var record in userRecord)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${record.fullName}',
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffa678ff),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "22398-7593793-9",
-                          style: GoogleFonts.inter(
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffa678ff),
+                          SizedBox(height: 10),
+                          Text(
+                            '${record.cnic}',
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffa678ff),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "A+",
-                          style: GoogleFonts.inter(
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffa678ff),
+                          SizedBox(height: 10),
+                          Text(
+                            '${record.bloodGroup}',
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffa678ff),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "Attock City",
-                          style: GoogleFonts.inter(
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffa678ff),
+                          SizedBox(height: 10),
+                          Text(
+                            '${record.address}',
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffa678ff),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "37567567667",
-                          style: GoogleFonts.inter(
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffa678ff),
+                          SizedBox(height: 10),
+                          Text(
+                            '${record.emerContact}',
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffa678ff),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 3),
-                        Text(
-                          "03756746776",
-                          style: GoogleFonts.inter(
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffa678ff),
+                          SizedBox(height: 3),
+                          Text(
+                            "03756746776",
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffa678ff),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 3),
-                        Text(
-                          "03756746776",
-                          style: GoogleFonts.inter(
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffa678ff),
+                          SizedBox(height: 3),
+                          Text(
+                            "03756746776",
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffa678ff),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 3),
-                        Text(
-                          "03756746776",
-                          style: GoogleFonts.inter(
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffa678ff),
+                          SizedBox(height: 3),
+                          Text(
+                            "03756746776",
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffa678ff),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
                   ],
                 ),
               ),

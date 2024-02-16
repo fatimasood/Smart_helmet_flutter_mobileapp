@@ -61,4 +61,13 @@ class DatabaseHelper {
       );
     }).toList();
   }
+
+  Future<Map<String, Object?>?> loadImage(String mailAddress) async {
+    final results = await _database
+        .query('user_records', where: 'email = ?', whereArgs: [mailAddress]);
+    if (results.isNotEmpty) {
+      return results.first;
+    }
+    return null;
+  }
 }
