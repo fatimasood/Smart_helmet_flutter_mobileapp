@@ -8,9 +8,7 @@ import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'NavigationScreens/SignUp.dart';
-
-String? loggedInUserEmail = userMail;
+String? mail_address;
 
 class EditInformation extends StatefulWidget {
   const EditInformation({super.key});
@@ -24,6 +22,7 @@ class _EditInformationState extends State<EditInformation> {
   //final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _fullNameController;
+  late TextEditingController _emailController;
   late TextEditingController _cnicController;
   late TextEditingController _bloodgroupController;
   late TextEditingController _addressController;
@@ -35,6 +34,7 @@ class _EditInformationState extends State<EditInformation> {
     bloodGroup: '',
     address: '',
     emerContact: '',
+    email: '',
     imageBytes: Uint8List(0),
   );
 
@@ -47,6 +47,7 @@ class _EditInformationState extends State<EditInformation> {
     _bloodgroupController = TextEditingController();
     _addressController = TextEditingController();
     _emerContactController = TextEditingController();
+    _emailController = TextEditingController();
   }
 
   File? _image;
@@ -111,7 +112,7 @@ class _EditInformationState extends State<EditInformation> {
             SizedBox(height: 10.0),
             Center(
               child: Container(
-                height: 450,
+                height: 510,
                 width: 340,
                 decoration: BoxDecoration(
                   color: Color(0xffffffff),
@@ -142,6 +143,31 @@ class _EditInformationState extends State<EditInformation> {
                           controller: _fullNameController,
                           decoration: InputDecoration(
                             hintText: 'Full Name',
+                            hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 170, 141, 227),
+                                fontWeight: FontWeight.w400),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.all(10),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 50,
+                        width: 300,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            border: Border.all(
+                              color: Color(0xff6617ff),
+                              width: 1.5,
+                            )),
+                        padding: EdgeInsets.all(5),
+                        child: TextFormField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            hintText: 'mail must be same as singup',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
                                 fontWeight: FontWeight.w400),
@@ -290,6 +316,7 @@ class _EditInformationState extends State<EditInformation> {
       bloodGroup: _bloodgroupController.text,
       address: _addressController.text,
       emerContact: _emerContactController.text,
+      email: _emailController.text,
       imageBytes: _userRecord.imageBytes,
     );
     try {
@@ -302,8 +329,10 @@ class _EditInformationState extends State<EditInformation> {
       print('CNIC: ${record.cnic}');
       print('Blood Group: ${record.bloodGroup}');
       print('Address: ${record.address}');
+      print('Email: ${record.email}');
       print('Emergency Contact: ${record.emerContact}');
       print('Image Bytes: ${record.imageBytes}');
+      mail_address = _emailController.text;
 
       Utils().toastMessage('Saved Successfully!');
     } catch (e) {
@@ -313,7 +342,7 @@ class _EditInformationState extends State<EditInformation> {
 }
 
 class UserRecord {
-  String fullName, cnic, bloodGroup, emerContact, address;
+  String fullName, cnic, bloodGroup, emerContact, email, address;
   Uint8List imageBytes;
 
   UserRecord({
@@ -322,12 +351,14 @@ class UserRecord {
     required this.bloodGroup,
     required this.address,
     required this.emerContact,
+    required this.email,
     required this.imageBytes,
   });
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
       'fullName': fullName,
+      'email': email,
       'cnic': cnic,
       'bloodGroup': bloodGroup,
       'address': address,

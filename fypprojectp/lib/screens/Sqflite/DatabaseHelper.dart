@@ -8,35 +8,32 @@ late Database _database;
 
 class DatabaseHelper {
   Future<void> initializeDatabase() async {
-    try {
-      String path = await getDatabasesPath();
-      _database = await openDatabase(
-        join(path, 'smarthelmet.db'),
-        onCreate: (db, version) {
-          return db.execute(
-              '''
-            CREATE TABLE user_records(
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              fullName TEXT,
-              cnic TEXT,
-              bloodGroup TEXT,
-              address TEXT,
-              emerContact TEXT,
-              imageBytes BLOB
-            )
-          ''');
-        },
-        version: 2,
-      );
-      print('Database initialized successfully');
-    } catch (e) {
-      print('Error initializing database: $e');
-    }
+    String path = await getDatabasesPath();
+    _database = await openDatabase(
+      join(path, 'smarthelmet.db'),
+      onCreate: (db, version) {
+        return db.execute(
+            '''
+        CREATE TABLE user_records(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          fullName TEXT,
+          email TEXT,
+          cnic TEXT,
+          bloodGroup TEXT,
+          address TEXT,
+          emerContact TEXT,
+          imageBytes BLOB
+        )
+      ''');
+      },
+      version: 2,
+    );
   }
 
   Future<void> insertUserData(UserRecord record) async {
     await _database.insert('user_records', {
       'fullName': record.fullName,
+      'email': record.email,
       'cnic': record.cnic,
       'bloodGroup': record.bloodGroup,
       'address': record.address,
@@ -45,19 +42,17 @@ class DatabaseHelper {
     });
   }
 
-  Future<List<UserRecord>> getAllUserRecordForUser(String userName) async {
-    // Remove spaces and convert to lowercase
-    final cleanedUserName = userName.replaceAll(' ', '').toLowerCase();
-
+  Future<List<UserRecord>> getAllUserRecordForUser(String mailAddress) async {
     final List<Map<String, dynamic>> records = await _database.query(
       'user_records',
-      where: 'fullName = ?',
-      whereArgs: [cleanedUserName],
+      where: 'email = ?',
+      whereArgs: [mailAddress],
     );
 
     return records.map((record) {
       return UserRecord(
         fullName: record['fullName'],
+        email: record['email'],
         cnic: record['cnic'],
         bloodGroup: record['bloodGroup'],
         emerContact: record['emerContact'],
