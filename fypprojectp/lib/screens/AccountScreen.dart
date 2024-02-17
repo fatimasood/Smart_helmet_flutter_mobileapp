@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fypprojectp/screens/NavigationScreens/SignUp.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'EditInformation.dart';
@@ -93,8 +94,11 @@ class _AccountScreenState extends State<AccountScreen> {
                           child: Padding(
                             padding: const EdgeInsets.only(right: 10.0),
                             child: Text(
-                              '${record.fullName}',
-                              style: TextStyle(color: Color(0xff9d6bff)),
+                              '${record.fullName.capitalize}',
+                              style: TextStyle(
+                                  color: Color(0xff9d6bff),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                         ),
@@ -198,7 +202,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          "Address",
+                          "SOS Contacts",
                           style: GoogleFonts.inter(
                             textStyle: const TextStyle(
                               fontSize: 16,
@@ -207,9 +211,9 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 61),
                         Text(
-                          "SOS Contacts",
+                          "Address",
                           style: GoogleFonts.inter(
                             textStyle: const TextStyle(
                               fontSize: 16,
@@ -264,17 +268,6 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            '${record.address}',
-                            style: GoogleFonts.inter(
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xffa678ff),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
                             '${record.emerContact}',
                             style: GoogleFonts.inter(
                               textStyle: const TextStyle(
@@ -306,14 +299,17 @@ class _AccountScreenState extends State<AccountScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 3),
-                          Text(
-                            "03756746776",
-                            style: GoogleFonts.inter(
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xffa678ff),
+                          SizedBox(height: 10),
+                          SizedBox(
+                            width: 145,
+                            child: Text(
+                              '${record.address}',
+                              style: GoogleFonts.inter(
+                                textStyle: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xffa678ff),
+                                ),
                               ),
                             ),
                           ),

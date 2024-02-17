@@ -19,7 +19,7 @@ class EditInformation extends StatefulWidget {
 
 class _EditInformationState extends State<EditInformation> {
   final _databaseHelper = DatabaseHelper();
-  //final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _fullNameController;
   late TextEditingController _emailController;
@@ -89,7 +89,7 @@ class _EditInformationState extends State<EditInformation> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 80, bottom: 15),
+              padding: const EdgeInsets.only(top: 60, bottom: 15),
               child: GestureDetector(
                 onTap: _pickImage,
                 child: CircleAvatar(
@@ -118,7 +118,7 @@ class _EditInformationState extends State<EditInformation> {
             SizedBox(height: 10.0),
             Center(
               child: Container(
-                height: 510,
+                height: 450,
                 width: 340,
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 243, 240, 250),
@@ -208,6 +208,17 @@ class _EditInformationState extends State<EditInformation> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              Utils().toastMessage(
+                                  'Kindly enter proper Information!');
+                            } else if (value.length != 13) {
+                              Utils().toastMessage('CNIC must be 13 digits');
+                              return 'CNIC must be 13 digits';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -239,26 +250,29 @@ class _EditInformationState extends State<EditInformation> {
                       SizedBox(
                         height: 20,
                       ),
-                      Container(
-                        height: 40,
-                        width: 300,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            border: Border.all(
-                              color: Color(0xff6617ff),
-                              width: 1.5,
-                            )),
-                        padding: EdgeInsets.all(5),
-                        child: TextFormField(
-                          controller: _addressController,
-                          decoration: InputDecoration(
-                            hintText: 'Address',
-                            hintStyle: TextStyle(
-                                color: Color.fromARGB(255, 170, 141, 227),
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(10),
+                      Expanded(
+                        child: Container(
+                          width: 300,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                              border: Border.all(
+                                color: Color(0xff6617ff),
+                                width: 1.5,
+                              )),
+                          padding:
+                              EdgeInsets.only(left: 5, right: 5, bottom: 1.5),
+                          child: TextFormField(
+                            controller: _addressController,
+                            decoration: InputDecoration(
+                              hintText: 'Address',
+                              hintStyle: TextStyle(
+                                  color: Color.fromARGB(255, 170, 141, 227),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(10),
+                            ),
                           ),
                         ),
                       ),
@@ -308,6 +322,9 @@ class _EditInformationState extends State<EditInformation> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 30,
+                      ),
                     ],
                   ),
                 ),
@@ -324,14 +341,33 @@ class _EditInformationState extends State<EditInformation> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Important Note'),
-          content: Text('Add your important note here.'),
+          title: Text(
+            'Important Note',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Color(0xff6617ff),
+                fontWeight: FontWeight.w800,
+                fontSize: 18),
+          ),
+          content: Text(
+            '1) Write email address that you was used for account registration.\n2) Write your CNIC, must be 13 digits.\n3) Address format (city,Mohalla,street number,home number, postal code) \n4) Must add 3 emergency contact numbers ',
+            style: TextStyle(
+                color: Color(0xff6617ff),
+                fontWeight: FontWeight.w400,
+                fontSize: 13),
+          ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: Text(
+                'OK',
+                style: TextStyle(
+                    color: Color(0xff6617ff),
+                    fontWeight: FontWeight.w800,
+                    fontSize: 15),
+              ),
             ),
           ],
         );
