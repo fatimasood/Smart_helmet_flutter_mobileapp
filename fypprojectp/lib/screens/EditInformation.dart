@@ -48,6 +48,10 @@ class _EditInformationState extends State<EditInformation> {
     _addressController = TextEditingController();
     _emerContactController = TextEditingController();
     _emailController = TextEditingController();
+
+    Future.delayed(Duration(seconds: 2), () {
+      _showImportantNoteAlert();
+    });
   }
 
   File? _image;
@@ -92,10 +96,12 @@ class _EditInformationState extends State<EditInformation> {
                   radius: 45.0,
                   backgroundColor: Colors.blueGrey.shade100,
                   backgroundImage: _image != null ? FileImage(_image!) : null,
-                  child: Icon(
-                    Icons.person_add_alt_sharp,
-                    size: 35.0,
-                  ),
+                  child: _image == null
+                      ? Icon(
+                          Icons.person_add_alt_sharp,
+                          size: 25.0,
+                        )
+                      : null,
                 ),
               ),
             ),
@@ -115,7 +121,7 @@ class _EditInformationState extends State<EditInformation> {
                 height: 510,
                 width: 340,
                 decoration: BoxDecoration(
-                  color: Color(0xffffffff),
+                  color: Color.fromARGB(255, 243, 240, 250),
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                   boxShadow: [
                     BoxShadow(
@@ -130,7 +136,7 @@ class _EditInformationState extends State<EditInformation> {
                   child: Column(
                     children: [
                       Container(
-                        height: 50,
+                        height: 40,
                         width: 300,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -145,7 +151,8 @@ class _EditInformationState extends State<EditInformation> {
                             hintText: 'Full Name',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
-                                fontWeight: FontWeight.w400),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14),
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
@@ -155,7 +162,7 @@ class _EditInformationState extends State<EditInformation> {
                         height: 20,
                       ),
                       Container(
-                        height: 50,
+                        height: 40,
                         width: 300,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -167,10 +174,11 @@ class _EditInformationState extends State<EditInformation> {
                         child: TextFormField(
                           controller: _emailController,
                           decoration: InputDecoration(
-                            hintText: 'mail must be same as singup',
+                            hintText: 'Email',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
-                                fontWeight: FontWeight.w400),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14),
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
@@ -180,7 +188,7 @@ class _EditInformationState extends State<EditInformation> {
                         height: 20,
                       ),
                       Container(
-                        height: 50,
+                        height: 40,
                         width: 300,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -195,7 +203,8 @@ class _EditInformationState extends State<EditInformation> {
                             hintText: 'CNIC',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
-                                fontWeight: FontWeight.w400),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14),
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
@@ -205,7 +214,7 @@ class _EditInformationState extends State<EditInformation> {
                         height: 20,
                       ),
                       Container(
-                        height: 50,
+                        height: 40,
                         width: 300,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -220,7 +229,8 @@ class _EditInformationState extends State<EditInformation> {
                             hintText: 'Blood Group',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
-                                fontWeight: FontWeight.w400),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14),
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
@@ -230,7 +240,7 @@ class _EditInformationState extends State<EditInformation> {
                         height: 20,
                       ),
                       Container(
-                        height: 50,
+                        height: 40,
                         width: 300,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -245,7 +255,8 @@ class _EditInformationState extends State<EditInformation> {
                             hintText: 'Address',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
-                                fontWeight: FontWeight.w400),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14),
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
@@ -255,7 +266,7 @@ class _EditInformationState extends State<EditInformation> {
                         height: 20,
                       ),
                       Container(
-                        height: 50,
+                        height: 40,
                         width: 300,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -270,7 +281,8 @@ class _EditInformationState extends State<EditInformation> {
                             hintText: 'Emergency Contact',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
-                                fontWeight: FontWeight.w400),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14),
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
@@ -304,6 +316,26 @@ class _EditInformationState extends State<EditInformation> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showImportantNoteAlert() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Important Note'),
+          content: Text('Add your important note here.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 
