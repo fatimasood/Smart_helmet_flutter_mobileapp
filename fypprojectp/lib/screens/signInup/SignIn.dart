@@ -39,6 +39,7 @@ class _SignInState extends State<SignIn> {
             password: passwordController.text.toString())
         .then((value) {
       Utils().toastMessage(value.user!.email.toString());
+      userMail = emailController.text;
       Navigator.push(
         context,
         MaterialPageRoute(

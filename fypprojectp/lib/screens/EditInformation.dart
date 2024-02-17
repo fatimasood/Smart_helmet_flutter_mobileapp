@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:fypprojectp/screens/NavigationScreens/SignUp.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
 import 'package:fypprojectp/screens/home.dart';
 import 'package:fypprojectp/utils.dart';
@@ -55,6 +56,8 @@ class _EditInformationState extends State<EditInformation> {
     _emerContact1Controller = TextEditingController();
     _emerContact2Controller = TextEditingController();
 
+    mail_address = _emailController.text;
+    mail_address = userMail;
     Future.delayed(Duration(seconds: 2), () {
       _showImportantNoteAlert();
     });
@@ -77,13 +80,54 @@ class _EditInformationState extends State<EditInformation> {
   }
 
   void saveInformation() async {
-    _addUser();
-    //delay for few second
-    await Future.delayed(Duration(seconds: 3));
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Home()),
+    if (await _addUser()) {
+      //delay for few seconds
+      await Future.delayed(Duration(seconds: 3));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Home()),
+      );
+    } else {
+      // Handle the case when data is not saved
+      Utils().toastMessage('Error! Data not saved.');
+    }
+  }
+
+  Future<bool> _addUser() async {
+    final record = UserRecord(
+      fullName: _fullNameController.text,
+      cnic: _cnicController.text,
+      bloodGroup: _bloodgroupController.text,
+      address: _addressController.text,
+      emerContact: _emerContactController.text,
+      emeContact: _emerContact1Controller.text,
+      emContact: _emerContact2Controller.text,
+      email: _emailController.text,
+      imageBytes: _userRecord.imageBytes,
     );
+
+    try {
+      await _databaseHelper.initializeDatabase();
+      await _databaseHelper.insertUserData(record);
+
+      // Print statements to check if data is saved correctly
+      print('Data saved successfully:');
+      print('Full Name: ${record.fullName}');
+      print('CNIC: ${record.cnic}');
+      print('Blood Group: ${record.bloodGroup}');
+      print('Address: ${record.address}');
+      print('Email: ${record.email}');
+      print('Emergency Contact: ${record.emerContact}');
+      print('Image Bytes: ${record.imageBytes}');
+      mail_address = _emailController.text;
+
+      Utils().toastMessage('Saved Successfully!');
+      return true;
+    } catch (e) {
+      // Print the error for debugging purposes
+      print('Error saving data: $e');
+      return false;
+    }
   }
 
   @override
@@ -486,41 +530,6 @@ class _EditInformationState extends State<EditInformation> {
         );
       },
     );
-  }
-
-  void _addUser() async {
-    // String fullName = _fullNameController.text;
-
-    final record = UserRecord(
-      fullName: _fullNameController.text,
-      cnic: _cnicController.text,
-      bloodGroup: _bloodgroupController.text,
-      address: _addressController.text,
-      emerContact: _emerContactController.text,
-      emeContact: _emerContact1Controller.text,
-      emContact: _emerContact2Controller.text,
-      email: _emailController.text,
-      imageBytes: _userRecord.imageBytes,
-    );
-    try {
-      await _databaseHelper.initializeDatabase();
-      await _databaseHelper.insertUserData(record);
-
-      // Print statements to check if data is saved correctly
-      print('Data saved successfully:');
-      print('Full Name: ${record.fullName}');
-      print('CNIC: ${record.cnic}');
-      print('Blood Group: ${record.bloodGroup}');
-      print('Address: ${record.address}');
-      print('Email: ${record.email}');
-      print('Emergency Contact: ${record.emerContact}');
-      print('Image Bytes: ${record.imageBytes}');
-      mail_address = _emailController.text;
-
-      Utils().toastMessage('Saved Successfully!');
-    } catch (e) {
-      Utils().toastMessage('Error! data not saved');
-    }
   }
 }
 

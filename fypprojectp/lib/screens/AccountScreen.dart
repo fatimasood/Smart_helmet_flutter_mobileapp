@@ -29,10 +29,10 @@ class _AccountScreenState extends State<AccountScreen> {
 
   Future<void> _loadUserRecords() async {
     try {
-      String? loggedInUserEmail = userMail;
+      String? loggedInUserEmail = mail_address;
       print('loggedInUserEmail: $loggedInUserEmail');
 
-      if (mail_address != null) {
+      if (mail_address == userMail) {
         print('mail address: $mail_address');
 
         final records =
