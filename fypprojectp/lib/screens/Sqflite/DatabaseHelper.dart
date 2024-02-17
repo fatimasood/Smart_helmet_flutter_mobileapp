@@ -22,6 +22,8 @@ class DatabaseHelper {
           bloodGroup TEXT,
           address TEXT,
           emerContact TEXT,
+          emeContact TEXT,
+          emContact TEXT,
           imageBytes BLOB
         )
       ''');
@@ -38,6 +40,8 @@ class DatabaseHelper {
       'bloodGroup': record.bloodGroup,
       'address': record.address,
       'emerContact': record.emerContact,
+      'emeContact': record.emeContact,
+      'emContact': record.emContact,
       'imageBytes': record.imageBytes,
     });
   }
@@ -56,6 +60,8 @@ class DatabaseHelper {
         cnic: record['cnic'],
         bloodGroup: record['bloodGroup'],
         emerContact: record['emerContact'],
+        emContact: record['emContact'],
+        emeContact: record['emeContact'],
         address: record['address'],
         imageBytes: record['imageBytes'],
       );

@@ -279,7 +279,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           SizedBox(height: 3),
                           Text(
-                            "03756746776",
+                            '${record.emeContact}',
                             style: GoogleFonts.inter(
                               textStyle: const TextStyle(
                                 fontSize: 16,
@@ -290,7 +290,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           SizedBox(height: 3),
                           Text(
-                            "03756746776",
+                            '${record.emContact}',
                             style: GoogleFonts.inter(
                               textStyle: const TextStyle(
                                 fontSize: 16,

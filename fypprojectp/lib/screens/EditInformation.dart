@@ -19,7 +19,7 @@ class EditInformation extends StatefulWidget {
 
 class _EditInformationState extends State<EditInformation> {
   final _databaseHelper = DatabaseHelper();
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _fullNameController;
   late TextEditingController _emailController;
@@ -27,6 +27,8 @@ class _EditInformationState extends State<EditInformation> {
   late TextEditingController _bloodgroupController;
   late TextEditingController _addressController;
   late TextEditingController _emerContactController;
+  late TextEditingController _emerContact1Controller;
+  late TextEditingController _emerContact2Controller;
 
   UserRecord _userRecord = UserRecord(
     fullName: '',
@@ -34,6 +36,8 @@ class _EditInformationState extends State<EditInformation> {
     bloodGroup: '',
     address: '',
     emerContact: '',
+    emContact: '',
+    emeContact: '',
     email: '',
     imageBytes: Uint8List(0),
   );
@@ -48,6 +52,8 @@ class _EditInformationState extends State<EditInformation> {
     _addressController = TextEditingController();
     _emerContactController = TextEditingController();
     _emailController = TextEditingController();
+    _emerContact1Controller = TextEditingController();
+    _emerContact2Controller = TextEditingController();
 
     Future.delayed(Duration(seconds: 2), () {
       _showImportantNoteAlert();
@@ -83,23 +89,23 @@ class _EditInformationState extends State<EditInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffede5fd),
+      backgroundColor: Color.fromARGB(255, 225, 214, 249),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 60, bottom: 15),
+              padding: const EdgeInsets.only(top: 50, bottom: 15),
               child: GestureDetector(
                 onTap: _pickImage,
                 child: CircleAvatar(
-                  radius: 45.0,
+                  radius: 40.0,
                   backgroundColor: Colors.blueGrey.shade100,
                   backgroundImage: _image != null ? FileImage(_image!) : null,
                   child: _image == null
                       ? Icon(
                           Icons.person_add_alt_sharp,
-                          size: 25.0,
+                          size: 23.0,
                         )
                       : null,
                 ),
@@ -109,7 +115,7 @@ class _EditInformationState extends State<EditInformation> {
               "Create Profile",
               style: GoogleFonts.inter(
                 textStyle: const TextStyle(
-                  fontSize: 26,
+                  fontSize: 23,
                   fontWeight: FontWeight.w700,
                   color: Color(0xff6617ff),
                 ),
@@ -118,7 +124,7 @@ class _EditInformationState extends State<EditInformation> {
             SizedBox(height: 10.0),
             Center(
               child: Container(
-                height: 450,
+                height: 570,
                 width: 340,
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 243, 240, 250),
@@ -147,6 +153,14 @@ class _EditInformationState extends State<EditInformation> {
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
                           controller: _fullNameController,
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color.fromARGB(255, 170, 141, 227),
+                            ),
+                          ),
+                          keyboardType: TextInputType.name,
                           decoration: InputDecoration(
                             hintText: 'Full Name',
                             hintStyle: TextStyle(
@@ -173,6 +187,14 @@ class _EditInformationState extends State<EditInformation> {
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
                           controller: _emailController,
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color.fromARGB(255, 170, 141, 227),
+                            ),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                             hintText: 'Email',
                             hintStyle: TextStyle(
@@ -199,6 +221,13 @@ class _EditInformationState extends State<EditInformation> {
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
                           controller: _cnicController,
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color.fromARGB(255, 170, 141, 227),
+                            ),
+                          ),
                           decoration: InputDecoration(
                             hintText: 'CNIC',
                             hintStyle: TextStyle(
@@ -209,16 +238,6 @@ class _EditInformationState extends State<EditInformation> {
                             contentPadding: EdgeInsets.all(10),
                           ),
                           keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              Utils().toastMessage(
-                                  'Kindly enter proper Information!');
-                            } else if (value.length != 13) {
-                              Utils().toastMessage('CNIC must be 13 digits');
-                              return 'CNIC must be 13 digits';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       SizedBox(
@@ -236,6 +255,13 @@ class _EditInformationState extends State<EditInformation> {
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
                           controller: _bloodgroupController,
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color.fromARGB(255, 170, 141, 227),
+                            ),
+                          ),
                           decoration: InputDecoration(
                             hintText: 'Blood Group',
                             hintStyle: TextStyle(
@@ -264,6 +290,14 @@ class _EditInformationState extends State<EditInformation> {
                               EdgeInsets.only(left: 5, right: 5, bottom: 1.5),
                           child: TextFormField(
                             controller: _addressController,
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Color.fromARGB(255, 170, 141, 227),
+                              ),
+                            ),
+                            keyboardType: TextInputType.streetAddress,
                             decoration: InputDecoration(
                               hintText: 'Address',
                               hintStyle: TextStyle(
@@ -283,14 +317,93 @@ class _EditInformationState extends State<EditInformation> {
                         height: 40,
                         width: 300,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            border: Border.all(
-                              color: Color(0xff6617ff),
-                              width: 1.5,
-                            )),
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          border: Border.all(
+                            color: Color(0xff6617ff),
+                            width: 1.5,
+                          ),
+                        ),
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
                           controller: _emerContactController,
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color.fromARGB(255, 170, 141, 227),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            hintText: 'Emergency Contact',
+                            hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 170, 141, 227),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.all(10),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 40,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          border: Border.all(
+                            color: Color(0xff6617ff),
+                            width: 1.5,
+                          ),
+                        ),
+                        padding: EdgeInsets.all(5),
+                        child: TextFormField(
+                          controller: _emerContact1Controller,
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color.fromARGB(255, 170, 141, 227),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            hintText: 'Emergency Contact',
+                            hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 170, 141, 227),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.all(10),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 40,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          border: Border.all(
+                            color: Color(0xff6617ff),
+                            width: 1.5,
+                          ),
+                        ),
+                        padding: EdgeInsets.all(5),
+                        child: TextFormField(
+                          controller: _emerContact2Controller,
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color.fromARGB(255, 170, 141, 227),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             hintText: 'Emergency Contact',
                             hintStyle: TextStyle(
@@ -313,10 +426,10 @@ class _EditInformationState extends State<EditInformation> {
                             "Save",
                             style: GoogleFonts.inter(
                               textStyle: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w800,
                                 color: Color(0xff6617ff),
-                                decoration: TextDecoration.underline,
+                                decoration: TextDecoration.none,
                               ),
                             ),
                           ),
@@ -384,6 +497,8 @@ class _EditInformationState extends State<EditInformation> {
       bloodGroup: _bloodgroupController.text,
       address: _addressController.text,
       emerContact: _emerContactController.text,
+      emeContact: _emerContact1Controller.text,
+      emContact: _emerContact2Controller.text,
       email: _emailController.text,
       imageBytes: _userRecord.imageBytes,
     );
@@ -410,7 +525,14 @@ class _EditInformationState extends State<EditInformation> {
 }
 
 class UserRecord {
-  String fullName, cnic, bloodGroup, emerContact, email, address;
+  String fullName,
+      cnic,
+      bloodGroup,
+      emerContact,
+      email,
+      emeContact,
+      emContact,
+      address;
   Uint8List imageBytes;
 
   UserRecord({
@@ -419,6 +541,8 @@ class UserRecord {
     required this.bloodGroup,
     required this.address,
     required this.emerContact,
+    required this.emContact,
+    required this.emeContact,
     required this.email,
     required this.imageBytes,
   });
@@ -431,6 +555,8 @@ class UserRecord {
       'bloodGroup': bloodGroup,
       'address': address,
       'emerContact': emerContact,
+      'emeContact': emeContact,
+      'emContact': emContact,
       'imageBytes': imageBytes,
     };
     return map;
