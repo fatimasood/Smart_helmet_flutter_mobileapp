@@ -4,23 +4,20 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fypprojectp/screens/Authentication/SignUp.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
-import 'package:fypprojectp/screens/home.dart';
+import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
-String? mail_address;
-
-class UpdateAccountInfo extends StatefulWidget {
-  const UpdateAccountInfo({super.key});
+class UpdateRecord extends StatefulWidget {
+  const UpdateRecord({Key? key}) : super(key: key);
 
   @override
-  State<UpdateAccountInfo> createState() => _UpdateAccountInfoState();
+  _UpdateRecordState createState() => _UpdateRecordState();
 }
 
-class _UpdateAccountInfoState extends State<UpdateAccountInfo> {
-  final _databaseHelper = DatabaseHelper();
-  // final _formKey = GlobalKey<FormState>();
+class _UpdateRecordState extends State<UpdateRecord> {
+  DatabaseHelper _databaseHelper = DatabaseHelper();
 
   late TextEditingController _fullNameController;
   late TextEditingController _emailController;
@@ -31,22 +28,12 @@ class _UpdateAccountInfoState extends State<UpdateAccountInfo> {
   late TextEditingController _emerContact1Controller;
   late TextEditingController _emerContact2Controller;
 
-  UserRecord _userRecord = UserRecord(
-    fullName: '',
-    cnic: '',
-    bloodGroup: '',
-    address: '',
-    emerContact: '',
-    emContact: '',
-    emeContact: '',
-    email: '',
-    imageBytes: Uint8List(0),
-  );
+  File? _image;
+  late UserRecord _userRecord;
 
   @override
   void initState() {
     super.initState();
-    //_databaseHelper.initializeDatabase();
     _fullNameController = TextEditingController();
     _cnicController = TextEditingController();
     _bloodgroupController = TextEditingController();
@@ -55,13 +42,75 @@ class _UpdateAccountInfoState extends State<UpdateAccountInfo> {
     _emailController = TextEditingController();
     _emerContact1Controller = TextEditingController();
     _emerContact2Controller = TextEditingController();
+    _userRecord = UserRecord(
+      fullName: '',
+      cnic: '',
+      bloodGroup: '',
+      address: '',
+      emerContact: '',
+      emContact: '',
+      emeContact: '',
+      email: '',
+      imageBytes: Uint8List(0),
+    );
 
     Future.delayed(const Duration(seconds: 2), () {
       _showImportantNoteAlert();
+      _loadData();
     });
   }
 
-  File? _image;
+  Future<void> _loadData() async {
+    // Fetch the user record by email
+    String? email = userMail;
+
+    UserRecord? userRecord = await _databaseHelper.getRecordByName(email!);
+
+    // Update the state with the fetched user record
+    setState(() {
+      _userRecord = userRecord ?? _userRecord;
+      _fullNameController.text = _userRecord.fullName;
+      _emailController.text = _userRecord.email;
+      _cnicController.text = _userRecord.cnic;
+      _bloodgroupController.text = _userRecord.bloodGroup;
+      _addressController.text = _userRecord.address;
+      _emerContactController.text = _userRecord.emerContact;
+      _emerContact1Controller.text = _userRecord.emeContact;
+      _emerContact2Controller.text = _userRecord.emContact;
+    });
+  }
+
+  Future<void> updateRecordInDatabase() async {
+    String fullName = _fullNameController.text;
+    String cnic = _cnicController.text;
+    String bloodGroup = _bloodgroupController.text;
+    String emerContact = _emerContactController.text;
+    String email = _emailController.text;
+    String emeContact = _emerContact1Controller.text;
+    String emContact = _emerContact2Controller.text;
+    String address = _addressController.text;
+
+    UserRecord updatedRecord = UserRecord(
+      fullName: fullName,
+      cnic: cnic,
+      bloodGroup: bloodGroup,
+      address: address,
+      emerContact: emerContact,
+      emContact: emContact,
+      emeContact: emeContact,
+      email: email,
+      imageBytes: _userRecord.imageBytes,
+    );
+
+    try {
+      await _databaseHelper.updateUserRecord(updatedRecord);
+      Utils().toastMessage('Record updated successfully!');
+      Navigator.pop(context);
+    } catch (error) {
+      print('Error updating record: $error');
+      Utils().toastMessage('Error updating record. Please try again.');
+    }
+  }
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -74,85 +123,6 @@ class _UpdateAccountInfoState extends State<UpdateAccountInfo> {
       setState(() {
         _userRecord.imageBytes = Uint8List.fromList(imageBytes);
       });
-    }
-  }
-
-  void saveInformation() async {
-    mail_address = _emailController.text;
-    print('mail_address is: $mail_address');
-    print('userMail is : $userMail');
-    try {
-      if (mail_address == userMail) {
-        if (await _addUser()) {
-          // Delay for a few seconds
-          await Future.delayed(Duration(seconds: 3));
-
-          // Ensure that context is not null
-          // ignore: unnecessary_null_comparison
-          if (context != null) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Home()),
-            );
-          } else {
-            print("Error: Context is null");
-          }
-        } else {
-          // Handle the case when data is not saved
-          Utils().toastMessage('Error! Data not saved.');
-        }
-      } else {
-        Utils().toastMessage('Email Error! Check your mail address');
-      }
-    } catch (e) {
-      print("Error: $e");
-      // Handle any exceptions that might occur during asynchronous operations
-    }
-  }
-
-  Future<bool> _addUser() async {
-    final existingRecords =
-        await _databaseHelper.getAllUserRecordForUser(mail_address!);
-
-    if (existingRecords.isNotEmpty) {
-      // Delete existing record(s) with the same email address
-      for (var record in existingRecords) {
-        await _databaseHelper.deleteUser(record.email);
-      }
-    }
-    final record = UserRecord(
-      fullName: _fullNameController.text,
-      cnic: _cnicController.text,
-      bloodGroup: _bloodgroupController.text,
-      address: _addressController.text,
-      emerContact: _emerContactController.text,
-      emeContact: _emerContact1Controller.text,
-      emContact: _emerContact2Controller.text,
-      email: _emailController.text,
-      imageBytes: _userRecord.imageBytes,
-    );
-
-    try {
-      await _databaseHelper.initializeDatabase();
-      //await _databaseHelper.insertUserData(record);
-
-      // Print statements to check if data is saved correctly
-      print('Data saved successfully:');
-      print('Full Name: ${record.fullName}');
-      print('CNIC: ${record.cnic}');
-      print('Blood Group: ${record.bloodGroup}');
-      print('Address: ${record.address}');
-      print('Email: ${record.email}');
-      print('Emergency Contact: ${record.emerContact}');
-      print('Image Bytes: ${record.imageBytes}');
-      mail_address = _emailController.text;
-
-      Utils().toastMessage('Saved Successfully!');
-      return true;
-    } catch (e) {
-      // Print the error for debugging purposes
-      print('Error saving data: $e');
-      return false;
     }
   }
 
@@ -489,7 +459,7 @@ class _UpdateAccountInfoState extends State<UpdateAccountInfo> {
                         height: 22,
                       ),
                       GestureDetector(
-                        onTap: saveInformation,
+                        onTap: updateRecordInDatabase,
                         child: Align(
                           alignment: Alignment.bottomRight,
                           child: Text(
@@ -556,44 +526,5 @@ class _UpdateAccountInfoState extends State<UpdateAccountInfo> {
         );
       },
     );
-  }
-}
-
-class UserRecord {
-  String fullName,
-      cnic,
-      bloodGroup,
-      emerContact,
-      email,
-      emeContact,
-      emContact,
-      address;
-  Uint8List imageBytes;
-
-  UserRecord({
-    required this.fullName,
-    required this.cnic,
-    required this.bloodGroup,
-    required this.address,
-    required this.emerContact,
-    required this.emContact,
-    required this.emeContact,
-    required this.email,
-    required this.imageBytes,
-  });
-
-  Map<String, dynamic> toMap() {
-    Map<String, dynamic> map = {
-      'fullName': fullName,
-      'email': email,
-      'cnic': cnic,
-      'bloodGroup': bloodGroup,
-      'address': address,
-      'emerContact': emerContact,
-      'emeContact': emeContact,
-      'emContact': emContact,
-      'imageBytes': imageBytes,
-    };
-    return map;
   }
 }

@@ -111,15 +111,6 @@ class _EditInformationState extends State<EditInformation> {
   }
 
   Future<bool> _addUser() async {
-    final existingRecords =
-        await _databaseHelper.getAllUserRecordForUser(mail_address!);
-
-    if (existingRecords.isNotEmpty) {
-      // Delete existing record(s) with the same email address
-      for (var record in existingRecords) {
-        await _databaseHelper.deleteUser(record.email);
-      }
-    }
     final record = UserRecord(
       fullName: _fullNameController.text,
       cnic: _cnicController.text,

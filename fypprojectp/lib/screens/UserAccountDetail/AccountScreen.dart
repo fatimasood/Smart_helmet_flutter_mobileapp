@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fypprojectp/screens/Authentication/SignUp.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
+import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
+import 'package:fypprojectp/screens/UserAccountDetail/UpdateRecord.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'EditInformation.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -37,7 +37,7 @@ class _AccountScreenState extends State<AccountScreen> {
         print('Records loaded successfully: $records');
 
         setState(() {
-          userRecord = records;
+          userRecord = records.cast<UserRecord>();
         });
       }
     } catch (e) {
@@ -324,6 +324,6 @@ class _AccountScreenState extends State<AccountScreen> {
 
   void navigateToEditInformationScreen() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => EditInformation()));
+        context, MaterialPageRoute(builder: (context) => UpdateRecord()));
   }
 }
