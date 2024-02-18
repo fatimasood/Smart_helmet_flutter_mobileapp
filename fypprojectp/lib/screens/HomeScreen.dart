@@ -1,7 +1,7 @@
-import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,28 +9,144 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Future<void> openBluetoothSettings() async {
-    const String iosBluetoothSettings = "App-Prefs:Bluetooth";
+  FlutterBlue flutterBlue = FlutterBlue.instance;
 
-    try {
-      if (await canLaunch(iosBluetoothSettings)) {
-        await launch(iosBluetoothSettings);
-      } else {
-        // If iOS deep link is not available, try using Android Intent
-        AndroidIntent intent = AndroidIntent(
-          action: 'android.settings.BLUETOOTH_SETTINGS',
+  void onTap() async {
+    // Check if Bluetooth is available on the device
+    if (await flutterBlue.isAvailable) {
+      // Request location permission
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.location,
+      ].request();
+
+      if (statuses[Permission.location] == PermissionStatus.granted) {
+        List<BluetoothDevice> devices = await _scanForDevices();
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text(
+                "Available Bluetooth Devices",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xff6617ff),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 18,
+                ),
+              ),
+              content: Container(
+                width: double.maxFinite,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      if (devices.isEmpty)
+                        Center(
+                          child: Text(
+                            "No devices available at this moment.",
+                            style: TextStyle(
+                              color: Color(0xff6617ff),
+                              fontWeight: FontWeight.w300,
+                              fontSize: 15,
+                            ),
+                          ),
+                        )
+                      else
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          child: ListView.builder(
+                            itemCount: devices.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(devices[index].name),
+                                onTap: () {
+                                  Navigator.pop(context); // Close the dialog
+                                  _connectToDevice(devices[index]);
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         );
-        await intent.launch();
+      } else {
+        // Location permission not granted
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text(
+                "Location Permission Required",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xff6617ff),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 18,
+                ),
+              ),
+              content: const Text(
+                "Location permission is required to discover Bluetooth devices.",
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
       }
-    } catch (e) {
-      print('Error opening Bluetooth settings: $e');
+    } else {
+      // Bluetooth is not available on the device
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              "Bluetooth Not Available",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xff6617ff),
+                fontWeight: FontWeight.w800,
+                fontSize: 18,
+              ),
+            ),
+            content: const Text(
+              "Bluetooth is not available on this device.",
+              textAlign: TextAlign.center,
+            ),
+          );
+        },
+      );
     }
   }
 
-  void onTap() {
-    Future.delayed(Duration(milliseconds: 100), () {
-      openBluetoothSettings();
-    });
+  Future<List<BluetoothDevice>> _scanForDevices() async {
+    List<BluetoothDevice> devices = [];
+
+    try {
+      await flutterBlue.startScan(timeout: Duration(seconds: 10));
+      flutterBlue.scanResults.listen((List<ScanResult> results) {
+        for (ScanResult result in results) {
+          devices.add(result.device);
+        }
+      });
+    } catch (e) {
+      print('Error scanning for devices: $e');
+    }
+
+    return devices;
+  }
+
+  Future<void> _connectToDevice(BluetoothDevice device) async {
+    try {
+      await device.connect();
+      print('Connected to ${device.name}');
+      // Implement your logic for handling the connected device here
+    } catch (e) {
+      print('Error connecting to device: $e');
+    }
   }
 
   @override
@@ -42,7 +158,11 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 15.0, left: 25.0, right: 25.0, bottom: 10.8),
+                top: 15.0,
+                left: 25.0,
+                right: 25.0,
+                bottom: 10.8,
+              ),
               child: Text(
                 "Please switch on your Bluetooth for tracking your ride ",
                 style: GoogleFonts.inter(
