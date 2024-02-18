@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/NavigationScreens/SignUp.dart';
+import 'package:fypprojectp/screens/Authentication/SignUp.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
 import 'package:fypprojectp/screens/home.dart';
 import 'package:fypprojectp/utils.dart';

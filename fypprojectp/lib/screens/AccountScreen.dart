@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/NavigationScreens/SignUp.dart';
+import 'package:fypprojectp/screens/Authentication/SignUp.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';

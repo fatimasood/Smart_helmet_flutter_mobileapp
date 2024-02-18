@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/signInup/SignIn.dart';
+import 'package:fypprojectp/screens/Authentication/SignIn.dart';
 
 class SplashServices {
   void isLogin(BuildContext context) {

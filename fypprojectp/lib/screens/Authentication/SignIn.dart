@@ -2,47 +2,49 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:fypprojectp/screens/EditInformation.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../signInup/SignIn.dart';
+import '../home.dart';
+import 'SignUp.dart';
 
-String? userMail;
+class SignIn extends StatefulWidget {
+  const SignIn({Key? key}) : super(key: key);
 
-class SignUp extends StatefulWidget {
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<SignIn> createState() => _SignInState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignInState extends State<SignIn> {
+  bool _isPasswordVisible = false; //for password state saving
+
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final fullNameController = TextEditingController();
-  final _auth = FirebaseAuth.instance; //initialize firebase
-  bool _passwordVisible = false; //for password visibility toggle
+
+  bool loading = false;
+  final _auth = FirebaseAuth.instance;
+
   @override
   void dispose() {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
-    fullNameController.dispose();
   }
 
-  void signup() {
+  void login() {
     _auth
-        .createUserWithEmailAndPassword(
+        .signInWithEmailAndPassword(
             email: emailController.text.toString(),
             password: passwordController.text.toString())
         .then((value) {
       Utils().toastMessage(value.user!.email.toString());
       userMail = emailController.text;
-      print('$userMail');
+      print('login user mail: $userMail');
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => EditInformation(),
+          builder: (context) => Home(),
         ),
       );
     }).onError((error, stackTrace) {
@@ -65,7 +67,9 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(
+                  height: 40,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -79,7 +83,9 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 10.0),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
                     Text(
                       "HELMET",
                       style: GoogleFonts.inter(
@@ -102,7 +108,7 @@ class _SignUpState extends State<SignUp> {
                           Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                              "Create",
+                              "Welcome",
                               style: GoogleFonts.jomhuria(
                                 textStyle: const TextStyle(
                                   fontSize: 67,
@@ -126,7 +132,7 @@ class _SignUpState extends State<SignUp> {
                       left: 35.0,
                       top: 0.0 + 50,
                       child: Text(
-                        "Account",
+                        "Back",
                         style: GoogleFonts.jomhuria(
                           textStyle: const TextStyle(
                             fontSize: 67,
@@ -145,115 +151,114 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 31),
+                const SizedBox(
+                  height: 61,
+                ),
                 Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        buildInputField(
-                          controller: fullNameController,
-                          hintText: 'Full name',
-                          prefixIcon: Icons.person_2_outlined,
-                          isNameField: true,
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      buildInputField(
+                        hintText: 'Email',
+                        prefixIcon: Icons.mail_outline_rounded,
+                      ),
+                      const SizedBox(height: 12),
+                      buildInputField(
+                        hintText: 'Password',
+                        prefixIcon: Icons.lock_outline,
+                        isPassword: true,
+                        onTogglePassword: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 70),
+                  child: SizedBox(
+                    height: 40,
+                    width: 140,
+                    child: InkWell(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xffc780ff),
                         ),
-                        // const SizedBox(height: 7),
-                        buildInputField(
-                          hintText: 'Email',
-                          prefixIcon: Icons.mail_outline_rounded,
-                          controller: emailController,
-                        ),
-                        //const SizedBox(height: 7),
-                        buildInputField(
-                          controller: passwordController,
-                          hintText: 'Password',
-                          prefixIcon: Icons.lock_outline,
-                          isPassword: true,
-                          onTogglePassword: () {
-                            setState(() {
-                              _passwordVisible = !_passwordVisible;
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 50),
-                        SizedBox(
-                          height: 40,
-                          width: 140,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xffc780ff),
+                        child: Text(
+                          "Log in",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xffdde6ed),
                             ),
-                            child: Text(
-                              "Sign up",
-                              style: GoogleFonts.inter(
-                                textStyle: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xffdde6ed),
-                                ),
-                              ),
-                            ),
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                signup();
-                              } else {}
-                            },
                           ),
                         ),
-                      ],
-                    )),
-                const SizedBox(height: 15),
-                Text(
-                  '────── or ──────',
-                  style: GoogleFonts.inknutAntiqua(
-                    textStyle: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xff6617ff),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            login();
+                          } else {}
+                        },
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    buildSocialIcon(imagePath: "lib/assets/fb.png"),
-                    const SizedBox(width: 10),
-                    buildSocialIcon(imagePath: "lib/assets/google.png"),
-                  ],
+                const SizedBox(
+                  width: 10,
+                  height: 20,
                 ),
-                const SizedBox(height: 75),
+                Text(
+                  'Forget password?',
+                  style: GoogleFonts.inter(
+                    textStyle: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xff9d6bff),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 50,
+                  height: 155,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Already have an account? ',
-                      style: GoogleFonts.inter(
-                        textStyle: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff6617ff),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignIn(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Log in',
-                        style: GoogleFonts.inter(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xff6617ff),
+                    Row(
+                      children: [
+                        Text(
+                          "Don't have an account? ",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff66117ff),
+                            ),
                           ),
                         ),
-                      ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignUp(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Sign up',
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xff6617ff),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -265,29 +270,13 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-//for images
-  Widget buildSocialIcon({required String imagePath}) {
-    return Align(
-      child: SizedBox(
-        width: 50,
-        height: 50,
-        child: Image.asset(
-          imagePath,
-        ),
-      ),
-    );
-  }
-
   Widget buildInputField({
     required String hintText,
     required IconData prefixIcon,
     bool isPassword = false,
     Function? onTogglePassword,
-    required TextEditingController controller,
-    bool isNameField = false,
   }) {
     return Container(
-      //    height: 76.23,
       padding: const EdgeInsets.fromLTRB(12, 12, 21, 9),
       child: Container(
         width: 326,
@@ -307,8 +296,8 @@ class _SignUpState extends State<SignUp> {
           keyboardType: isPassword
               ? TextInputType.visiblePassword
               : TextInputType.emailAddress,
-          controller: controller,
-          obscureText: isPassword && !_passwordVisible,
+          controller: isPassword ? passwordController : emailController,
+          obscureText: isPassword && !_isPasswordVisible,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(top: 11.28),
             hintText: hintText,
@@ -331,11 +320,10 @@ class _SignUpState extends State<SignUp> {
                       }
                     },
                     icon: Icon(
-                      _passwordVisible
+                      _isPasswordVisible
                           ? Icons.visibility
                           : Icons.visibility_off,
                       color: Colors.grey,
-                      size: 20,
                     ),
                   )
                 : null,
@@ -344,10 +332,8 @@ class _SignUpState extends State<SignUp> {
             if (value!.isEmpty) {
               Fluttertoast.showToast(
                 msg: isPassword
-                    ? 'Kindly set any password'
-                    : isNameField
-                        ? 'Enter your name'
-                        : 'Enter your gmail',
+                    ? 'Please enter a password'
+                    : 'Please enter a valid email',
                 toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
@@ -356,8 +342,9 @@ class _SignUpState extends State<SignUp> {
                 fontSize: 16.0,
               );
               return null;
+              //play sound
+              //_audioPlayer.play('assets/beep.mp3', isLocal: true');
             }
-
             if (isPassword && value.length < 6) {
               Fluttertoast.showToast(
                 msg: 'Password should be at least 6 characters long',
@@ -369,10 +356,12 @@ class _SignUpState extends State<SignUp> {
                 fontSize: 16.0,
               );
               return null;
+              // Play the beep sound
+              //  await _audioPlayer.play('assets/beep.mp3', isLocal: true);
             }
-            /* if (!isPassword && !value.endsWith('@gmail.com')) {
+            if (!isPassword && !value.endsWith('@gmail.com')) {
               Fluttertoast.showToast(
-                msg: 'Enter proper gmail address',
+                msg: 'Kindly Enter Proper mail',
                 toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
@@ -380,10 +369,9 @@ class _SignUpState extends State<SignUp> {
                 textColor: Colors.white54,
                 fontSize: 16.0,
               );
-
               // Play the beep sound
               // await _audioPlayer.play('assets/beep.mp3', isLocal: true);
-            }*/
+            }
             return null;
           },
         ),

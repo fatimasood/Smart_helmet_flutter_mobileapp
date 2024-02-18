@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../NavigationScreens/SignUp.dart';
+import '../Authentication/SignUp.dart';
 import 'SecondScreen.dart';
 
 // ignore: camel_case_types
