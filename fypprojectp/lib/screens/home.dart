@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'AccountScreen.dart';
 import 'HomeScreen.dart';
 import 'LearnScreen.dart';
 import 'NavigationScreens/bottomNavigation.dart';
 import 'NavigationScreens/customAppbar.dart';
 import 'NavigationScreens/customSidebar.dart';
 import 'SignsScreen.dart';
+import 'UserAccountDetail/AccountScreen.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

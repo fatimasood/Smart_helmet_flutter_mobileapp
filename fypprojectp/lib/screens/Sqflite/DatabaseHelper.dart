@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fypprojectp/screens/EditInformation.dart';
+import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
