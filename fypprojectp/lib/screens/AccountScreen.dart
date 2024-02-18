@@ -8,8 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'EditInformation.dart';
 
-String? loggedInUserEmail;
-
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
 
@@ -28,15 +26,14 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Future<void> _loadUserRecords() async {
+    String? mail;
+    mail = userMail;
     try {
-      String? loggedInUserEmail = mail_address;
-      print('loggedInUserEmail: $loggedInUserEmail');
-
-      if (mail_address == userMail) {
-        print('mail address: $mail_address');
+      if (mail == userMail) {
+        print('mail $mail');
 
         final records =
-            await _databaseHelper.getAllUserRecordForUser(mail_address!);
+            await _databaseHelper.getAllUserRecordForUser(userMail!);
         print('Records loaded successfully: $records');
 
         setState(() {

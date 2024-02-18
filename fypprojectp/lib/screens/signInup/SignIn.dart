@@ -40,6 +40,7 @@ class _SignInState extends State<SignIn> {
         .then((value) {
       Utils().toastMessage(value.user!.email.toString());
       userMail = emailController.text;
+      print('login user mail: $userMail');
       Navigator.push(
         context,
         MaterialPageRoute(

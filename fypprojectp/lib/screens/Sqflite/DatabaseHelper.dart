@@ -76,4 +76,10 @@ class DatabaseHelper {
     }
     return null;
   }
+
+  Future<void> deleteUser(String mailAddress) async {
+    print('Deleting records for mail: $mailAddress');
+    await _database
+        .query('user_records', where: 'email = ?', whereArgs: [mailAddress]);
+  }
 }

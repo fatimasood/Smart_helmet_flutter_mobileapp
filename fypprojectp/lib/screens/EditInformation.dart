@@ -56,9 +56,7 @@ class _EditInformationState extends State<EditInformation> {
     _emerContact1Controller = TextEditingController();
     _emerContact2Controller = TextEditingController();
 
-    mail_address = _emailController.text;
-    mail_address = userMail;
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       _showImportantNoteAlert();
     });
   }
@@ -80,20 +78,48 @@ class _EditInformationState extends State<EditInformation> {
   }
 
   void saveInformation() async {
-    if (await _addUser()) {
-      //delay for few seconds
-      await Future.delayed(Duration(seconds: 3));
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Home()),
-      );
-    } else {
-      // Handle the case when data is not saved
-      Utils().toastMessage('Error! Data not saved.');
+    mail_address = _emailController.text;
+    print('mail_address is: $mail_address');
+    print('userMail is : $userMail');
+    try {
+      if (mail_address == userMail) {
+        if (await _addUser()) {
+          // Delay for a few seconds
+          await Future.delayed(Duration(seconds: 3));
+
+          // Ensure that context is not null
+          // ignore: unnecessary_null_comparison
+          if (context != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            );
+          } else {
+            print("Error: Context is null");
+          }
+        } else {
+          // Handle the case when data is not saved
+          Utils().toastMessage('Error! Data not saved.');
+        }
+      } else {
+        Utils().toastMessage('Email Error! Check your mail address');
+      }
+    } catch (e) {
+      print("Error: $e");
+      // Handle any exceptions that might occur during asynchronous operations
     }
   }
 
   Future<bool> _addUser() async {
+    final existingRecords =
+        await _databaseHelper.getAllUserRecordForUser(mail_address!);
+
+    if (existingRecords.isNotEmpty) {
+      // Delete existing record(s) with the same email address
+      for (var record in existingRecords) {
+        await _databaseHelper.deleteUser(record.email);
+      }
+    }
     final record = UserRecord(
       fullName: _fullNameController.text,
       cnic: _cnicController.text,
