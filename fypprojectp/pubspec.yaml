@@ -55,11 +55,11 @@ dependencies:
   image_picker: ^0.8.5+3
   audioplayers: ^5.2.0
   get: ^4.6.5
-  app_settings: ^5.1.1
-  flutter_blue: ^0.8.0 
+  app_settings: ^5.1.1 
   sqflite: ^2.3.2
   intl: ^0.19.0
-  flutter_bluetooth_serial: ^0.4.0
+  flutter_blue_plus: ^1.31.15
+  
 
 dev_dependencies:
   flutter_test:
