@@ -4,7 +4,12 @@ import 'package:fypprojectp/screens/bluetooth_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final BluetoothController bluetoothController = BluetoothController();
 
   @override
@@ -64,6 +69,8 @@ class HomeScreen extends StatelessWidget {
                                       itemCount: snapshot.data!.length,
                                       itemBuilder: (context, index) {
                                         final data = snapshot.data![index];
+                                        print(
+                                            'Device found: ${data.device.name ?? 'Unknown'}');
                                         return Card(
                                           elevation: 2,
                                           child: ListTile(
@@ -77,6 +84,7 @@ class HomeScreen extends StatelessWidget {
                                       },
                                     );
                                   } else {
+                                    print('No device found');
                                     return const Center(
                                       child: Text('No device found'),
                                     );

@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/SplashScreens.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
+import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +25,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SplashScreen(title: 'Smart Helmet'),
+      home: const EditInformation(),
+      //home: const SplashScreen(title: 'Smart Helmet'),
     );
   }
 }

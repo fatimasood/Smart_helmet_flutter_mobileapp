@@ -141,7 +141,6 @@ class _EditInformationState extends State<EditInformation> {
       Utils().toastMessage('Saved Successfully!');
       return true;
     } catch (e) {
-      // Print the error for debugging purposes
       print('Error saving data: $e');
       return false;
     }
@@ -156,17 +155,18 @@ class _EditInformationState extends State<EditInformation> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 50, bottom: 15),
+              padding: const EdgeInsets.only(top: 50, bottom: 8),
               child: GestureDetector(
                 onTap: _pickImage,
                 child: CircleAvatar(
-                  radius: 40.0,
-                  backgroundColor: Colors.blueGrey.shade100,
+                  radius: 45.0,
+                  //  backgroundColor: Colors.blueGrey.shade100,
                   backgroundImage: _image != null ? FileImage(_image!) : null,
                   child: _image == null
-                      ? Icon(
-                          Icons.person_add_alt_sharp,
-                          size: 23.0,
+                      ? Image.asset(
+                          'lib/assets/Group9.png',
+                          width: 110.0,
+                          height: 110.0,
                         )
                       : null,
                 ),
@@ -206,10 +206,10 @@ class _EditInformationState extends State<EditInformation> {
                         height: 40,
                         width: 300,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                             border: Border.all(
                               color: Color(0xff6617ff),
-                              width: 1.5,
+                              width: 1,
                             )),
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
@@ -223,7 +223,7 @@ class _EditInformationState extends State<EditInformation> {
                           ),
                           keyboardType: TextInputType.name,
                           decoration: InputDecoration(
-                            hintText: 'Full Name',
+                            hintText: 'Alex',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
                                 fontWeight: FontWeight.w400,
@@ -240,10 +240,10 @@ class _EditInformationState extends State<EditInformation> {
                         height: 40,
                         width: 300,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                             border: Border.all(
                               color: Color(0xff6617ff),
-                              width: 1.5,
+                              width: 1,
                             )),
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
@@ -257,7 +257,7 @@ class _EditInformationState extends State<EditInformation> {
                           ),
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                            hintText: 'Email',
+                            hintText: 'Alex@gmail.com',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
                                 fontWeight: FontWeight.w400,
@@ -274,10 +274,10 @@ class _EditInformationState extends State<EditInformation> {
                         height: 40,
                         width: 300,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                             border: Border.all(
                               color: Color(0xff6617ff),
-                              width: 1.5,
+                              width: 1,
                             )),
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
@@ -290,7 +290,7 @@ class _EditInformationState extends State<EditInformation> {
                             ),
                           ),
                           decoration: InputDecoration(
-                            hintText: 'CNIC',
+                            hintText: '3740523487659 (CNIC)',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
                                 fontWeight: FontWeight.w400,
@@ -308,10 +308,10 @@ class _EditInformationState extends State<EditInformation> {
                         height: 40,
                         width: 300,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                             border: Border.all(
                               color: Color(0xff6617ff),
-                              width: 1.5,
+                              width: 1,
                             )),
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
@@ -342,10 +342,10 @@ class _EditInformationState extends State<EditInformation> {
                           width: 300,
                           decoration: BoxDecoration(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
+                                  BorderRadius.all(Radius.circular(10)),
                               border: Border.all(
                                 color: Color(0xff6617ff),
-                                width: 1.5,
+                                width: 1,
                               )),
                           padding:
                               EdgeInsets.only(left: 5, right: 5, bottom: 1.5),
@@ -378,10 +378,10 @@ class _EditInformationState extends State<EditInformation> {
                         height: 40,
                         width: 300,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
                           border: Border.all(
                             color: Color(0xff6617ff),
-                            width: 1.5,
+                            width: 1,
                           ),
                         ),
                         padding: EdgeInsets.all(5),
@@ -396,7 +396,7 @@ class _EditInformationState extends State<EditInformation> {
                           ),
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: 'Emergency Contact',
+                            hintText: '92xxxxxxxxxx Emergency Contact',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
                                 fontWeight: FontWeight.w400,
@@ -413,10 +413,10 @@ class _EditInformationState extends State<EditInformation> {
                         height: 40,
                         width: 300,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
                           border: Border.all(
                             color: Color(0xff6617ff),
-                            width: 1.5,
+                            width: 1,
                           ),
                         ),
                         padding: EdgeInsets.all(5),
@@ -431,7 +431,7 @@ class _EditInformationState extends State<EditInformation> {
                           ),
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: 'Emergency Contact',
+                            hintText: '92xxxxxxxxxx',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
                                 fontWeight: FontWeight.w400,
@@ -448,10 +448,10 @@ class _EditInformationState extends State<EditInformation> {
                         height: 40,
                         width: 300,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
                           border: Border.all(
                             color: Color(0xff6617ff),
-                            width: 1.5,
+                            width: 1,
                           ),
                         ),
                         padding: EdgeInsets.all(5),
@@ -466,7 +466,7 @@ class _EditInformationState extends State<EditInformation> {
                           ),
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: 'Emergency Contact',
+                            hintText: '92xxxxxxxxxx',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
                                 fontWeight: FontWeight.w400,
