@@ -69,6 +69,7 @@ class _UpdateRecordState extends State<UpdateRecord> {
     // Update the state with the fetched user record
     setState(() {
       _userRecord = userRecord ?? _userRecord;
+
       _fullNameController.text = _userRecord.fullName;
       _emailController.text = _userRecord.email;
       _cnicController.text = _userRecord.cnic;
@@ -169,7 +170,7 @@ class _UpdateRecordState extends State<UpdateRecord> {
                 onTap: _pickImage,
                 child: CircleAvatar(
                   radius: 40.0,
-                  backgroundColor: Colors.blueGrey.shade100,
+                  //backgroundColor: Colors.blueGrey.shade100,
                   backgroundImage: _image != null ? FileImage(_image!) : null,
                   child: _image == null
                       ? Image.asset(

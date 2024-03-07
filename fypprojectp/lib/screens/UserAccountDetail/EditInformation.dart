@@ -20,7 +20,7 @@ class EditInformation extends StatefulWidget {
 
 class _EditInformationState extends State<EditInformation> {
   final _databaseHelper = DatabaseHelper();
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _fullNameController;
   late TextEditingController _emailController;
