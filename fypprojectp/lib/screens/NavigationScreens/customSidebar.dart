@@ -19,7 +19,7 @@ class CustomSidebar extends StatelessWidget {
           topRight: Radius.circular(60),
           bottomRight: Radius.circular(60),
         ),
-        color: Color(0xffd7c3ff),
+        color: Color(0xff9d6bff),
       ),
       child: Column(
         children: [
@@ -42,7 +42,7 @@ class CustomSidebar extends StatelessWidget {
               },
             ),
             decoration: BoxDecoration(
-              color: Color(0xffd7c3ff),
+              color: Color(0xff9d6bff),
             ),
           ),
           Padding(
@@ -163,7 +163,7 @@ class CustomSidebar extends StatelessWidget {
                   // Navigate to the settings screen
                 },
                 leading: Icon(
-                  Icons.settings_applications_sharp,
+                  Icons.settings,
                   size: 25,
                   color: Color(0xffffffff),
                 ),

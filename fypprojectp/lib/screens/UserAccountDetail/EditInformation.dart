@@ -20,7 +20,7 @@ class EditInformation extends StatefulWidget {
 
 class _EditInformationState extends State<EditInformation> {
   final _databaseHelper = DatabaseHelper();
-  // final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _fullNameController;
   late TextEditingController _emailController;
@@ -78,36 +78,62 @@ class _EditInformationState extends State<EditInformation> {
   }
 
   void saveInformation() async {
-    mail_address = _emailController.text;
-    print('mail_address is: $mail_address');
-    print('userMail is : $userMail');
-    try {
-      if (mail_address == userMail) {
-        if (await _addUser()) {
-          // Delay for a few seconds
-          await Future.delayed(Duration(seconds: 3));
+    if (_validateForm()) {
+      mail_address = _emailController.text;
+      print('mail_address is: $mail_address');
+      print('userMail is : $userMail');
+      try {
+        if (mail_address == userMail) {
+          if (await _addUser()) {
+            // Delay for a few seconds
+            await Future.delayed(Duration(seconds: 3));
 
-          // Ensure that context is not null
-          // ignore: unnecessary_null_comparison
-          if (context != null) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Home()),
-            );
+            if (context != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Home()),
+              );
+            } else {
+              print("Error: Context is null");
+            }
           } else {
-            print("Error: Context is null");
+            // Handle the case when data is not saved
+            Utils().toastMessage('Error! Data not saved.');
           }
         } else {
-          // Handle the case when data is not saved
-          Utils().toastMessage('Error! Data not saved.');
+          Utils().toastMessage('Email Error! Check your mail address');
         }
-      } else {
-        Utils().toastMessage('Email Error! Check your mail address');
+      } catch (e) {
+        print("Error: $e");
       }
-    } catch (e) {
-      print("Error: $e");
-      // Handle any exceptions that might occur during asynchronous operations
     }
+  }
+
+  bool _validateForm() {
+    if (_cnicController.text.length != 13) {
+      Utils().toastMessage('CNIC must be 13 digits');
+      return false;
+    }
+    if (_emerContactController.text.length != 11 ||
+        _emerContact1Controller.text.length != 11 ||
+        _emerContact2Controller.text.length != 11) {
+      Utils().toastMessage('Contact number must be 11 digits');
+      return false;
+    }
+    if (_fullNameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _cnicController.text.isEmpty ||
+        _bloodgroupController.text.isEmpty ||
+        _addressController.text.isEmpty ||
+        _emerContactController.text.isEmpty ||
+        _emerContact1Controller.text.isEmpty ||
+        _emerContact2Controller.text.isEmpty ||
+        (_image == null || _userRecord.imageBytes.isEmpty)) {
+      Utils().toastMessage('Please enter all Info');
+      return false;
+    }
+
+    return true;
   }
 
   Future<bool> _addUser() async {
@@ -231,6 +257,12 @@ class _EditInformationState extends State<EditInformation> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -265,6 +297,12 @@ class _EditInformationState extends State<EditInformation> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -298,6 +336,14 @@ class _EditInformationState extends State<EditInformation> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            } else if (value.length != 13) {
+                              return 'Contact number must be 11 digits';
+                            }
+                            return null;
+                          },
                           keyboardType: TextInputType.number,
                         ),
                       ),
@@ -332,6 +378,12 @@ class _EditInformationState extends State<EditInformation> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -368,6 +420,12 @@ class _EditInformationState extends State<EditInformation> {
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.all(10),
                             ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Info required, fill all fields';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ),
@@ -396,7 +454,7 @@ class _EditInformationState extends State<EditInformation> {
                           ),
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: '92xxxxxxxxxx Emergency Contact',
+                            hintText: '92xxxxxxxxxx',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 170, 141, 227),
                                 fontWeight: FontWeight.w400,
@@ -404,6 +462,14 @@ class _EditInformationState extends State<EditInformation> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            } else if (value.length != 11) {
+                              return 'Contact number must be 11 digits';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -439,6 +505,14 @@ class _EditInformationState extends State<EditInformation> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            } else if (value.length != 11) {
+                              return 'Contact number must be 11 digits';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -474,6 +548,14 @@ class _EditInformationState extends State<EditInformation> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            } else if (value.length != 11) {
+                              return 'Contact number must be 11 digits';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(

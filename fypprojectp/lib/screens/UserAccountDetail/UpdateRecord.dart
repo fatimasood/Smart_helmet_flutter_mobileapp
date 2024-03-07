@@ -81,35 +81,64 @@ class _UpdateRecordState extends State<UpdateRecord> {
   }
 
   Future<void> updateRecordInDatabase() async {
-    String fullName = _fullNameController.text;
-    String cnic = _cnicController.text;
-    String bloodGroup = _bloodgroupController.text;
-    String emerContact = _emerContactController.text;
-    String email = _emailController.text;
-    String emeContact = _emerContact1Controller.text;
-    String emContact = _emerContact2Controller.text;
-    String address = _addressController.text;
+    if (_validateForm()) {
+      String fullName = _fullNameController.text;
+      String cnic = _cnicController.text;
+      String bloodGroup = _bloodgroupController.text;
+      String emerContact = _emerContactController.text;
+      String email = _emailController.text;
+      String emeContact = _emerContact1Controller.text;
+      String emContact = _emerContact2Controller.text;
+      String address = _addressController.text;
 
-    UserRecord updatedRecord = UserRecord(
-      fullName: fullName,
-      cnic: cnic,
-      bloodGroup: bloodGroup,
-      address: address,
-      emerContact: emerContact,
-      emContact: emContact,
-      emeContact: emeContact,
-      email: email,
-      imageBytes: _userRecord.imageBytes,
-    );
+      UserRecord updatedRecord = UserRecord(
+        fullName: fullName,
+        cnic: cnic,
+        bloodGroup: bloodGroup,
+        address: address,
+        emerContact: emerContact,
+        emContact: emContact,
+        emeContact: emeContact,
+        email: email,
+        imageBytes: _userRecord.imageBytes,
+      );
 
-    try {
-      await _databaseHelper.updateUserRecord(updatedRecord);
-      Utils().toastMessage('Record updated successfully!');
-      Navigator.pop(context);
-    } catch (error) {
-      print('Error updating record: $error');
-      Utils().toastMessage('Error updating record. Please try again.');
+      try {
+        await _databaseHelper.updateUserRecord(updatedRecord);
+        Utils().toastMessage('Record updated successfully!');
+        Navigator.pop(context);
+      } catch (error) {
+        print('Error updating record: $error');
+        Utils().toastMessage('Error updating record. Please try again.');
+      }
     }
+  }
+
+  bool _validateForm() {
+    if (_cnicController.text.length != 13) {
+      Utils().toastMessage('CNIC must be 13 digits');
+      return false;
+    }
+    if (_emerContactController.text.length != 11 ||
+        _emerContact1Controller.text.length != 11 ||
+        _emerContact2Controller.text.length != 11) {
+      Utils().toastMessage('Contact number must be 11 digits');
+      return false;
+    }
+    if (_fullNameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _cnicController.text.isEmpty ||
+        _bloodgroupController.text.isEmpty ||
+        _addressController.text.isEmpty ||
+        _emerContactController.text.isEmpty ||
+        _emerContact1Controller.text.isEmpty ||
+        _emerContact2Controller.text.isEmpty ||
+        (_image == null || _userRecord.imageBytes.isEmpty)) {
+      Utils().toastMessage('Please enter all Info');
+      return false;
+    }
+
+    return true;
   }
 
   Future<void> _pickImage() async {
@@ -143,9 +172,10 @@ class _UpdateRecordState extends State<UpdateRecord> {
                   backgroundColor: Colors.blueGrey.shade100,
                   backgroundImage: _image != null ? FileImage(_image!) : null,
                   child: _image == null
-                      ? Icon(
-                          Icons.person_add_alt_sharp,
-                          size: 23.0,
+                      ? Image.asset(
+                          'lib/assets/Group9.png',
+                          width: 110.0,
+                          height: 110.0,
                         )
                       : null,
                 ),
@@ -210,6 +240,12 @@ class _UpdateRecordState extends State<UpdateRecord> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -244,6 +280,12 @@ class _UpdateRecordState extends State<UpdateRecord> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -277,6 +319,14 @@ class _UpdateRecordState extends State<UpdateRecord> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            } else if (value.length != 13) {
+                              return 'Contact number must be 11 digits';
+                            }
+                            return null;
+                          },
                           keyboardType: TextInputType.number,
                         ),
                       ),
@@ -311,6 +361,12 @@ class _UpdateRecordState extends State<UpdateRecord> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -347,6 +403,12 @@ class _UpdateRecordState extends State<UpdateRecord> {
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.all(10),
                             ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Info required, fill all fields';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ),
@@ -383,6 +445,14 @@ class _UpdateRecordState extends State<UpdateRecord> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            } else if (value.length != 11) {
+                              return 'Contact number must be 11 digits';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -418,6 +488,14 @@ class _UpdateRecordState extends State<UpdateRecord> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            } else if (value.length != 11) {
+                              return 'Contact number must be 11 digits';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -453,6 +531,14 @@ class _UpdateRecordState extends State<UpdateRecord> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(10),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Info required, fill all fields';
+                            } else if (value.length != 11) {
+                              return 'Contact number must be 11 digits';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
