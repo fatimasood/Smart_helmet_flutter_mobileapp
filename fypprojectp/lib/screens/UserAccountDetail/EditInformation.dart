@@ -88,6 +88,7 @@ class _EditInformationState extends State<EditInformation> {
             // Delay for a few seconds
             await Future.delayed(Duration(seconds: 3));
 
+            // ignore: unnecessary_null_comparison
             if (context != null) {
               Navigator.push(
                 context,
