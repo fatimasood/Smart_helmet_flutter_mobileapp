@@ -92,7 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
       print('Connected to ${device.name ?? 'Unknown Device'}');
     } catch (error) {
       print('Error connecting to ${device.name ?? 'Unknown Device'}: $error');
-      // Handle the error here, and possibly display a user-friendly message.
     }
   }
 
