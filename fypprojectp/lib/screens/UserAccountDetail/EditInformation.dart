@@ -2,14 +2,13 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/Authentication/SignUp.dart';
+import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
 import 'package:fypprojectp/screens/home.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-
-String? mail_address;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditInformation extends StatefulWidget {
   const EditInformation({super.key});
@@ -43,6 +42,12 @@ class _EditInformationState extends State<EditInformation> {
     imageBytes: Uint8List(0),
   );
 
+// Load user email from shared preferences
+  Future<String?> loadUserEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('user_email');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -58,6 +63,14 @@ class _EditInformationState extends State<EditInformation> {
 
     Future.delayed(const Duration(seconds: 2), () {
       _showImportantNoteAlert();
+    });
+
+    loadUserEmail().then((savedEmail) {
+      if (savedEmail != null) {
+        setState(() {
+          _emailController.text = savedEmail;
+        });
+      }
     });
   }
 

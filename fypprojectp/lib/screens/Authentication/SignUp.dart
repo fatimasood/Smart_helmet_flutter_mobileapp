@@ -2,13 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'SignIn.dart';
-
-String? userMail;
 
 class SignUp extends StatefulWidget {
   @override
@@ -37,6 +37,8 @@ class _SignUpState extends State<SignUp> {
             password: passwordController.text.toString())
         .then((value) {
       Utils().toastMessage(value.user!.email.toString());
+      //save user mail to pesistent storage
+      saveUserEmail(userMail!);
       userMail = emailController.text;
       print('$userMail');
       Navigator.push(
@@ -48,6 +50,31 @@ class _SignUpState extends State<SignUp> {
     }).onError((error, stackTrace) {
       debugPrint(error.toString());
       Utils().toastMessage(error.toString());
+    });
+  }
+
+// Save user email to shared preferences
+  Future<void> saveUserEmail(String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('user_email', email);
+  }
+
+// Load user email from shared preferences
+  Future<String?> loadUserEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('user_email');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Load user email when the widget initializes
+    loadUserEmail().then((savedEmail) {
+      if (savedEmail != null) {
+        setState(() {
+          emailController.text = savedEmail;
+        });
+      }
     });
   }
 

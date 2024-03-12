@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fypprojectp/screens/SplashScreens.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
 
+String? mail_address;
+String? userMail;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // Initialize Firebase
