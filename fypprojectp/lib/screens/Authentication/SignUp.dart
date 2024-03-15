@@ -6,7 +6,6 @@ import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'SignIn.dart';
 
@@ -37,10 +36,7 @@ class _SignUpState extends State<SignUp> {
             password: passwordController.text.toString())
         .then((value) {
       Utils().toastMessage(value.user!.email.toString());
-      //save user mail to pesistent storage
-      saveUserEmail(userMail!);
       userMail = emailController.text;
-      print('$userMail');
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -53,29 +49,9 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
-// Save user email to shared preferences
-  Future<void> saveUserEmail(String email) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('user_email', email);
-  }
-
-// Load user email from shared preferences
-  Future<String?> loadUserEmail() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('user_email');
-  }
-
   @override
   void initState() {
     super.initState();
-    // Load user email when the widget initializes
-    loadUserEmail().then((savedEmail) {
-      if (savedEmail != null) {
-        setState(() {
-          emailController.text = savedEmail;
-        });
-      }
-    });
   }
 
   @override

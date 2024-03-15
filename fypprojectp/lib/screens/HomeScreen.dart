@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:fypprojectp/screens/Authentication/SignUp.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -114,6 +115,34 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: Color(0xff9d6bff),
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SignUp()), // Navigate to Home screen
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 0.0,
+                  left: 20,
+                  right: 20,
+                  bottom: 0.0,
+                ),
+                child: Text(
+                  "Sign Up",
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff9d6bff),
+                    ),
                   ),
                 ),
               ),
