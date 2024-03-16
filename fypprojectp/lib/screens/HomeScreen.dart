@@ -4,8 +4,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:fypprojectp/screens/Authentication/SignUp.dart';
+import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,10 +18,56 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<BluetoothDevice> _devices = [];
   BluetoothConnection? _connection;
 
+  late SharedPreferences prefs;
   @override
   void initState() {
     super.initState();
+    checkEmail();
     _initializeBluetooth();
+  }
+
+  Future<void> checkEmail() async {
+    prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString('email');
+    print('emai: $email');
+    if (email == null) {
+      // Show dialog with the message
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              "Welcome Back",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Color(0xff6617ff),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 18),
+            ),
+            content: const Text(
+              "Updation Required!",
+              style: TextStyle(
+                  color: Color(0xff6617ff),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 15),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditInformation(),
+                    ),
+                  );
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   Future<void> _initializeBluetooth() async {
@@ -119,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            GestureDetector(
+            /* GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
@@ -146,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-            ),
+            ),*/
             SizedBox(height: 15.0),
             GestureDetector(
               onTap: () {

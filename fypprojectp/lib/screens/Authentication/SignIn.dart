@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -39,9 +40,9 @@ class _SignInState extends State<SignIn> {
             password: passwordController.text.toString())
         .then((value) {
       Utils().toastMessage(value.user!.email.toString());
-      // userMail = emailController.text;
+      userMail = emailController.text;
 
-      //  print('login user mail: $userMail');
+      print('login user mail: $userMail');
 
       Navigator.push(
         context,

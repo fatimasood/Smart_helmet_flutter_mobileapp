@@ -1,12 +1,15 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:fypprojectp/firebase_services/splash_services.dart';
 import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/UpdateRecord.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 String? mail;
 
@@ -28,14 +31,105 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Future<void> _loadUserRecords() async {
-    mail = userMail;
+    //retreive data from shared pref
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    String? email = prefs.getString('email');
+    mail = email;
+
+    print('mail: $mail');
+    print('savedEmailA: $savedEmailA');
     try {
-      if (mail == userMail) {
-        print('mail $mail');
-        print('userMail $userMail');
-        final records =
-            await _databaseHelper.getAllUserRecordForUser(userMail!);
+      if (mail != null && mail == savedEmailA) {
+        String? fullName = prefs.getString('fullName');
+        String? cnic = prefs.getString('cnic');
+        String? bloodGroup = prefs.getString('bloodGroup');
+        String? address = prefs.getString('address');
+        String? emerContact = prefs.getString('emerContact');
+        String? emerContact1 = prefs.getString('emerContact1');
+        String? emerContact2 = prefs.getString('emerContact2');
+        String? imageBase64 = prefs.getString('image');
+
+// Check if all required data is available
+        if (fullName != null &&
+            email != null &&
+            cnic != null &&
+            bloodGroup != null &&
+            address != null &&
+            emerContact != null &&
+            emerContact1 != null &&
+            emerContact2 != null &&
+            imageBase64 != null) {
+          Uint8List imageBytes = base64.decode(imageBase64);
+//create user record object
+          UserRecord record = UserRecord(
+            fullName: fullName,
+            email: email,
+            cnic: cnic,
+            bloodGroup: bloodGroup,
+            address: address,
+            emerContact: emerContact,
+            emeContact: emerContact1,
+            emContact: emerContact2,
+            imageBytes: imageBytes,
+          );
+          setState(() {
+            userRecord.add(record);
+          });
+        }
+//fetch user record from database
+        final records = await _databaseHelper.getAllUserRecordForUser(email!);
+        print('Records loaded successfully: $records');
+
+        setState(() {
+          userRecord = records.cast<UserRecord>();
+        });
+      }
+    } catch (e) {
+      print('Error loading user records: $e');
+    }
+//if signup
+    try {
+      if (mail != null && mail == userMail) {
+        print('userMAil: $userMail');
+        String? fullName = prefs.getString('fullName');
+        String? cnic = prefs.getString('cnic');
+        String? bloodGroup = prefs.getString('bloodGroup');
+        String? address = prefs.getString('address');
+        String? emerContact = prefs.getString('emerContact');
+        String? emerContact1 = prefs.getString('emerContact1');
+        String? emerContact2 = prefs.getString('emerContact2');
+        String? imageBase64 = prefs.getString('image');
+
+// Check if all required data is available
+        if (fullName != null &&
+            email != null &&
+            cnic != null &&
+            bloodGroup != null &&
+            address != null &&
+            emerContact != null &&
+            emerContact1 != null &&
+            emerContact2 != null &&
+            imageBase64 != null) {
+          Uint8List imageBytes = base64.decode(imageBase64);
+//create user record object
+          UserRecord record = UserRecord(
+            fullName: fullName,
+            email: email,
+            cnic: cnic,
+            bloodGroup: bloodGroup,
+            address: address,
+            emerContact: emerContact,
+            emeContact: emerContact1,
+            emContact: emerContact2,
+            imageBytes: imageBytes,
+          );
+          setState(() {
+            userRecord.add(record);
+          });
+        }
+//fetch user record from database
+        final records = await _databaseHelper.getAllUserRecordForUser(email!);
         print('Records loaded successfully: $records');
 
         setState(() {

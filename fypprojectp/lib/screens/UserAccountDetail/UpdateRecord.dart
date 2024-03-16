@@ -8,6 +8,7 @@ import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateRecord extends StatefulWidget {
   const UpdateRecord({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class UpdateRecord extends StatefulWidget {
 
 class _UpdateRecordState extends State<UpdateRecord> {
   DatabaseHelper _databaseHelper = DatabaseHelper();
+  late SharedPreferences prefs;
 
   late TextEditingController _fullNameController;
   late TextEditingController _emailController;
@@ -34,6 +36,7 @@ class _UpdateRecordState extends State<UpdateRecord> {
   @override
   void initState() {
     super.initState();
+    _initSharedPreferences();
     _fullNameController = TextEditingController();
     _cnicController = TextEditingController();
     _bloodgroupController = TextEditingController();
@@ -58,6 +61,10 @@ class _UpdateRecordState extends State<UpdateRecord> {
       _showImportantNoteAlert();
       _loadData();
     });
+  }
+
+  Future<void> _initSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
   }
 
   Future<void> _loadData() async {
@@ -92,6 +99,13 @@ class _UpdateRecordState extends State<UpdateRecord> {
       String emContact = _emerContact2Controller.text;
       String address = _addressController.text;
 
+      // Get image bytes if the image is selected
+      // ignore: unused_local_variable
+      Uint8List? imageBytes;
+      if (_image != null) {
+        imageBytes = await _image!.readAsBytes();
+      }
+
       UserRecord updatedRecord = UserRecord(
         fullName: fullName,
         cnic: cnic,
@@ -101,11 +115,22 @@ class _UpdateRecordState extends State<UpdateRecord> {
         emContact: emContact,
         emeContact: emeContact,
         email: email,
-        imageBytes: _userRecord.imageBytes,
+        imageBytes: _userRecord.imageBytes ?? _userRecord.imageBytes,
       );
 
       try {
         await _databaseHelper.updateUserRecord(updatedRecord);
+
+        // Update user's information in SharedPreferences
+        await prefs.setString('fullName', fullName);
+        await prefs.setString('cnic', cnic);
+        await prefs.setString('bloodGroup', bloodGroup);
+        await prefs.setString('address', address);
+        await prefs.setString('emerContact', emerContact);
+        await prefs.setString('emContact', emContact);
+        await prefs.setString('emeContact', emeContact);
+        await prefs.setString('email', email);
+
         Utils().toastMessage('Record updated successfully!');
         Navigator.pop(context);
       } catch (error) {

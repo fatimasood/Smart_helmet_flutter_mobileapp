@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -42,12 +43,6 @@ class _EditInformationState extends State<EditInformation> {
     imageBytes: Uint8List(0),
   );
 
-// Load user email from shared preferences
-  Future<String?> loadUserEmail() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('user_email');
-  }
-
   @override
   void initState() {
     super.initState();
@@ -61,16 +56,11 @@ class _EditInformationState extends State<EditInformation> {
     _emerContact1Controller = TextEditingController();
     _emerContact2Controller = TextEditingController();
 
+// Retrieve image from SharedPreferences
+    _getImageFromSharedPreferences();
+
     Future.delayed(const Duration(seconds: 2), () {
       _showImportantNoteAlert();
-    });
-
-    loadUserEmail().then((savedEmail) {
-      if (savedEmail != null) {
-        setState(() {
-          _emailController.text = savedEmail;
-        });
-      }
     });
   }
 
@@ -98,6 +88,8 @@ class _EditInformationState extends State<EditInformation> {
       try {
         if (mail_address == userMail) {
           if (await _addUser()) {
+            //SAVE DATA TO SHARED PREFERENCE
+            await _saveToSharedPreferences();
             // Delay for a few seconds
             await Future.delayed(Duration(seconds: 3));
 
@@ -143,7 +135,7 @@ class _EditInformationState extends State<EditInformation> {
         _emerContact1Controller.text.isEmpty ||
         _emerContact2Controller.text.isEmpty ||
         (_image == null || _userRecord.imageBytes.isEmpty)) {
-      Utils().toastMessage('Please enter all Info');
+      Utils().toastMessage('Kindly enter all required Info');
       return false;
     }
 
@@ -176,6 +168,7 @@ class _EditInformationState extends State<EditInformation> {
       print('Email: ${record.email}');
       print('Emergency Contact: ${record.emerContact}');
       print('Image Bytes: ${record.imageBytes}');
+
       mail_address = _emailController.text;
 
       Utils().toastMessage('Saved Successfully!');
@@ -184,6 +177,45 @@ class _EditInformationState extends State<EditInformation> {
       print('Error saving data: $e');
       return false;
     }
+  }
+
+//convert Uint8List to base64 string
+  String uint8ListToBase64(Uint8List data) {
+    return base64Encode(data);
+  }
+
+//convert base64 string to Uint8List
+  Uint8List base64ToUint8List(String base64String) {
+    return base64Decode(base64String);
+  }
+
+  //retrieve the image from SharedPreferences
+  Future<void> _getImageFromSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? imageBase64 = prefs.getString('image');
+    if (imageBase64 != null) {
+      Uint8List imageBytes = base64ToUint8List(imageBase64);
+      setState(() {
+        _userRecord.imageBytes = imageBytes;
+      });
+    }
+  }
+
+  // save data in shared prefe
+  Future<void> _saveToSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('fullName', _fullNameController.text);
+    await prefs.setString('email', _emailController.text);
+    await prefs.setString('cnic', _cnicController.text);
+    await prefs.setString('bloodGroup', _bloodgroupController.text);
+    await prefs.setString('address', _addressController.text);
+    await prefs.setString('emerContact', _emerContactController.text);
+    await prefs.setString('emerContact1', _emerContact1Controller.text);
+    await prefs.setString('emerContact2', _emerContact2Controller.text);
+
+    // Save image as base64 string in shared prefe
+    String imageBase64 = uint8ListToBase64(_userRecord.imageBytes);
+    await prefs.setString('image', imageBase64);
   }
 
   @override

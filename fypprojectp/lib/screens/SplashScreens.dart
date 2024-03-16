@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,12 +15,13 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   SplashServices splashScreen =
       SplashServices(); //firebase splashscreen services
+
   @override
   void initState() {
     super.initState();
 
     // Simulate a delay for demonstration purpose
-    Future.delayed(const Duration(seconds: 6), () {
+    Future.delayed(const Duration(seconds: 5), () {
       // After the delay, navigate to the next screen
       splashScreen.isLogin(context);
     });
