@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fypprojectp/screens/SettingsScreen.dart';
 
 class CustomSidebar extends StatelessWidget {
   final int selectedIndex;
@@ -161,6 +162,10 @@ class CustomSidebar extends StatelessWidget {
                 ),
                 onTap: () {
                   // Navigate to the settings screen
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SettingsScreen()));
                 },
                 leading: Icon(
                   Icons.settings,
