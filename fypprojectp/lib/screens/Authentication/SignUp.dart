@@ -37,6 +37,7 @@ class _SignUpState extends State<SignUp> {
         .then((value) {
       Utils().toastMessage(value.user!.email.toString());
       userMail = emailController.text;
+      print(userMail);
       Navigator.push(
         context,
         MaterialPageRoute(
