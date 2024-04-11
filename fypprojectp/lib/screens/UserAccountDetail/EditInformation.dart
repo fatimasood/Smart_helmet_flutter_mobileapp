@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:fypprojectp/firebase_services/splash_services.dart';
 import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
 import 'package:fypprojectp/screens/home.dart';
@@ -83,6 +84,7 @@ class _EditInformationState extends State<EditInformation> {
   void saveInformation() async {
     if (_validateForm()) {
       mail_address = _emailController.text;
+      userMail = savedEmailA;
       print('mail_address is: $mail_address');
       print('userMail is : $userMail');
       try {

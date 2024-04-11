@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
+import 'package:fypprojectp/screens/UserAccountDetail/UpdateRecord.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditInformation(),
+                      builder: (context) => UpdateRecord(),
                     ),
                   );
                 },
