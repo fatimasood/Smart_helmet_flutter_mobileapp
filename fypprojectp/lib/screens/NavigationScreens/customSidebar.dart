@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/screens/SettingsScreen.dart';
 
 class CustomSidebar extends StatelessWidget {
   final int selectedIndex;
@@ -77,7 +76,7 @@ class CustomSidebar extends StatelessWidget {
               height: 40,
               child: ListTile(
                 title: Text(
-                  'Learn Ride',
+                  'Profile',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
@@ -89,7 +88,7 @@ class CustomSidebar extends StatelessWidget {
                   onItemTapped(1); // Navigate to the screen
                 },
                 leading: Icon(
-                  Icons.electric_bike_rounded,
+                  Icons.person_4_rounded,
                   size: 25,
                   color: Color(0xffffffff),
                 ),
@@ -127,7 +126,7 @@ class CustomSidebar extends StatelessWidget {
               height: 40,
               child: ListTile(
                 title: Text(
-                  'Account',
+                  'Settings',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
@@ -139,35 +138,6 @@ class CustomSidebar extends StatelessWidget {
                   onItemTapped(3); // Navigate to the screen
                 },
                 leading: Icon(
-                  Icons.person_4_rounded,
-                  size: 25,
-                  color: Color(0xffffffff),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 160),
-            child: Container(
-              height: 40,
-              child: ListTile(
-                title: Text(
-                  'Setting',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'Inter',
-                    color: Color(0xffffffff),
-                  ),
-                ),
-                onTap: () {
-                  // Navigate to the settings screen
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SettingsScreen()));
-                },
-                leading: Icon(
                   Icons.settings,
                   size: 25,
                   color: Color(0xffffffff),
@@ -176,7 +146,7 @@ class CustomSidebar extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.zero,
+            padding: EdgeInsets.only(top: 200),
             child: Container(
               height: 40,
               child: ListTile(

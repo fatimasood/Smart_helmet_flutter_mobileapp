@@ -4,7 +4,12 @@ import 'package:fypprojectp/screens/SplashScreens.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
 
 String? mail_address;
+String? savedEmailA;
+String? email;
+String? mail;
 String? userMail;
+String _logout= "login";
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // Initialize Firebase

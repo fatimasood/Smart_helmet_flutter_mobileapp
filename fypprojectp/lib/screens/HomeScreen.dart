@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:fypprojectp/screens/UserAccountDetail/UpdateRecord.dart';
+import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   BluetoothConnection? _connection;
 
   late SharedPreferences prefs;
+  bool isUpdateDialogShown = false;
   @override
   void initState() {
     super.initState();
@@ -28,13 +29,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> checkEmail() async {
     prefs = await SharedPreferences.getInstance();
+
     String? email = prefs.getString('email');
+
     print('emai: $email');
-    if (email == null) {
+    if (email == null && isUpdateDialogShown == false) {
       // Show dialog with the message
       showDialog(
         context: context,
         builder: (BuildContext context) {
+          isUpdateDialogShown = true;
           return AlertDialog(
             title: const Text(
               "Welcome Back",
@@ -57,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => UpdateRecord(),
+                      builder: (context) => EditInformation(),
                     ),
                   );
                 },

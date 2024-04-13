@@ -2,10 +2,9 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/Authentication/SignIn.dart';
 import 'package:fypprojectp/screens/home.dart';
-
-String? savedEmailA;
 
 class SplashServices {
   void isLogin(BuildContext context) {

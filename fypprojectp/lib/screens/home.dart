@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'HomeScreen.dart';
-import 'LearnScreen.dart';
 import 'NavigationScreens/bottomNavigation.dart';
 import 'NavigationScreens/customAppbar.dart';
 import 'NavigationScreens/customSidebar.dart';
+import 'Settings.dart';
 import 'SignsScreen.dart';
 import 'UserAccountDetail/AccountScreen.dart';
 
@@ -21,9 +21,9 @@ class _Home extends State<Home> {
 
   final List<Widget> _screens = [
     HomeScreen(),
-    LearnScreen(),
-    SignsScreen(),
     AccountScreen(),
+    SignsScreen(),
+    Settings(),
   ];
 
   void _onBottomNavItemTapped(int index) {

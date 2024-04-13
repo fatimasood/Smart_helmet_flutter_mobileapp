@@ -1,26 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/Authentication/SignIn.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
-
+class Settings extends StatefulWidget {
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  State<Settings> createState() => _SettingsState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsState extends State<Settings> {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<void> _signOut() async {
     await _auth.signOut();
-
-    print('userMail is $userMail');
-    print('mail is $mail');
-    print('email is $email');
-    print('savedEmailA is $savedEmailA');
 
     Navigator.push(
       context,
@@ -31,29 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff9d6bff),
-        title: Text(
-          'Settings',
-          style: GoogleFonts.inter(
-            textStyle: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
-            size: 16,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop(); //close current screen
-          },
-        ),
-      ),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding:

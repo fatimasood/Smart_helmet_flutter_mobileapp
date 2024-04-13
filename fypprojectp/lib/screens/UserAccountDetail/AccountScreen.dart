@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:fypprojectp/firebase_services/splash_services.dart';
 import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
@@ -10,8 +9,6 @@ import 'package:fypprojectp/screens/UserAccountDetail/UpdateRecord.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-String? mail;
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});

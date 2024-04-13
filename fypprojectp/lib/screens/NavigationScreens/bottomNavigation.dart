@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
@@ -32,9 +31,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             buildNavItem(Icons.home_filled, "Home", 0),
-            buildNavItem(Icons.electric_bike_rounded, "Learn", 1),
+            buildNavItem(Icons.person_4_rounded, "Profile", 1),
             buildNavItem(Icons.sign_language, "Signs", 2),
-            buildNavItem(Icons.person_4_rounded, "Account", 3),
+            buildNavItem(Icons.settings, "Settings", 3),
           ],
         ),
       ),
