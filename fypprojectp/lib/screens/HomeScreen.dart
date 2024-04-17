@@ -126,7 +126,6 @@ class _HomeScreenState extends State<HomeScreen> {
       print('Bonded successfully with ${device.name ?? 'Unknown Device'}');
     } catch (error) {
       print('Error bonding with ${device.name ?? 'Unknown Device'}: $error');
-      // Handle the error, possibly display a user-friendly message.
     }
   }
 
@@ -166,6 +165,17 @@ class _HomeScreenState extends State<HomeScreen> {
     prefs = await SharedPreferences.getInstance();
     await prefs.setString('Bluetooth_data', data);
     print('Data saved in SharedPreferences: $data');
+  }
+
+//accident detection
+
+  Future<void> _accidentDetection() async {
+    // Ensure Bluetooth is enabled
+    bool? isEnabled = await _bluetooth.isEnabled;
+    if (isEnabled != null && !isEnabled) {
+      await _bluetooth.requestEnable();
+    }
+    _startDiscovery();
   }
 
   @override

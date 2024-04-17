@@ -4,30 +4,25 @@ import 'package:fypprojectp/screens/Authentication/SignIn.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-late final _ratingController;
-late double _rating;
-
-double _userRating = 3.0;
-int _ratingBarMode = 1;
-double _initialRating = 2.0;
-bool _isRTLMode = false;
-bool _isVertical = false;
-
-IconData? _selectedIcon;
-
 class Settings extends StatefulWidget {
   @override
   State<Settings> createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {
+  var _ratingController = TextEditingController();
+  late double _rating;
+  int _ratingBarMode = 1;
+  bool _isRTLMode = false;
+  bool _isVertical = false;
+  late IconData _selectedIcon;
+
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
+    _ratingController.text = "3.0";
     super.initState();
-    _ratingController = TextEditingController(text: '3.0');
-    _rating = _initialRating;
   }
 
   Future<void> _signOut() async {
@@ -52,11 +47,8 @@ class _SettingsState extends State<Settings> {
                 fontWeight: FontWeight.w600,
                 fontSize: 17),
           ),
-          //content:,
-          actions: [
-            //rating bar
-            // take comment space
-          ],
+          content: Container(),
+          actions: [],
         );
       },
     );
