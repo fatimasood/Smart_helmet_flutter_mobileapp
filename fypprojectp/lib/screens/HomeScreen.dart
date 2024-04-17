@@ -4,9 +4,12 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:fypprojectp/screens/BluetoothConnectedScreen.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+String receivedData = '';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -20,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   late SharedPreferences prefs;
   bool isUpdateDialogShown = false;
+
   @override
   void initState() {
     super.initState();
@@ -136,15 +140,32 @@ class _HomeScreenState extends State<HomeScreen> {
         if (data != null) {
           print('Data received: $data');
           // Handle received data from your ESP32 device
+          setState(() {
+            receivedData = utf8.decode(data); // Store received data
+          });
+          _saveDataInSharedPreferences(receivedData);
         }
       }, onDone: () {
         print('Connection to ${device.name ?? 'Unknown Device'} closed.');
       });
 
       print('Connected to ${device.name ?? 'Unknown Device'}');
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BluetoothConnectedScreen(data: receivedData),
+        ),
+      );
     } catch (error) {
       print('Error connecting to ${device.name ?? 'Unknown Device'}: $error');
     }
+  }
+
+  Future<void> _saveDataInSharedPreferences(String data) async {
+    prefs = await SharedPreferences.getInstance();
+    await prefs.setString('Bluetooth_data', data);
+    print('Data saved in SharedPreferences: $data');
   }
 
   @override

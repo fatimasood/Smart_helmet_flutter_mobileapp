@@ -2,6 +2,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fypprojectp/screens/Authentication/SignIn.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+late final _ratingController;
+late double _rating;
+
+double _userRating = 3.0;
+int _ratingBarMode = 1;
+double _initialRating = 2.0;
+bool _isRTLMode = false;
+bool _isVertical = false;
+
+IconData? _selectedIcon;
 
 class Settings extends StatefulWidget {
   @override
@@ -11,6 +23,13 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
+  @override
+  void initState() {
+    super.initState();
+    _ratingController = TextEditingController(text: '3.0');
+    _rating = _initialRating;
+  }
+
   Future<void> _signOut() async {
     await _auth.signOut();
 
@@ -19,6 +38,117 @@ class _SettingsState extends State<Settings> {
       MaterialPageRoute(builder: (context) => SignIn()),
     );
   }
+
+  Future<void> _feedback() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            " Help us shine brighter! ",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Color(0xff6617ff),
+                fontWeight: FontWeight.w600,
+                fontSize: 17),
+          ),
+          //content:,
+          actions: [],
+        );
+      },
+    );
+  }
+
+  Future<void> _contactUs(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          title: Text(
+            'Hey! How can we help you.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Color(0xff6617ff),
+                fontWeight: FontWeight.w600,
+                fontSize: 17),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    _launchMail('205366@aack.au.edu.pk');
+                  },
+                  child: Text(
+                    '205366@aack.au.edu.pk',
+                    style: TextStyle(
+                        color: Color(0xff6617ff),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.5),
+                  ),
+                ),
+                SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () {
+                    _launchMail('205366@aack.au.edu.pk');
+                  },
+                  child: Text(
+                    '205366@aack.au.edu.pk',
+                    style: TextStyle(
+                        color: Color(0xff6617ff),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.5),
+                  ),
+                ),
+                SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () {
+                    _launchMail('205366@aack.au.edu.pk');
+                  },
+                  child: Text(
+                    '205366@aack.au.edu.pk',
+                    style: TextStyle(
+                        color: Color(0xff6617ff),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.5),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Close',
+                style: TextStyle(
+                    color: Color(0xff6617ff),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _launchMail(String email) async {
+    String subject = 'Help Required!';
+    String mailUrl = 'mailto:$email?subject=${Uri.encodeComponent(subject)}';
+    if (await canLaunch(mailUrl)) {
+      await launch(mailUrl);
+    } else {
+      throw 'Could not launch $mailUrl';
+    }
+  }
+
+  Future<void> _tutorial() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +161,12 @@ class _SettingsState extends State<Settings> {
           child: Column(
             children: [
               InkWell(
-                onTap: _signOut,
+                onTap: _tutorial,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
                     height: 50,
-                    color: Colors.grey[200],
+                    color: Color(0xffede5fd),
                     child: Padding(
                       padding: const EdgeInsets.only(
                           top: 10, left: 10, bottom: 10, right: 10),
@@ -44,8 +174,8 @@ class _SettingsState extends State<Settings> {
                         children: [
                           Icon(
                             Icons.help_center_outlined,
-                            color: Colors.black,
-                            size: 18,
+                            color: Color(0xffa678ff),
+                            size: 16.5,
                           ),
                           SizedBox(
                             width: 8.5,
@@ -54,9 +184,9 @@ class _SettingsState extends State<Settings> {
                             'Tutorial and Help',
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffa678ff),
                               ),
                             ),
                           ),
@@ -70,32 +200,34 @@ class _SettingsState extends State<Settings> {
                 height: 13,
               ),
               InkWell(
-                onTap: _signOut,
+                onTap: () {
+                  _contactUs(context);
+                },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
                     height: 50,
-                    color: Colors.grey[200],
+                    color: Color(0xffede5fd),
                     child: Padding(
                       padding: const EdgeInsets.only(
                           top: 10, left: 10, bottom: 10, right: 10),
                       child: Row(
                         children: [
                           Icon(
-                            Icons.feed_outlined,
-                            color: Colors.black,
-                            size: 18,
+                            Icons.mail_outline_sharp,
+                            color: Color(0xffa678ff),
+                            size: 16.5,
                           ),
                           SizedBox(
                             width: 8.5,
                           ),
                           Text(
-                            'About and Legal Information',
+                            'Contact US',
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffa678ff),
                               ),
                             ),
                           ),
@@ -109,12 +241,12 @@ class _SettingsState extends State<Settings> {
                 height: 13,
               ),
               InkWell(
-                onTap: _signOut,
+                onTap: _feedback,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
                     height: 50,
-                    color: Colors.grey[200],
+                    color: Color(0xffede5fd),
                     child: Padding(
                       padding: const EdgeInsets.only(
                           top: 10, left: 10, bottom: 10, right: 10),
@@ -122,8 +254,8 @@ class _SettingsState extends State<Settings> {
                         children: [
                           Icon(
                             Icons.feedback_outlined,
-                            color: Colors.black,
-                            size: 18,
+                            color: Color(0xffa678ff),
+                            size: 16.5,
                           ),
                           SizedBox(
                             width: 8.5,
@@ -132,9 +264,9 @@ class _SettingsState extends State<Settings> {
                             'Feedback',
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffa678ff),
                               ),
                             ),
                           ),
@@ -153,7 +285,7 @@ class _SettingsState extends State<Settings> {
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
                     height: 50,
-                    color: Colors.grey[200],
+                    color: Color(0xffede5fd),
                     child: Padding(
                       padding: const EdgeInsets.only(
                           top: 10, left: 10, bottom: 10, right: 10),
@@ -161,8 +293,8 @@ class _SettingsState extends State<Settings> {
                         children: [
                           Icon(
                             Icons.logout_outlined,
-                            color: Colors.black,
-                            size: 18,
+                            color: Color(0xffa678ff),
+                            size: 16.5,
                           ),
                           SizedBox(
                             width: 8.5,
@@ -171,9 +303,9 @@ class _SettingsState extends State<Settings> {
                             'Logout',
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffa678ff),
                               ),
                             ),
                           ),

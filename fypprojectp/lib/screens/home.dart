@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fypprojectp/screens/Settings.dart';
 
 import 'HomeScreen.dart';
 import 'NavigationScreens/bottomNavigation.dart';
 import 'NavigationScreens/customAppbar.dart';
 import 'NavigationScreens/customSidebar.dart';
-import 'Settings.dart';
 import 'SignsScreen.dart';
 import 'UserAccountDetail/AccountScreen.dart';
 
