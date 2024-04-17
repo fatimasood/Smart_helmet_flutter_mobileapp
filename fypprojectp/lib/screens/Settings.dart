@@ -53,7 +53,10 @@ class _SettingsState extends State<Settings> {
                 fontSize: 17),
           ),
           //content:,
-          actions: [],
+          actions: [
+            //rating bar
+            // take comment space
+          ],
         );
       },
     );
