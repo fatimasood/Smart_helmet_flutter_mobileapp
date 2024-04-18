@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
-import 'package:fypprojectp/screens/Sqflite/UpdateRecord.dart';
+import 'package:fypprojectp/screens/UserAccountDetail/UpdateRecord.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';

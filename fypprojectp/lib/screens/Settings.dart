@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fypprojectp/screens/Authentication/SignIn.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,6 +14,7 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   var _ratingController = TextEditingController();
+  var _feedbackController = TextEditingController();
   late double _rating;
   int _ratingBarMode = 1;
   bool _isRTLMode = false;
@@ -47,8 +51,90 @@ class _SettingsState extends State<Settings> {
                 fontWeight: FontWeight.w600,
                 fontSize: 17),
           ),
-          content: Container(),
-          actions: [],
+          content: Container(
+            height: 250,
+            child: Column(
+              children: [
+                RatingBar.builder(
+                  unratedColor: Colors.grey[400],
+                  itemSize: 35,
+                  glow: false,
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    if (rating.toInt() < 3) {
+                      log("less than 3");
+                    } else {
+                      log("greater than 3");
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'Share your thoughts here... ',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: Color(0xff6617ff),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12),
+                ),
+                SizedBox(
+                  height: 13,
+                ),
+                Container(
+                  width: 200.0,
+                  height: 150.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(
+                      color: Color(0xff6617ff),
+                      width: 1.0,
+                    ),
+                  ),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _feedbackController,
+                        style: TextStyle(
+                            color: Color(0xffa678ff),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 13),
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Get feedback text
+                String feedbackText = _feedbackController.text;
+
+                print("Feedback Text: $feedbackText");
+
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Submit',
+                style: TextStyle(
+                    color: Color(0xff6617ff),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14),
+              ),
+            ),
+          ],
         );
       },
     );
