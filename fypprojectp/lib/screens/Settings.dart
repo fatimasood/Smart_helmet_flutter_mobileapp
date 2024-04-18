@@ -15,11 +15,6 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   var _ratingController = TextEditingController();
   var _feedbackController = TextEditingController();
-  late double _rating;
-  int _ratingBarMode = 1;
-  bool _isRTLMode = false;
-  bool _isVertical = false;
-  late IconData _selectedIcon;
 
   FirebaseAuth _auth = FirebaseAuth.instance;
 
