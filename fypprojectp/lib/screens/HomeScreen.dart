@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/BluetoothConnectedScreen.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -150,6 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       print('Connected to ${device.name ?? 'Unknown Device'}');
 
+      // ignore: use_build_context_synchronously
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -165,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
     prefs = await SharedPreferences.getInstance();
     await prefs.setString('Bluetooth_data', data);
     print('Data saved in SharedPreferences: $data');
+    dataSaved = data;
   }
 
 //accident detection
@@ -176,6 +179,46 @@ class _HomeScreenState extends State<HomeScreen> {
       await _bluetooth.requestEnable();
     }
     _startDiscovery();
+  }
+
+  Future<void> checkAccidentOccur() async {
+    prefs = await SharedPreferences.getInstance();
+
+    String? accidentData = prefs.getString('Bluetooth_data');
+
+    print('Accident Data: $accidentData');
+
+    if (accidentData != null &&
+        (accidentData.toLowerCase() == 'accident detected')) {
+      print('Accident Detected!');
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              "SOS",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Color(0xff6617ff),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 18),
+            ),
+            content: Text("An accident has been detected."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      print('No accident detected.');
+    }
   }
 
   @override

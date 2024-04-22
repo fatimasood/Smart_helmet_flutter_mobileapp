@@ -117,7 +117,7 @@ class _SettingsState extends State<Settings> {
                 // Get feedback text
                 String feedbackText = _feedbackController.text;
 
-                print("Feedback Text: $feedbackText");
+                print("Feedback: $feedbackText");
 
                 Navigator.of(context).pop();
               },

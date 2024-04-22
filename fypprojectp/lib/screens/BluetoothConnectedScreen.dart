@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fypprojectp/main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BluetoothConnectedScreen extends StatefulWidget {
@@ -43,7 +44,10 @@ class _BluetoothConnectedScreenState extends State<BluetoothConnectedScreen> {
           padding:
               const EdgeInsets.only(top: 30, left: 25, right: 25, bottom: 25),
           child: Center(
-            child: Text('Data received: ${widget.data}'),
+            child: Text(
+              'Data received: $dataSaved',
+              style: TextStyle(color: Colors.purple),
+            ),
           ), // Display received data
         ),
       ),

@@ -8,7 +8,8 @@ String? savedEmailA;
 String? email;
 String? mail;
 String? userMail;
-String _logout= "login";
+String _logout = "login";
+String dataSaved='';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
