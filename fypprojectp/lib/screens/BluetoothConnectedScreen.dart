@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fypprojectp/main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 class BluetoothConnectedScreen extends StatefulWidget {
   final String data;
   const BluetoothConnectedScreen({Key? key, required this.data})

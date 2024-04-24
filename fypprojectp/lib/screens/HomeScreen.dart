@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:fypprojectp/main.dart';
-import 'package:fypprojectp/screens/BluetoothConnectedScreen.dart';
+//import 'package:fypprojectp/screens/BluetoothConnectedScreen.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -152,12 +152,12 @@ class _HomeScreenState extends State<HomeScreen> {
       print('Connected to ${device.name ?? 'Unknown Device'}');
 
       // ignore: use_build_context_synchronously
-      Navigator.push(
+      /* Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => BluetoothConnectedScreen(data: receivedData),
         ),
-      );
+      );*/
     } catch (error) {
       print('Error connecting to ${device.name ?? 'Unknown Device'}: $error');
     }
@@ -324,6 +324,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: 165,
                   ),
                 ),
+              ),
+            ),
+            // Display received data
+            Text(
+              'Received Data: $receivedData',
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],
