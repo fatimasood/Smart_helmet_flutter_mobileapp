@@ -8,6 +8,7 @@ import 'package:fypprojectp/main.dart';
 //import 'package:fypprojectp/screens/BluetoothConnectedScreen.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String receivedData = '';
@@ -21,6 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
   final List<BluetoothDevice> _devices = [];
   BluetoothConnection? _connection;
+  bool _isBluetoothConnected =
+      false; // check either bluetooth is connected or not
 
   late SharedPreferences prefs;
   bool isUpdateDialogShown = false;
@@ -66,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditInformation(),
+                      builder: (context) => const EditInformation(),
                     ),
                   );
                 },
@@ -221,6 +224,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  //location
+  static final CameraPosition _kGooglePlex = const CameraPosition(
+      target: LatLng(37.42796133580664, -122.085749655962), zoom: 14.4746);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -273,67 +280,89 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),*/
             SizedBox(height: 15.0),
-            GestureDetector(
-              onTap: () {
-                print("Button pressed. Initiating device scan...");
-                _startDiscovery();
+            if (_isBluetoothConnected)
+              GestureDetector(
+                onTap: () {
+                  print("Button pressed. Initiating device scan...");
+                  _startDiscovery();
 
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text(
-                        "Available Bluetooth Devices",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color(0xff6617ff),
-                          fontWeight: FontWeight.w800,
-                          fontSize: 18,
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          "Available Bluetooth Devices",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xff6617ff),
+                            fontWeight: FontWeight.w800,
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                      content: Container(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        child: ListView.builder(
-                          itemCount: _devices.length,
-                          itemBuilder: (context, index) {
-                            BluetoothDevice device = _devices[index];
-                            return ListTile(
-                              title: Text(device.name ?? 'Unknown Device'),
-                              subtitle: Text(device.address),
-                              onTap: () {
-                                print(
-                                    'Device selected: ${device.name ?? 'Unknown Device'}');
-                                _connectToDevice(device);
-                              },
-                            );
-                          },
+                        content: Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          child: ListView.builder(
+                            itemCount: _devices.length,
+                            itemBuilder: (context, index) {
+                              BluetoothDevice device = _devices[index];
+                              return ListTile(
+                                title: Text(device.name ?? 'Unknown Device'),
+                                subtitle: Text(device.address),
+                                onTap: () {
+                                  print(
+                                      'Device selected: ${device.name ?? 'Unknown Device'}');
+                                  _connectToDevice(device);
+                                },
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
-              child: Container(
-                width: 180,
-                height: 180,
-                child: Center(
-                  child: Image.asset(
-                    "lib/assets/blueooth.png",
-                    height: 165,
-                    width: 165,
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  width: 180,
+                  height: 180,
+                  child: Center(
+                    child: Image.asset(
+                      "lib/assets/blueooth.png",
+                      height: 165,
+                      width: 165,
+                    ),
                   ),
                 ),
               ),
-            ),
-            // Display received data
-            Text(
-              'Received Data: $receivedData',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
+            //  SizedBox(height: 200,),
+            if (!_isBluetoothConnected)
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 10, left: 20, right: 20, bottom: 20),
+                child: Container(
+                  height: 200,
+                  child: GoogleMap(
+                    initialCameraPosition: _kGooglePlex,
+                  ),
+                ),
               ),
-            ),
+            // SizedBox(height: 100,),
+            if (!_isBluetoothConnected)
+              // Display received data
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 2, left: 20, right: 20, bottom: 20),
+                child: Container(
+                  height: 100,
+                  child: Text(
+                    'Received Data: $receivedData',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
