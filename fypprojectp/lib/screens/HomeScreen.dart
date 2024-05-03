@@ -225,8 +225,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //location
-  static final CameraPosition _kGooglePlex = const CameraPosition(
-      target: LatLng(37.42796133580664, -122.085749655962), zoom: 14.4746);
+  static final CameraPosition _kGooglePlex =
+      const CameraPosition(target: LatLng(33.857616, 72.393265), zoom: 14.4746);
 
   @override
   Widget build(BuildContext context) {
@@ -237,20 +237,37 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 15.0),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 0.0, left: 20, right: 20, bottom: 0.0),
-              child: Text(
-                "Kindly switch on your Bluetooth for tracking your ride ",
-                style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff9d6bff),
+            if (!_isBluetoothConnected)
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 0.0, left: 20, right: 20, bottom: 0.0),
+                child: Text(
+                  "Kindly switch on your Bluetooth for tracking your ride ",
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff9d6bff),
+                    ),
                   ),
                 ),
               ),
-            ),
+            if (_isBluetoothConnected)
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 0.0, left: 20, right: 20, bottom: 0.0),
+                child: Text(
+                  "Let's kick off this ride with excitement and safety!   ",
+                  textAlign: TextAlign.start,
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff9d6bff),
+                    ),
+                  ),
+                ),
+              ),
             /* GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -280,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),*/
             SizedBox(height: 15.0),
-            if (_isBluetoothConnected)
+            if (!_isBluetoothConnected)
               GestureDetector(
                 onTap: () {
                   print("Button pressed. Initiating device scan...");
@@ -335,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             //  SizedBox(height: 200,),
-            if (!_isBluetoothConnected)
+            if (_isBluetoothConnected)
               Padding(
                 padding: const EdgeInsets.only(
                     top: 10, left: 20, right: 20, bottom: 20),
@@ -347,18 +364,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             // SizedBox(height: 100,),
-            if (!_isBluetoothConnected)
+            if (_isBluetoothConnected)
               // Display received data
               Padding(
                 padding: const EdgeInsets.only(
                     top: 2, left: 20, right: 20, bottom: 20),
                 child: Container(
                   height: 100,
-                  child: Text(
-                    'Received Data: $receivedData',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
+                  width: 310,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    border: Border.all(
+                      color: Color(0xff6617ff),
+                      width: 1,
+                    ),
+                    //color: Color.fromARGB(255, 190, 163, 244),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Received Data: $receivedData',
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xff9d6bff),
+                        ),
+                      ),
                     ),
                   ),
                 ),

@@ -402,11 +402,12 @@ class _EditInformationState extends State<EditInformation> {
                         height: 40,
                         width: 300,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            border: Border.all(
-                              color: Color(0xff6617ff),
-                              width: 1,
-                            )),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            color: Color(0xff6617ff),
+                            width: 1,
+                          ),
+                        ),
                         padding: EdgeInsets.all(5),
                         child: TextFormField(
                           controller: _bloodgroupController,
