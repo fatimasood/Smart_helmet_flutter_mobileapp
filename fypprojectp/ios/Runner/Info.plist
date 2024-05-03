@@ -59,6 +59,12 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<string>Main</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<string>NSLocationWhenInUseUsageDescription</string>
+	<key>Want to display location on Map, and track it.</key>
+	<string>NSLocationAlwaysAndWhenInUseUsageDescription</string>
+	<key>Want to display location on Map, and track it.</key>
 	
 </dict>
 </plist>

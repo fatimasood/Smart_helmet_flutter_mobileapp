@@ -9,6 +9,7 @@ import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String receivedData = '';
@@ -33,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     checkEmail();
     _initializeBluetooth();
+    getLocationUpdates();
   }
 
   Future<void> checkEmail() async {
@@ -225,8 +227,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //location
-  static final CameraPosition _kGooglePlex =
-      const CameraPosition(target: LatLng(33.857616, 72.393265), zoom: 14.4746);
+
+  Location _locationController = new Location();
+
+  static const LatLng _kGooglePlex = LatLng(37.4223, -122.0848);
+  static const LatLng _pApplePark = LatLng(37.3346, -122.0890);
+
+  LatLng? _currentP = null;
 
   @override
   Widget build(BuildContext context) {
@@ -297,7 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),*/
             SizedBox(height: 15.0),
-            if (!_isBluetoothConnected)
+            if (_isBluetoothConnected)
               GestureDetector(
                 onTap: () {
                   print("Button pressed. Initiating device scan...");
@@ -352,19 +359,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             //  SizedBox(height: 200,),
-            if (_isBluetoothConnected)
+            if (!_isBluetoothConnected)
               Padding(
                 padding: const EdgeInsets.only(
                     top: 10, left: 20, right: 20, bottom: 20),
                 child: Container(
                   height: 200,
                   child: GoogleMap(
-                    initialCameraPosition: _kGooglePlex,
+                    initialCameraPosition:
+                        CameraPosition(target: _kGooglePlex, zoom: 13),
+                    markers: {
+                      Marker(
+                          markerId: MarkerId("_currentLocation"),
+                          icon: BitmapDescriptor.defaultMarker,
+                          position: _pApplePark),
+                      Marker(
+                          markerId: MarkerId("_sourceLocation"),
+                          icon: BitmapDescriptor.defaultMarker,
+                          position: _pApplePark)
+                    },
                   ),
                 ),
               ),
             // SizedBox(height: 100,),
-            if (_isBluetoothConnected)
+            if (!_isBluetoothConnected)
               // Display received data
               Padding(
                 padding: const EdgeInsets.only(
@@ -418,5 +436,36 @@ class _HomeScreenState extends State<HomeScreen> {
     _bluetooth.cancelDiscovery();
     _connection?.close();
     super.dispose();
+  }
+
+  //for location
+  Future<void> getLocationUpdates() async {
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await _locationController.serviceEnabled();
+    if (_serviceEnabled) {
+      _serviceEnabled = await _locationController.requestService();
+    } else {
+      return;
+    }
+
+    _permissionGranted = await _locationController.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await _locationController.requestPermission();
+    }
+    if (_permissionGranted == PermissionStatus.granted) {
+      return;
+    }
+    _locationController.onLocationChanged
+        .listen((LocationData currentLocation) {
+      if (currentLocation.latitude != null &&
+          currentLocation.longitude != null) {
+        setState(() {
+          _currentP =
+              LatLng(currentLocation.latitude!, currentLocation.longitude!);
+        });
+      }
+    });
   }
 }
