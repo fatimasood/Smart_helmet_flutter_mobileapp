@@ -226,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return AlertDialog(
             title: Padding(
               padding:
-                  const EdgeInsets.only(top: 20, bottom: 0, left: 0, right: 0),
+                  const EdgeInsets.only(top: 20, bottom: 20, left: 0, right: 0),
               child: Text(
                 "Accident Detected",
                 textAlign: TextAlign.center,
@@ -242,8 +242,8 @@ class _HomeScreenState extends State<HomeScreen> {
             content: TimerWidget(),
             actions: [
               Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 0, left: 0, right: 0),
-              
+                padding: const EdgeInsets.only(
+                    top: 20, bottom: 0, left: 0, right: 0),
                 child: TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -552,4 +552,3 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 }
-
