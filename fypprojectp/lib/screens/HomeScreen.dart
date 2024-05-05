@@ -7,6 +7,7 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:fypprojectp/constants.dart';
 import 'package:fypprojectp/main.dart';
+import 'package:fypprojectp/screens/TimerWidget.dart';
 //import 'package:fypprojectp/screens/BluetoothConnectedScreen.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,7 +15,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String receivedData = '';
+String receivedData = 'accident detected';
+bool isAccidentDetected = false;
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -198,7 +200,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 //accident detection
-
   Future<void> _accidentDetection() async {
     // Ensure Bluetooth is enabled
     bool? isEnabled = await _bluetooth.isEnabled;
@@ -211,33 +212,50 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> checkAccidentOccur() async {
     prefs = await SharedPreferences.getInstance();
 
-    String? accidentData = prefs.getString('Bluetooth_data');
+    //String? accidentData = prefs.getString('Bluetooth_data');
 
-    print('Accident Data: $accidentData');
+    print('Accident Data: $receivedData');
 
-    if (accidentData != null &&
-        (accidentData.toLowerCase() == 'accident detected')) {
+    if (receivedData != null ||
+        (receivedData.toLowerCase() == 'accident detected')) {
       print('Accident Detected!');
 
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text(
-              "SOS",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Color(0xff6617ff),
-                  fontWeight: FontWeight.w800,
-                  fontSize: 18),
+            title: Padding(
+              padding:
+                  const EdgeInsets.only(top: 20, bottom: 0, left: 0, right: 0),
+              child: Text(
+                "Accident Detected",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.inter(
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xff6617ff),
+                  ),
+                ),
+              ),
             ),
-            content: Text("An accident has been detected."),
+            content: TimerWidget(),
             actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("OK"),
+              Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 0, left: 0, right: 0),
+              
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Center(
+                    child: Image.asset(
+                      "lib/assets/crossIcon.png",
+                      width: 45,
+                      height: 45,
+                    ),
+                  ),
+                ),
               ),
             ],
           );
@@ -440,21 +458,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+
+            GestureDetector(
+              onTap: checkAccidentOccur,
+              child: Text('SOS'),
+            ),
           ],
         ),
       ),
     );
-  }
-
-  void _sendMessageToDevice(String message) {
-    if (_connection != null && _connection!.isConnected) {
-      _connection!.output.add(Uint8List.fromList(utf8.encode('$message\n')));
-      _connection!.output.allSent.then((_) {
-        print('Message sent: $message');
-      });
-    } else {
-      print('Not connected to any device.');
-    }
   }
 
   @override
@@ -540,3 +552,4 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 }
+
