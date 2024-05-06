@@ -72,8 +72,8 @@ class _TimerWidgetState extends State<TimerWidget> {
   Future<void> _sendSMS() async {
     if (await Permission.sms.request().isGranted) {
       List<String> phoneNumbers = [
-        "923200594810",
-        //"03115199742"
+        "03110168103",
+        "03115199742"
       ]; // recipient's numbers
       String message = "Accident Detected!"; //message
 

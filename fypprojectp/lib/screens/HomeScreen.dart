@@ -59,6 +59,19 @@ class _HomeScreenState extends State<HomeScreen> {
             }),
       },
     );
+
+    _connection?.input?.listen((Uint8List? data) {
+      if (data != null) {
+        print('Data received: $data');
+        setState(() {
+          receivedData = utf8.decode(data); // Store received data
+        });
+        _saveDataInSharedPreferences(receivedData);
+        checkAccidentOccur(); // Check for accident detection
+      }
+    }, onDone: () {
+      print('Test Done ');
+    });
   }
 
   Future<void> checkEmail() async {
@@ -173,6 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
             receivedData = utf8.decode(data); // Store received data
           });
           _saveDataInSharedPreferences(receivedData);
+          checkAccidentOccur(); // Check for accident detection
         }
       }, onDone: () {
         print('Connection to ${device.name ?? 'Unknown Device'} closed.');
@@ -335,7 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),*/
             SizedBox(height: 15.0),
-            if (_isBluetoothConnected)
+            if (!_isBluetoothConnected)
               GestureDetector(
                 onTap: () {
                   print("Button pressed. Initiating device scan...");
@@ -390,7 +404,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             //  SizedBox(height: 200,),
-            if (!_isBluetoothConnected)
+            if (_isBluetoothConnected)
               Padding(
                 padding: const EdgeInsets.only(
                     top: 10, left: 20, right: 20, bottom: 20),
@@ -398,7 +412,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 200,
                   child: _currentP == null
                       ? const Center(
-                          child: Text("Loading..."),
+                          child: Text(
+                            "Loading...",
+                            style: TextStyle(color: Color(0xff6617ff)),
+                          ),
                         )
                       : GoogleMap(
                           onMapCreated: ((GoogleMapController controller) =>
@@ -427,7 +444,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             // SizedBox(height: 100,),
-            if (!_isBluetoothConnected)
+            if (_isBluetoothConnected)
               // Display received data
               Padding(
                 padding: const EdgeInsets.only(
@@ -458,11 +475,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-
-            GestureDetector(
-              onTap: checkAccidentOccur,
-              child: Text('SOS'),
-            ),
+            if (_isBluetoothConnected)
+              GestureDetector(
+                onTap: checkAccidentOccur,
+                child: const Text('SOS'),
+              ),
           ],
         ),
       ),
