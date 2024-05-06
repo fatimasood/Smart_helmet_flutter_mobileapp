@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:background_sms/background_sms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beep/flutter_beep.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class TimerWidget extends StatefulWidget {
   @override
@@ -31,6 +33,7 @@ class _TimerWidgetState extends State<TimerWidget> {
           }
         }
         if (_start == 5) {
+          _sendSMS();
           setState(() {
             timer.cancel();
           });
@@ -64,5 +67,26 @@ class _TimerWidgetState extends State<TimerWidget> {
         ),
       ),
     );
+  }
+
+  Future<void> _sendSMS() async {
+    if (await Permission.sms.request().isGranted) {
+      List<String> phoneNumbers = [
+        "923200594810",
+        //"03115199742"
+      ]; // recipient's numbers
+      String message = "Accident Detected!"; //message
+
+      for (String phoneNumber in phoneNumbers) {
+        SmsStatus res = await BackgroundSms.sendMessage(
+          phoneNumber: phoneNumber,
+          message: message,
+        );
+        print("SMS Status for $phoneNumber: $res");
+      }
+    } else {
+      // Handle denied permissions
+      print("SMS permission is denied.");
+    }
   }
 }
