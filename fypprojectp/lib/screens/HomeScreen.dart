@@ -15,7 +15,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String receivedData = 'accident detected';
+String receivedData = '';
 bool isAccidentDetected = false;
 
 class HomeScreen extends StatefulWidget {
@@ -41,8 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
   final List<BluetoothDevice> _devices = [];
   BluetoothConnection? _connection;
-  bool _isBluetoothConnected =
-      false; // check either bluetooth is connected or not
+  final bool _isBluetoothConnected = false; // check either bluetooth is connected or not
 
   late SharedPreferences prefs;
   bool isUpdateDialogShown = false;
@@ -59,14 +58,15 @@ class _HomeScreenState extends State<HomeScreen> {
             }),
       },
     );
-
     _connection?.input?.listen((Uint8List? data) {
       if (data != null) {
-        print('Data received: $data');
+        print('Data save for accident: $data');
         setState(() {
           receivedData = utf8.decode(data); // Store received data
         });
         _saveDataInSharedPreferences(receivedData);
+        print('receivedData $receivedData ');
+
         checkAccidentOccur(); // Check for accident detection
       }
     }, onDone: () {
@@ -226,12 +226,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> checkAccidentOccur() async {
     prefs = await SharedPreferences.getInstance();
 
-    //String? accidentData = prefs.getString('Bluetooth_data');
+    //  String? accidentData = prefs.getString('Bluetooth_data');
 
     print('Accident Data: $receivedData');
 
-    if (receivedData != null ||
-        (receivedData.toLowerCase() == 'accident detected')) {
+    if (receivedData.contains('Accident Detected')) {
       print('Accident Detected!');
 
       showDialog(
@@ -404,7 +403,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             //  SizedBox(height: 200,),
-            if (_isBluetoothConnected)
+            if (!_isBluetoothConnected)
               Padding(
                 padding: const EdgeInsets.only(
                     top: 10, left: 20, right: 20, bottom: 20),
@@ -444,7 +443,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             // SizedBox(height: 100,),
-            if (_isBluetoothConnected)
+            if (!_isBluetoothConnected)
               // Display received data
               Padding(
                 padding: const EdgeInsets.only(
@@ -475,11 +474,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-            if (_isBluetoothConnected)
-              GestureDetector(
-                onTap: checkAccidentOccur,
-                child: const Text('SOS'),
-              ),
+
+            GestureDetector(
+              onTap: checkAccidentOccur,
+              child: Text('SOS'),
+            ),
           ],
         ),
       ),

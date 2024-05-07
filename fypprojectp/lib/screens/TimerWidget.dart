@@ -62,7 +62,8 @@ class _TimerWidgetState extends State<TimerWidget> {
           style: TextStyle(
             fontSize: 60,
             fontWeight: FontWeight.bold,
-            color: Colors.red.shade700,
+            color: Color(0xff6617ff),
+            
           ),
         ),
       ),
