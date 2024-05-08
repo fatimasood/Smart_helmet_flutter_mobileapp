@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:background_sms/background_sms.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class TimerWidget extends StatefulWidget {
 class _TimerWidgetState extends State<TimerWidget> {
   int _start = 1;
   late Timer _timer;
+  double _progress = 0.0;
 
   @override
   void initState() {
@@ -25,23 +27,21 @@ class _TimerWidgetState extends State<TimerWidget> {
     _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
-        if (_start == 1) {
-          try {
-            FlutterBeep.beep();
-          } catch (e) {
-            print('Error playing beep sound: $e');
+        setState(() {
+          if (_start == 1) {
+            try {
+              FlutterBeep.beep();
+            } catch (e) {
+              print('Error playing beep sound: $e');
+            }
           }
-        }
-        if (_start == 5) {
-          _sendSMS();
-          setState(() {
+          if (_start == 5) {
+            _sendSMS(); // send SMS
             timer.cancel();
-          });
-        } else {
-          setState(() {
-            _start++;
-          });
-        }
+          }
+          _start++;
+          _progress = (_start / 5);
+        });
       },
     );
   }
@@ -54,19 +54,30 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      child: Center(
-        child: Text(
-          '$_start',
-          style: TextStyle(
-            fontSize: 60,
-            fontWeight: FontWeight.bold,
-            color: Color(0xff6617ff),
-            
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          height: 60,
+          width: 60,
+          child: CustomPaint(
+            painter: CirclePainter(progress: _progress),
           ),
         ),
-      ),
+        Container(
+          height: 60,
+          child: Center(
+            child: Text(
+              '$_start',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff6617ff),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -75,6 +86,7 @@ class _TimerWidgetState extends State<TimerWidget> {
       List<String> phoneNumbers = [
         "03110168103",
         "03115199742"
+        //"923200594810"
       ]; // recipient's numbers
       String message = "Accident Detected!"; //message
 
@@ -89,5 +101,48 @@ class _TimerWidgetState extends State<TimerWidget> {
       // Handle denied permissions
       print("SMS permission is denied.");
     }
+  }
+}
+
+class CirclePainter extends CustomPainter {
+  final double progress;
+
+  CirclePainter({required this.progress});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
+
+    canvas.drawCircle(
+      Offset(size.width / 2, size.height / 2),
+      size.width / 2,
+      paint,
+    );
+
+    Paint progressPaint = Paint()
+      ..color = Colors.purple
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4.0;
+
+    double sweepAngle = 2 * pi * progress;
+
+    canvas.drawArc(
+      Rect.fromCircle(
+        center: Offset(size.width / 2, size.height / 2),
+        radius: size.width / 2,
+      ),
+      -pi / 2,
+      sweepAngle,
+      false,
+      progressPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(CirclePainter oldDelegate) {
+    return oldDelegate.progress != progress;
   }
 }

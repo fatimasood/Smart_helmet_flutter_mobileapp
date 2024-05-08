@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 String receivedData = '';
 bool isAccidentDetected = false;
+bool bluetoothconnected = false;
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -41,7 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
   final List<BluetoothDevice> _devices = [];
   BluetoothConnection? _connection;
-  final bool _isBluetoothConnected = false; // check either bluetooth is connected or not
+  final bool _isBluetoothConnected =
+      false; // check either bluetooth is connected or not
 
   late SharedPreferences prefs;
   bool isUpdateDialogShown = false;
@@ -177,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
       print(
           'Connecting to ${device.name ?? 'Unknown Device'} at ${device.address}...');
       _connection = await BluetoothConnection.toAddress(device.address);
+      bluetoothconnected = true;
 
       _connection?.input?.listen((Uint8List? data) {
         if (data != null) {
@@ -224,13 +227,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> checkAccidentOccur() async {
-    prefs = await SharedPreferences.getInstance();
+   // prefs = await SharedPreferences.getInstance();
 
     //  String? accidentData = prefs.getString('Bluetooth_data');
 
-    print('Accident Data: $receivedData');
+    print('Accident Data: $dataSaved');
 
-    if (receivedData.contains('Accident Detected')) {
+    if (dataSaved.contains('Accident Detected')) {
       print('Accident Detected!');
 
       showDialog(
@@ -241,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding:
                   const EdgeInsets.only(top: 20, bottom: 20, left: 0, right: 0),
               child: Text(
-                "Accident Detected",
+                "Emergency SOS",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.inter(
                   textStyle: const TextStyle(
@@ -275,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       );
     } else {
-      print('No accident detected.');
+       print('No accident detected.');
     }
   }
 
@@ -381,6 +384,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   print(
                                       'Device selected: ${device.name ?? 'Unknown Device'}');
                                   _connectToDevice(device);
+                                  if (_isBluetoothConnected) {
+                                    Navigator.pop(context);
+                                  }
                                 },
                               );
                             },
@@ -477,7 +483,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             GestureDetector(
               onTap: checkAccidentOccur,
-              child: Text('SOS'),
+              child: const Text('SOS'),
             ),
           ],
         ),
