@@ -125,6 +125,7 @@ class _EditInformationState extends State<EditInformation> {
         _emerContact1Controller.text.length != 11 ||
         _emerContact2Controller.text.length != 11) {
       Utils().toastMessage('Contact number must be 11 digits');
+
       return false;
     }
     if (_fullNameController.text.isEmpty ||
@@ -217,6 +218,10 @@ class _EditInformationState extends State<EditInformation> {
     // Save image as base64 string in shared prefe
     String imageBase64 = uint8ListToBase64(_userRecord.imageBytes);
     await prefs.setString('image', imageBase64);
+
+    phonenum1 = _emerContactController.toString();
+    phonenum2 = _emerContact1Controller.toString();
+    phonenum3 = _emerContact2Controller.toString();
   }
 
   @override

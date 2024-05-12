@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:background_sms/background_sms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beep/flutter_beep.dart';
+import 'package:fypprojectp/main.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class TimerWidget extends StatefulWidget {
@@ -35,11 +36,12 @@ class _TimerWidgetState extends State<TimerWidget> {
               print('Error playing beep sound: $e');
             }
           }
-          if (_start == 5) {
-            _sendSMS(); // send SMS
+          if (_start == 10) {
             timer.cancel();
+            _sendSMS(); // send SMS
           }
           _start++;
+          FlutterBeep.beep();
           _progress = (_start / 5);
         });
       },
@@ -70,7 +72,7 @@ class _TimerWidgetState extends State<TimerWidget> {
             child: Text(
               '$_start',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: Color(0xff6617ff),
               ),
@@ -84,8 +86,9 @@ class _TimerWidgetState extends State<TimerWidget> {
   Future<void> _sendSMS() async {
     if (await Permission.sms.request().isGranted) {
       List<String> phoneNumbers = [
-        "03110168103",
-        "03115199742"
+        phonenum1.toString(),
+        phonenum2.toString(),
+        phonenum3.toString(),
         //"923200594810"
       ]; // recipient's numbers
       String message = "Accident Detected!"; //message

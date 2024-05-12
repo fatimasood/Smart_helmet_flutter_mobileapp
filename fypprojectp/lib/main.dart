@@ -9,7 +9,10 @@ String? email;
 String? mail;
 String? userMail;
 String _logout = "login";
-String dataSaved='';
+String dataSaved = '';
+String? phonenum1 = '';
+String? phonenum2 = '';
+String? phonenum3 = '';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -227,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> checkAccidentOccur() async {
-   // prefs = await SharedPreferences.getInstance();
+    // prefs = await SharedPreferences.getInstance();
 
     //  String? accidentData = prefs.getString('Bluetooth_data');
 
@@ -258,17 +258,27 @@ class _HomeScreenState extends State<HomeScreen> {
             content: TimerWidget(),
             actions: [
               Padding(
-                padding: const EdgeInsets.only(
-                    top: 20, bottom: 0, left: 0, right: 0),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Center(
-                    child: Image.asset(
-                      "lib/assets/crossIcon.png",
-                      width: 45,
-                      height: 45,
+                padding: const EdgeInsets.only(top: 20),
+                child: SizedBox(
+                  height: 40,
+                  width: 140,
+                  child: InkWell(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey.shade100),
+                      child: Text(
+                        "Close",
+                        style: GoogleFonts.inter(
+                          textStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xffc780ff),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
                   ),
                 ),
@@ -278,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       );
     } else {
-       print('No accident detected.');
+      print('No accident detected.');
     }
   }
 
