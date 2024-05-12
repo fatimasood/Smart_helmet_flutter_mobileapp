@@ -15,8 +15,10 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   var _ratingController = TextEditingController();
   var _feedbackController = TextEditingController();
+  var _commentController = TextEditingController();
 
   FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _showTeam = false; // Boolean to manage visibility of team info
 
   @override
   void initState() {
@@ -147,49 +149,41 @@ class _SettingsState extends State<Settings> {
             'Hey! How can we help you.',
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: Color(0xff6617ff),
-                fontWeight: FontWeight.w600,
-                fontSize: 17),
+              color: Color(0xff6617ff),
+              fontWeight: FontWeight.w600,
+              fontSize: 17,
+            ),
           ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    _launchMail('205366@aack.au.edu.pk');
-                  },
-                  child: Text(
-                    '205366@aack.au.edu.pk',
-                    style: TextStyle(
-                        color: Color(0xff6617ff),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.5),
+          content: Container(
+            height: 155,
+            child: Column(
+              children: [
+                Container(
+                  width: 210.0,
+                  height: 150.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(
+                      color: Color(0xff6617ff),
+                      width: 1.0,
+                    ),
                   ),
-                ),
-                SizedBox(height: 10),
-                GestureDetector(
-                  onTap: () {
-                    _launchMail('205366@aack.au.edu.pk');
-                  },
-                  child: Text(
-                    '205366@aack.au.edu.pk',
-                    style: TextStyle(
-                        color: Color(0xff6617ff),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.5),
-                  ),
-                ),
-                SizedBox(height: 10),
-                GestureDetector(
-                  onTap: () {
-                    _launchMail('205366@aack.au.edu.pk');
-                  },
-                  child: Text(
-                    '205366@aack.au.edu.pk',
-                    style: TextStyle(
-                        color: Color(0xff6617ff),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.5),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _commentController,
+                        style: TextStyle(
+                            color: Color(0xffa678ff),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 13),
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -198,14 +192,18 @@ class _SettingsState extends State<Settings> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
+                String comment = _commentController.text;
+                _submitComment(comment);
+                //Utils().toastMessage("Mail Send Successfully!");
                 Navigator.of(context).pop();
               },
               child: Text(
-                'Close',
+                'Submit',
                 style: TextStyle(
-                    color: Color(0xff6617ff),
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14),
+                  color: Color(0xff6617ff),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
               ),
             ),
           ],
@@ -214,14 +212,41 @@ class _SettingsState extends State<Settings> {
     );
   }
 
+  void _submitComment(String comment) async {
+    //String? adminEmail = savedEmailA;
+    String adminEmail = '205366@aack.au.edu.pk';
+    String subject = 'USER QUERY (SMART HELMET)';
+    String body = comment;
+
+    // Constructing the static mailto URL
+    String mailtoUrl = 'mailto:$adminEmail'
+        '?subject=${Uri.encodeComponent(subject)}'
+        '&body=${Uri.encodeComponent(body)}';
+
+    try {
+      // Launching the mailto URL
+      await launch(mailtoUrl);
+    } catch (e) {
+      // Handling any potential errors
+      print('Error launching email: $e');
+    }
+  }
+
   void _launchMail(String email) async {
     String subject = 'Help Required!';
     String mailUrl = 'mailto:$email?subject=${Uri.encodeComponent(subject)}';
     if (await canLaunch(mailUrl)) {
       await launch(mailUrl);
+      print('mail send ');
     } else {
       throw 'Could not launch $mailUrl';
     }
+  }
+
+  void _toggleTeamVisibility() {
+    setState(() {
+      _showTeam = !_showTeam;
+    });
   }
 
   Future<void> _tutorial() async {}
@@ -230,168 +255,317 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(top: 30, left: 25, right: 25, bottom: 25),
-          child: Column(
-            children: [
-              InkWell(
-                onTap: _tutorial,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    height: 50,
-                    color: Color(0xffede5fd),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10, left: 10, bottom: 10, right: 10),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.help_center_outlined,
-                            color: Color(0xffa678ff),
-                            size: 16.5,
-                          ),
-                          SizedBox(
-                            width: 8.5,
-                          ),
-                          Text(
-                            'Tutorial and Help',
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(top: 30, left: 25, right: 25, bottom: 25),
+            child: Column(
+              children: [
+                if (!_showTeam) ...[
+                  InkWell(
+                    onTap: _tutorial,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        height: 50,
+                        color: Color(0xffede5fd),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, bottom: 10, right: 10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.help_center_outlined,
                                 color: Color(0xffa678ff),
+                                size: 16.5,
+                              ),
+                              SizedBox(
+                                width: 8.5,
+                              ),
+                              Text(
+                                'Tutorial and Help',
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xffa678ff),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 13,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      _contactUs(context);
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        height: 50,
+                        color: Color(0xffede5fd),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, bottom: 10, right: 10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.mail_outline_sharp,
+                                color: Color(0xffa678ff),
+                                size: 16.5,
+                              ),
+                              SizedBox(
+                                width: 8.5,
+                              ),
+                              Text(
+                                'Contact US',
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xffa678ff),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 13,
+                  ),
+                  InkWell(
+                    onTap: _feedback,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        height: 50,
+                        color: Color(0xffede5fd),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, bottom: 10, right: 10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.feedback_outlined,
+                                color: Color(0xffa678ff),
+                                size: 16.5,
+                              ),
+                              SizedBox(
+                                width: 8.5,
+                              ),
+                              Text(
+                                'Feedback',
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xffa678ff),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 13,
+                  ),
+                ],
+                InkWell(
+                  onTap: () {
+                    _toggleTeamVisibility();
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      height: 50,
+                      color: Color(0xffede5fd),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10, left: 10, bottom: 10, right: 10),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.people_outline,
+                              color: Color(0xffa678ff),
+                              size: 16.5,
+                            ),
+                            SizedBox(
+                              width: 8.5,
+                            ),
+                            Text(
+                              'Our Team',
+                              style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xffa678ff),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 13,
-              ),
-              InkWell(
-                onTap: () {
-                  _contactUs(context);
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    height: 50,
-                    color: Color(0xffede5fd),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10, left: 10, bottom: 10, right: 10),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.mail_outline_sharp,
-                            color: Color(0xffa678ff),
-                            size: 16.5,
-                          ),
-                          SizedBox(
-                            width: 8.5,
-                          ),
-                          Text(
-                            'Contact US',
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xffa678ff),
+                if (_showTeam) ...[
+                  SizedBox(height: 10),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: SingleChildScrollView(
+                      child: Container(
+                        height: 385,
+                        width: 320,
+                        color: Color(0xffede5fd),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, bottom: 10, right: 10),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Huzaifa Hafeez',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff6617ff),
+                                  ),
+                                ),
                               ),
-                            ),
+                              SizedBox(
+                                height: 7,
+                              ),
+                              Text(
+                                "Huzaifa is a Team Leader. He is a graphic Designer and a Developer. Company Named Hexler Solution's CO-FOUNDER and a successfull freelancer. In this project he work on Hardware and complete Documentation. ",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xffa678ff),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Muzammil Shoukat',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff6617ff),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 7,
+                              ),
+                              Text(
+                                "Huzaifa is a Team Leader. He is a graphic Designer and a Developer. Company Named Hexler Solution's CO-FOUNDER and a successfull freelancer. In this project he work on Hardware and complete Documentation. ",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xffa678ff),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Fatima Masood',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff6617ff),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 7,
+                              ),
+                              Text(
+                                "Huzaifa is a Team Leader. He is a graphic Designer and a Developer. Company Named Hexler Solution's CO-FOUNDER and a successfull freelancer. In this project he work on Hardware and complete Documentation. ",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xffa678ff),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
+                ],
+                SizedBox(
+                  height: 13,
                 ),
-              ),
-              SizedBox(
-                height: 13,
-              ),
-              InkWell(
-                onTap: _feedback,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    height: 50,
-                    color: Color(0xffede5fd),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10, left: 10, bottom: 10, right: 10),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.feedback_outlined,
-                            color: Color(0xffa678ff),
-                            size: 16.5,
-                          ),
-                          SizedBox(
-                            width: 8.5,
-                          ),
-                          Text(
-                            'Feedback',
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
+                if (!_showTeam) ...[
+                  InkWell(
+                    onTap: _signOut,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        height: 50,
+                        color: Color(0xffede5fd),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, bottom: 10, right: 10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.logout_outlined,
                                 color: Color(0xffa678ff),
+                                size: 16.5,
                               ),
-                            ),
+                              SizedBox(
+                                width: 8.5,
+                              ),
+                              Text(
+                                'Logout',
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xffa678ff),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 13,
-              ),
-              InkWell(
-                onTap: _signOut,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    height: 50,
-                    color: Color(0xffede5fd),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10, left: 10, bottom: 10, right: 10),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.logout_outlined,
-                            color: Color(0xffa678ff),
-                            size: 16.5,
-                          ),
-                          SizedBox(
-                            width: 8.5,
-                          ),
-                          Text(
-                            'Logout',
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xffa678ff),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+                ],
+              ],
+            ),
           ),
         ),
       ),

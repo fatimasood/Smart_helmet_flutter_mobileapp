@@ -205,27 +205,7 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ],
                     )),
-                const SizedBox(height: 15),
-                Text(
-                  '────── or ──────',
-                  style: GoogleFonts.inknutAntiqua(
-                    textStyle: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xff6617ff),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    buildSocialIcon(imagePath: "lib/assets/fb.png"),
-                    const SizedBox(width: 10),
-                    buildSocialIcon(imagePath: "lib/assets/google.png"),
-                  ],
-                ),
-                const SizedBox(height: 75),
+                const SizedBox(height: 181.75),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
