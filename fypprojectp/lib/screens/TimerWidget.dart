@@ -5,7 +5,17 @@ import 'package:background_sms/background_sms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beep/flutter_beep.dart';
 import 'package:fypprojectp/main.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+bool msgSend = false;
+String _fullName = user_name.toString();
+String _cnic = user_cnic.toString();
+String _bloodGroup = user_bGroup.toString();
+String _address = user_Address.toString();
+String _emerContact = _emerContact.toString();
+String _emerContact1 = _emerContact1.toString();
+String _emerContact2 = _emerContact2.toString();
 
 class TimerWidget extends StatefulWidget {
   @override
@@ -17,10 +27,30 @@ class _TimerWidgetState extends State<TimerWidget> {
   late Timer _timer;
   double _progress = 0.0;
 
+  late String currentLocation;
+
   @override
   void initState() {
     super.initState();
     _startTimer();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      LocationPermission permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception("Location permission denied");
+      } else {
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        currentLocation =
+            "Lat: ${position.latitude}, Lng: ${position.longitude}";
+      }
+    } catch (e) {
+      print("Error getting current location: $e");
+      currentLocation = "Unknown";
+    }
   }
 
   void _startTimer() {
@@ -89,9 +119,18 @@ class _TimerWidgetState extends State<TimerWidget> {
         phonenum1.toString(),
         phonenum2.toString(),
         phonenum3.toString(),
-        //"923200594810"
       ]; // recipient's numbers
-      String message = "Accident Detected!"; //message
+      String message = "Accident Detected!\n\n"
+          "User Information:\n"
+          "Full Name: $_fullName\n"
+          "CNIC: $_cnic\n"
+          "Blood Group: $_bloodGroup\n"
+          "Home Address: $_address\n"
+          "Emergency Contacts:\n"
+          "1. $_emerContact\n"
+          "2. $_emerContact1\n"
+          "3. $_emerContact2\n"
+          "Current Location: $currentLocation";
 
       for (String phoneNumber in phoneNumbers) {
         SmsStatus res = await BackgroundSms.sendMessage(
@@ -99,6 +138,7 @@ class _TimerWidgetState extends State<TimerWidget> {
           message: message,
         );
         print("SMS Status for $phoneNumber: $res");
+        msgSend = true;
       }
     } else {
       // Handle denied permissions

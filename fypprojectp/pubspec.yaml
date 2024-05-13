@@ -68,6 +68,7 @@ dependencies:
   flutter_polyline_points: ^2.0.0
   flutter_beep: ^1.0.0
   background_sms: ^0.0.4
+  geolocator: ^11.0.0
   
   
   

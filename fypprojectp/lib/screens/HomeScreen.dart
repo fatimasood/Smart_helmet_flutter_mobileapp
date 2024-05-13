@@ -15,7 +15,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String receivedData = '';
+String receivedData = ' ';
 bool isAccidentDetected = false;
 bool bluetoothconnected = false;
 
@@ -287,6 +287,9 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       );
+      if (msgSend == true) {
+        Navigator.pop(context);
+      }
     } else {
       print('No accident detected.');
     }
@@ -490,11 +493,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-
-            GestureDetector(
-              onTap: checkAccidentOccur,
-              child: const Text('SOS'),
-            ),
           ],
         ),
       ),

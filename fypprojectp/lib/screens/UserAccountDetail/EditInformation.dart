@@ -222,6 +222,11 @@ class _EditInformationState extends State<EditInformation> {
     phonenum1 = _emerContactController.toString();
     phonenum2 = _emerContact1Controller.toString();
     phonenum3 = _emerContact2Controller.toString();
+
+    user_name = _fullNameController.toString();
+    user_cnic = _cnicController.toString();
+    user_Address = _addressController.toString();
+    user_bGroup = _bloodgroupController.toString();
   }
 
   @override

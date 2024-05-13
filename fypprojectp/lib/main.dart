@@ -13,6 +13,7 @@ String dataSaved = '';
 String? phonenum1 = '';
 String? phonenum2 = '';
 String? phonenum3 = '';
+String? user_name = '', user_cnic = '', user_bGroup = '', user_Address = '';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
