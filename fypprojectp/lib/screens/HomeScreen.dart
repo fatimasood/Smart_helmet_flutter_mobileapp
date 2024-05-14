@@ -10,14 +10,15 @@ import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/TimerWidget.dart';
 //import 'package:fypprojectp/screens/BluetoothConnectedScreen.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
+import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String receivedData = ' ';
-bool isAccidentDetected = false;
 bool bluetoothconnected = false;
+bool _isConnected = false;
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -53,6 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     checkEmail();
     _initializeBluetooth();
+    // bluetoothconnected = false;
+
     getLocationUpdates().then(
       (_) => {
         getPolylinePoints().then((coordinates) => {
@@ -179,7 +182,6 @@ class _HomeScreenState extends State<HomeScreen> {
       print(
           'Connecting to ${device.name ?? 'Unknown Device'} at ${device.address}...');
       _connection = await BluetoothConnection.toAddress(device.address);
-      bluetoothconnected = true;
 
       _connection?.input?.listen((Uint8List? data) {
         if (data != null) {
@@ -196,6 +198,12 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 
       print('Connected to ${device.name ?? 'Unknown Device'}');
+      setState(() {
+        bluetoothconnected = true;
+        Navigator.pop(context);
+      });
+
+      Utils().toastMessage("Bluetooth Connected...!!");
 
       // ignore: use_build_context_synchronously
       /* Navigator.push(
@@ -263,22 +271,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 40,
                   width: 140,
                   child: InkWell(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey.shade100),
-                      child: Text(
-                        "Close",
-                        style: GoogleFonts.inter(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xffc780ff),
+                    child: Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey.shade200),
+                        child: Text(
+                          "Close",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff6617ff),
+                            ),
                           ),
                         ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
                     ),
                   ),
                 ),
@@ -287,9 +297,6 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       );
-      if (msgSend == true) {
-        Navigator.pop(context);
-      }
     } else {
       print('No accident detected.');
     }
@@ -304,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 15.0),
-            if (!_isBluetoothConnected)
+            if (!bluetoothconnected)
               Padding(
                 padding: const EdgeInsets.only(
                     top: 0.0, left: 20, right: 20, bottom: 0.0),
@@ -319,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-            if (_isBluetoothConnected)
+            if (bluetoothconnected)
               Padding(
                 padding: const EdgeInsets.only(
                     top: 0.0, left: 20, right: 20, bottom: 0.0),
@@ -335,36 +342,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-            /* GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          SignUp()), // Navigate to Home screen
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 0.0,
-                  left: 20,
-                  right: 20,
-                  bottom: 0.0,
-                ),
-                child: Text(
-                  "Sign Up",
-                  style: GoogleFonts.inter(
-                    textStyle: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff9d6bff),
-                    ),
-                  ),
-                ),
-              ),
-            ),*/
+
             SizedBox(height: 15.0),
-            if (!_isBluetoothConnected)
+            if (!bluetoothconnected)
               GestureDetector(
                 onTap: () {
                   print("Button pressed. Initiating device scan...");
@@ -422,7 +402,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             //  SizedBox(height: 200,),
-            if (!_isBluetoothConnected)
+            if (bluetoothconnected)
               Padding(
                 padding: const EdgeInsets.only(
                     top: 10, left: 20, right: 20, bottom: 20),
@@ -462,7 +442,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             // SizedBox(height: 100,),
-            if (!_isBluetoothConnected)
+            if (bluetoothconnected)
               // Display received data
               Padding(
                 padding: const EdgeInsets.only(
@@ -493,6 +473,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+            /* GestureDetector(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 0.0,
+                  left: 20,
+                  right: 20,
+                  bottom: 0.0,
+                ),
+                child: Text(
+                  "Msg Check",
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff9d6bff),
+                    ),
+                  ),
+                ),
+              ),
+            ),*/
           ],
         ),
       ),

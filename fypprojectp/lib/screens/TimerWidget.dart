@@ -5,10 +5,10 @@ import 'package:background_sms/background_sms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beep/flutter_beep.dart';
 import 'package:fypprojectp/main.dart';
+import 'package:fypprojectp/utils.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-bool msgSend = false;
 String _fullName = user_name.toString();
 String _cnic = user_cnic.toString();
 String _bloodGroup = user_bGroup.toString();
@@ -67,12 +67,13 @@ class _TimerWidgetState extends State<TimerWidget> {
             }
           }
           if (_start == 10) {
+            _sendSMS();
+            Utils().toastMessage("Message send successfully");
             timer.cancel();
-            _sendSMS(); // send SMS
           }
           _start++;
           FlutterBeep.beep();
-          _progress = (_start / 5);
+          _progress = (_start / 10);
         });
       },
     );
@@ -119,6 +120,7 @@ class _TimerWidgetState extends State<TimerWidget> {
         phonenum1.toString(),
         phonenum2.toString(),
         phonenum3.toString(),
+        '923110168103'
       ]; // recipient's numbers
       String message = "Accident Detected!\n\n"
           "User Information:\n"
@@ -138,7 +140,6 @@ class _TimerWidgetState extends State<TimerWidget> {
           message: message,
         );
         print("SMS Status for $phoneNumber: $res");
-        msgSend = true;
       }
     } else {
       // Handle denied permissions
