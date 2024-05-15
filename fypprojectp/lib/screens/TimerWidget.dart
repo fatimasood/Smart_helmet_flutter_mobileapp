@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:background_sms/background_sms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beep/flutter_beep.dart';
+import 'package:fypprojectp/utils.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -42,24 +44,6 @@ class _TimerWidgetState extends State<TimerWidget> {
   void initState() {
     super.initState();
     _startTimer();
-    _getCurrentLocation();
-  }
-
-  Future<void> _getCurrentLocation() async {
-    try {
-      LocationPermission permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        throw Exception("Location permission denied");
-      } else {
-        Position position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high);
-        currentLocation =
-            "Lat: ${position.latitude}, Lng: ${position.longitude}";
-      }
-    } catch (e) {
-      print("Error getting current location: $e");
-      currentLocation = "Unknown";
-    }
   }
 
   void _startTimer() {
@@ -75,14 +59,16 @@ class _TimerWidgetState extends State<TimerWidget> {
               print('Error playing beep sound: $e');
             }
           }
-          if (_start == 10) {
-            _sendSMS();
+          if (_start == 9) {
+            setState(() {
+              _sendSMS();
+            });
 
             timer.cancel();
           }
           _start++;
           FlutterBeep.beep();
-          _progress = (_start / 10);
+          _progress = (_start / 9);
         });
       },
     );
@@ -95,34 +81,56 @@ class _TimerWidgetState extends State<TimerWidget> {
         widget.emerContact,
         widget.emerContact1,
         widget.emerContact2,
-        '03110168103'
+        //'03110168103'
       ];
       print('Phone number 1: ${widget.emerContact1}');
       print('Name: ${widget.fullName}');
-      print('Current Location: $currentLocation');
 
-      String message = "Accident Detected!\n\n"
-          "User Information:\n"
-          "Full Name: ${widget.fullName}\n"
-          "CNIC: ${widget.cnic}\n"
-          "Blood Group: ${widget.bloodGroup}\n"
-          "Home Address: ${widget.address}\n"
-          "Emergency Contacts:\n"
-          "1. ${widget.emerContact}\n"
-          "2. ${widget.emerContact1}\n"
-          "3. ${widget.emerContact2}\n"
-          "Current Location: $currentLocation";
+      try {
+        String address = await getAddressFromCurrentLocation();
+        print('Current Location: $address');
 
-      for (String phoneNumber in phoneNumbers) {
-        SmsStatus res = await BackgroundSms.sendMessage(
-          phoneNumber: phoneNumber,
-          message: message,
-        );
-        print("SMS Status for $phoneNumber: $res");
+        String message =
+            "Accident Detected at $address\n${widget.fullName} \n${widget.cnic}\n${widget.emerContact1}\n${widget.emerContact}\n${widget.address}";
+
+        for (String phoneNumber in phoneNumbers) {
+          SmsStatus res = await BackgroundSms.sendMessage(
+            phoneNumber: phoneNumber,
+            message: message,
+          );
+          print("SMS Status for $phoneNumber: $res");
+          Utils().toastMessage('Message Send Successfully');
+        }
+      } catch (e) {
+        print('Error sending SMS: $e');
+        Utils().toastMessage('Error sending SMS');
       }
     } else {
       // Handle denied permissions
       print("SMS permission is denied.");
+    }
+  }
+
+  Future<String> getAddressFromCurrentLocation() async {
+    try {
+      LocationPermission permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception("Location permission denied");
+      } else {
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+            position.latitude, position.longitude);
+        if (placemarks.isNotEmpty) {
+          Placemark placemark = placemarks[0];
+          return "${placemark.street}, ${placemark.locality}, ${placemark.country}";
+        } else {
+          throw Exception('No address found for the provided coordinates');
+        }
+      }
+    } catch (e) {
+      print("Error getting current location: $e");
+      return "Unknown";
     }
   }
 

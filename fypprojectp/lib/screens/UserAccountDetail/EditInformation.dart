@@ -121,10 +121,10 @@ class _EditInformationState extends State<EditInformation> {
       Utils().toastMessage('CNIC must be 13 digits');
       return false;
     }
-    if (_emerContactController.text.length != 11 ||
-        _emerContact1Controller.text.length != 11 ||
-        _emerContact2Controller.text.length != 11) {
-      Utils().toastMessage('Contact number must be 11 digits');
+    if (_emerContactController.text.length != 12 ||
+        _emerContact1Controller.text.length != 12 ||
+        _emerContact2Controller.text.length != 12) {
+      Utils().toastMessage('Contact number must be correct');
 
       return false;
     }
@@ -399,7 +399,7 @@ class _EditInformationState extends State<EditInformation> {
                             if (value == null || value.isEmpty) {
                               return 'Info required, fill all fields';
                             } else if (value.length != 13) {
-                              return 'Contact number must be 11 digits';
+                              return 'Contact number must be correct';
                             }
                             return null;
                           },

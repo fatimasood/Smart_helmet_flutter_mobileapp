@@ -69,6 +69,7 @@ dependencies:
   flutter_beep: ^1.0.0
   background_sms: ^0.0.4
   geolocator: ^11.0.0
+  geocoding: ^3.0.0
   
   
   

@@ -15,7 +15,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String receivedData = '';
+String receivedData = 'Accident Detected';
 bool bluetoothconnected = false;
 bool _isConnected = false;
 
@@ -25,9 +25,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late String fullName;
+  late String cnic;
+  late String bloodGroup;
+  late String address;
+  late String emerContact;
+  late String emerContact1;
+  late String emerContact2;
   //location
 
   Location _locationController = new Location();
+  bool _isMounted = false;
 
   final Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();
@@ -51,8 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _isMounted = true;
     checkEmail();
     _initializeBluetooth();
+    getUserDataFromSharedPreferences();
     // bluetoothconnected = false;
 
     getLocationUpdates().then(
@@ -76,6 +86,21 @@ class _HomeScreenState extends State<HomeScreen> {
     }, onDone: () {
       print('Test Done ');
     });
+  }
+
+  Future<void> getUserDataFromSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Retrieve user data from shared preferences
+    fullName = prefs.getString('fullName') ?? '';
+    cnic = prefs.getString('cnic') ?? '';
+    bloodGroup = prefs.getString('bloodGroup') ?? '';
+    address = prefs.getString('address') ?? '';
+    emerContact = prefs.getString('emerContact') ?? '';
+    emerContact1 = prefs.getString('emerContact1') ?? '';
+    emerContact2 = prefs.getString('emerContact2') ?? '';
+
+    // Once data is retrieved, rebuild the widget to update the UI
+    setState(() {});
   }
 
   Future<void> checkEmail() async {
@@ -239,8 +264,8 @@ class _HomeScreenState extends State<HomeScreen> {
     //  String? accidentData = prefs.getString('Bluetooth_data');
 
     print('Accident Data: $dataSaved');
-
-    if (dataSaved.contains('Accident Detected')) {
+//if (dataSaved.contains('Accident Detected'))
+    if (receivedData.contains('Accident Detected')) {
       print('Accident Detected!');
 
       showDialog(
@@ -263,13 +288,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             content: TimerWidget(
-              fullName: 'fullName',
-              cnic: 'cnic',
-              bloodGroup: 'bloodGroup',
-              address: 'address',
-              emerContact: 'emerContact',
-              emerContact1: 'emerContact1',
-              emerContact2: 'emerContact2',
+              fullName: fullName,
+              cnic: cnic,
+              bloodGroup: bloodGroup,
+              address: address,
+              emerContact: emerContact,
+              emerContact1: emerContact1,
+              emerContact2: emerContact2,
             ),
             actions: [
               Padding(
@@ -479,8 +504,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-            /* GestureDetector(
-              onTap: () {},
+            GestureDetector(
+              onTap: () {
+                checkAccidentOccur();
+              },
               child: Padding(
                 padding: const EdgeInsets.only(
                   top: 0.0,
@@ -499,19 +526,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-            ),*/
+            ),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    print('Disposing resources...');
-    _bluetooth.cancelDiscovery();
-    _connection?.close();
-    super.dispose();
   }
 
   //for location
@@ -587,5 +606,14 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       polylines[id] = polyline;
     });
+  }
+
+  @override
+  void dispose() {
+    print('Disposing resources...');
+    _bluetooth.cancelDiscovery();
+    _connection?.close();
+    _isMounted = false;
+    super.dispose();
   }
 }
