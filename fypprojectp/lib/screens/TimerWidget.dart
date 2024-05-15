@@ -44,6 +44,40 @@ class _TimerWidgetState extends State<TimerWidget> {
   void initState() {
     super.initState();
     _startTimer();
+    _getCurrentLocation();
+  }
+
+  Future<String> getAddress(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        Placemark placemark = placemarks[0];
+        return "${placemark.name}, ${placemark.locality}, ${placemark.country}";
+      } else {
+        throw Exception('No address found for the provided coordinates');
+      }
+    } catch (e) {
+      print('Error fetching address: $e');
+      return 'Unknown';
+    }
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      LocationPermission permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception("Location permission denied");
+      } else {
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        currentLocation =
+            "Lat: ${position.latitude}, Lng: ${position.longitude}";
+      }
+    } catch (e) {
+      print("Error getting current location: $e");
+      currentLocation = "Unknown";
+    }
   }
 
   void _startTimer() {
@@ -146,8 +180,8 @@ class _TimerWidgetState extends State<TimerWidget> {
       alignment: Alignment.center,
       children: [
         Container(
-          height: 60,
-          width: 60,
+          height: 100,
+          width: 100,
           child: CustomPaint(
             painter: CirclePainter(progress: _progress),
           ),
@@ -158,7 +192,7 @@ class _TimerWidgetState extends State<TimerWidget> {
             child: Text(
               '$_start',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
                 color: Color(0xff6617ff),
               ),

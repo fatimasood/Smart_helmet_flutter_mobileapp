@@ -228,14 +228,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 
       Utils().toastMessage("Bluetooth Connected...!!");
-
-      // ignore: use_build_context_synchronously
-      /* Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => BluetoothConnectedScreen(data: receivedData),
-        ),
-      );*/
     } catch (error) {
       print('Error connecting to ${device.name ?? 'Unknown Device'}: $error');
     }
@@ -298,21 +290,19 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             actions: [
               Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 25),
                 child: SizedBox(
-                  height: 40,
-                  width: 140,
                   child: InkWell(
                     child: Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey.shade200),
+                            backgroundColor: Colors.grey.shade300),
                         child: Text(
                           "Close",
                           style: GoogleFonts.inter(
                             textStyle: const TextStyle(
                               fontSize: 14,
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w600,
                               color: Color(0xff6617ff),
                             ),
                           ),
