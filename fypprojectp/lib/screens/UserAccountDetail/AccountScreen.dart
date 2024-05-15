@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/Sqflite/DatabaseHelper.dart';
+import 'package:fypprojectp/screens/TimerWidget.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/UpdateRecord.dart';
 import 'package:get/get.dart';
@@ -74,6 +75,7 @@ class _AccountScreenState extends State<AccountScreen> {
             userRecord.add(record);
           });
         }
+
 //fetch user record from database
         final records = await _databaseHelper.getAllUserRecordForUser(email!);
         print('Records loaded successfully: $records');
@@ -132,6 +134,15 @@ class _AccountScreenState extends State<AccountScreen> {
         setState(() {
           userRecord = records.cast<UserRecord>();
         });
+        TimerWidget(
+          address: address!,
+          fullName: fullName!,
+          emerContact1: emerContact1!,
+          emerContact2: emerContact2!,
+          emerContact: emerContact!,
+          cnic: cnic!,
+          bloodGroup: bloodGroup!,
+        );
       }
     } catch (e) {
       print('Error loading user records: $e');

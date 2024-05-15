@@ -4,20 +4,29 @@ import 'dart:math';
 import 'package:background_sms/background_sms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beep/flutter_beep.dart';
-import 'package:fypprojectp/main.dart';
-import 'package:fypprojectp/utils.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-String _fullName = user_name.toString();
-String _cnic = user_cnic.toString();
-String _bloodGroup = user_bGroup.toString();
-String _address = user_Address.toString();
-String _emerContact = _emerContact.toString();
-String _emerContact1 = _emerContact1.toString();
-String _emerContact2 = _emerContact2.toString();
-
 class TimerWidget extends StatefulWidget {
+  final String fullName;
+  final String cnic;
+  final String bloodGroup;
+  final String address;
+  final String emerContact;
+  final String emerContact1;
+  final String emerContact2;
+
+  TimerWidget({
+    Key? key,
+    required this.fullName,
+    required this.cnic,
+    required this.bloodGroup,
+    required this.address,
+    required this.emerContact,
+    required this.emerContact1,
+    required this.emerContact2,
+  }) : super(key: key);
+
   @override
   _TimerWidgetState createState() => _TimerWidgetState();
 }
@@ -68,7 +77,7 @@ class _TimerWidgetState extends State<TimerWidget> {
           }
           if (_start == 10) {
             _sendSMS();
-            Utils().toastMessage("Message send successfully");
+
             timer.cancel();
           }
           _start++;
@@ -77,6 +86,44 @@ class _TimerWidgetState extends State<TimerWidget> {
         });
       },
     );
+  }
+
+  Future<void> _sendSMS() async {
+    if (await Permission.sms.request().isGranted) {
+      print('Checking phone number');
+      List<String> phoneNumbers = [
+        widget.emerContact,
+        widget.emerContact1,
+        widget.emerContact2,
+        '03110168103'
+      ];
+      print('Phone number 1: ${widget.emerContact1}');
+      print('Name: ${widget.fullName}');
+      print('Current Location: $currentLocation');
+
+      String message = "Accident Detected!\n\n"
+          "User Information:\n"
+          "Full Name: ${widget.fullName}\n"
+          "CNIC: ${widget.cnic}\n"
+          "Blood Group: ${widget.bloodGroup}\n"
+          "Home Address: ${widget.address}\n"
+          "Emergency Contacts:\n"
+          "1. ${widget.emerContact}\n"
+          "2. ${widget.emerContact1}\n"
+          "3. ${widget.emerContact2}\n"
+          "Current Location: $currentLocation";
+
+      for (String phoneNumber in phoneNumbers) {
+        SmsStatus res = await BackgroundSms.sendMessage(
+          phoneNumber: phoneNumber,
+          message: message,
+        );
+        print("SMS Status for $phoneNumber: $res");
+      }
+    } else {
+      // Handle denied permissions
+      print("SMS permission is denied.");
+    }
   }
 
   @override
@@ -112,41 +159,6 @@ class _TimerWidgetState extends State<TimerWidget> {
         ),
       ],
     );
-  }
-
-  Future<void> _sendSMS() async {
-    if (await Permission.sms.request().isGranted) {
-      print('checking phone number');
-      List<String> phoneNumbers = [
-        _emerContact,
-        _emerContact1,
-        _emerContact2,
-        '923110168103'
-      ];
-      print('phone num1 $_emerContact1'); // recipient's numbers
-      String message = "Accident Detected!\n\n"
-          "User Information:\n"
-          "Full Name: $_fullName\n"
-          "CNIC: $_cnic\n"
-          "Blood Group: $_bloodGroup\n"
-          "Home Address: $_address\n"
-          "Emergency Contacts:\n"
-          "1. $_emerContact\n"
-          "2. $_emerContact1\n"
-          "3. $_emerContact2\n"
-          "Current Location: $currentLocation";
-
-      for (String phoneNumber in phoneNumbers) {
-        SmsStatus res = await BackgroundSms.sendMessage(
-          phoneNumber: phoneNumber,
-          message: message,
-        );
-        print("SMS Status for $phoneNumber: $res");
-      }
-    } else {
-      // Handle denied permissions
-      print("SMS permission is denied.");
-    }
   }
 }
 

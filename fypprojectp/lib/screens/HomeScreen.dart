@@ -8,7 +8,6 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:fypprojectp/constants.dart';
 import 'package:fypprojectp/main.dart';
 import 'package:fypprojectp/screens/TimerWidget.dart';
-//import 'package:fypprojectp/screens/BluetoothConnectedScreen.dart';
 import 'package:fypprojectp/screens/UserAccountDetail/EditInformation.dart';
 import 'package:fypprojectp/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,7 +15,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String receivedData = ' ';
+String receivedData = '';
 bool bluetoothconnected = false;
 bool _isConnected = false;
 
@@ -263,7 +262,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            content: TimerWidget(),
+            content: TimerWidget(
+              fullName: 'fullName',
+              cnic: 'cnic',
+              bloodGroup: 'bloodGroup',
+              address: 'address',
+              emerContact: 'emerContact',
+              emerContact1: 'emerContact1',
+              emerContact2: 'emerContact2',
+            ),
             actions: [
               Padding(
                 padding: const EdgeInsets.only(top: 20),

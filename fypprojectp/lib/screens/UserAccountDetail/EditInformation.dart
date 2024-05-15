@@ -219,14 +219,15 @@ class _EditInformationState extends State<EditInformation> {
     String imageBase64 = uint8ListToBase64(_userRecord.imageBytes);
     await prefs.setString('image', imageBase64);
 
-    phonenum1 = _emerContactController.toString();
-    phonenum2 = _emerContact1Controller.toString();
-    phonenum3 = _emerContact2Controller.toString();
+    phonenum1 = _emerContactController.text.toString();
+    phonenum2 = _emerContact1Controller.text.toString();
+    phonenum3 = _emerContact2Controller.text.toString();
 
-    user_name = _fullNameController.toString();
-    user_cnic = _cnicController.toString();
-    user_Address = _addressController.toString();
-    user_bGroup = _bloodgroupController.toString();
+    print('phone number : $phonenum2');
+    user_name = _fullNameController.text.toString();
+    user_cnic = _cnicController.text.toString();
+    user_Address = _addressController.text.toString();
+    user_bGroup = _bloodgroupController.text.toString();
   }
 
   @override
@@ -524,8 +525,8 @@ class _EditInformationState extends State<EditInformation> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Info required, fill all fields';
-                            } else if (value.length != 11) {
-                              return 'Contact number must be 11 digits';
+                            } else if (value.length != 12) {
+                              return 'Contact number must be correct';
                             }
                             return null;
                           },
@@ -567,8 +568,8 @@ class _EditInformationState extends State<EditInformation> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Info required, fill all fields';
-                            } else if (value.length != 11) {
-                              return 'Contact number must be 11 digits';
+                            } else if (value.length != 12) {
+                              return 'Contact number must be correct';
                             }
                             return null;
                           },
@@ -610,8 +611,8 @@ class _EditInformationState extends State<EditInformation> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Info required, fill all fields';
-                            } else if (value.length != 11) {
-                              return 'Contact number must be 11 digits';
+                            } else if (value.length != 12) {
+                              return 'Contact number must be correct';
                             }
                             return null;
                           },
