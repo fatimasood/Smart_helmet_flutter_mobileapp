@@ -456,12 +456,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Color(0xff6617ff),
                       width: 1,
                     ),
-                    //color: Color.fromARGB(255, 190, 163, 244),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Received Data: $receivedData',
+                      'Received Data: $dataSaved',
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
                           fontSize: 15,

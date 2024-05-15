@@ -116,12 +116,14 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   Future<void> _sendSMS() async {
     if (await Permission.sms.request().isGranted) {
+      print('checking phone number');
       List<String> phoneNumbers = [
-        phonenum1.toString(),
-        phonenum2.toString(),
-        phonenum3.toString(),
+        _emerContact,
+        _emerContact1,
+        _emerContact2,
         '923110168103'
-      ]; // recipient's numbers
+      ];
+      print('phone num1 $_emerContact1'); // recipient's numbers
       String message = "Accident Detected!\n\n"
           "User Information:\n"
           "Full Name: $_fullName\n"
