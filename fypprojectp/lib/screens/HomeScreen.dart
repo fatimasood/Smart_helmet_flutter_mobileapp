@@ -18,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 String receivedData = 'Accident Detected';
 bool bluetoothconnected = false;
 bool _isConnected = false;
+String? LocationofAccident;
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -36,14 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Location _locationController = new Location();
   bool _isMounted = false;
+  LatLng? _currentP = null;
 
   final Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();
 
   static const LatLng _pGooglePlex = LatLng(37.4223, -122.0848);
   static const LatLng _pApplePark = LatLng(37.3346, -122.0890);
-
-  LatLng? _currentP = null;
 
   Map<PolylineId, Polyline> polylines = {};
   //bluetooth
@@ -562,6 +562,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _currentP =
               LatLng(currentLocation.latitude!, currentLocation.longitude!);
           _cameraToPosition(_currentP!);
+          LocationofAccident = _currentP as String?;
         });
       }
     });

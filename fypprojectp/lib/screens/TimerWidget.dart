@@ -39,6 +39,7 @@ class _TimerWidgetState extends State<TimerWidget> {
   double _progress = 0.0;
 
   late String currentLocation;
+  late Position currentPosition;
 
   @override
   void initState() {
@@ -47,19 +48,30 @@ class _TimerWidgetState extends State<TimerWidget> {
     _getCurrentLocation();
   }
 
-  Future<String> getAddress(double latitude, double longitude) async {
+  Future<String> getAddress() async {
     try {
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(latitude, longitude);
-      if (placemarks.isNotEmpty) {
-        Placemark placemark = placemarks[0];
-        return "${placemark.name}, ${placemark.locality}, ${placemark.country}";
+      LocationPermission permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception("Location permission denied");
       } else {
-        throw Exception('No address found for the provided coordinates');
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+            position.latitude, position.longitude);
+        if (placemarks.isNotEmpty) {
+          Placemark placemark = placemarks[0];
+          String cityName = placemark.locality ?? 'Unknown City';
+          String country = placemark.country ?? 'Unknown Country';
+          String thoroughfare = placemark.thoroughfare ?? '';
+          String subThoroughfare = placemark.subThoroughfare ?? '';
+          return "$thoroughfare $subThoroughfare, $cityName, $country";
+        } else {
+          throw Exception('No address found for the provided coordinates');
+        }
       }
     } catch (e) {
-      print('Error fetching address: $e');
-      return 'Unknown';
+      print("Error getting current location: $e");
+      return "Unknown";
     }
   }
 
@@ -69,10 +81,10 @@ class _TimerWidgetState extends State<TimerWidget> {
       if (permission == LocationPermission.denied) {
         throw Exception("Location permission denied");
       } else {
-        Position position = await Geolocator.getCurrentPosition(
+        currentPosition = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high);
         currentLocation =
-            "Lat: ${position.latitude}, Lng: ${position.longitude}";
+            "Lat: ${currentPosition.latitude}, Lng: ${currentPosition.longitude}";
       }
     } catch (e) {
       print("Error getting current location: $e");
@@ -95,7 +107,7 @@ class _TimerWidgetState extends State<TimerWidget> {
           }
           if (_start == 9) {
             setState(() {
-              _sendSMS();
+              _sendSMS(currentPosition);
             });
 
             timer.cancel();
@@ -108,7 +120,7 @@ class _TimerWidgetState extends State<TimerWidget> {
     );
   }
 
-  Future<void> _sendSMS() async {
+  Future<void> _sendSMS(Position currentPosition) async {
     if (await Permission.sms.request().isGranted) {
       print('Checking phone number');
       List<String> phoneNumbers = [
@@ -121,11 +133,15 @@ class _TimerWidgetState extends State<TimerWidget> {
       print('Name: ${widget.fullName}');
 
       try {
+        // Get current location address
         String address = await getAddressFromCurrentLocation();
-        print('Current Location: $address');
+
+        // Constructing Google Maps link with latitude and longitude
+        String mapLink =
+            'https://www.google.com/maps/search/?api=1&query=${currentPosition.latitude},${currentPosition.longitude}';
 
         String message =
-            "Accident Detected at $address\n${widget.fullName} \n${widget.cnic}\n${widget.emerContact1}\n${widget.emerContact}\n${widget.address}";
+            "Accident Detected at $address. $mapLink\n${widget.fullName} \n${widget.cnic}\nBlood Group ${widget.bloodGroup}";
 
         for (String phoneNumber in phoneNumbers) {
           SmsStatus res = await BackgroundSms.sendMessage(
