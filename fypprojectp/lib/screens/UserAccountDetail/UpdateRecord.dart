@@ -145,10 +145,10 @@ class _UpdateRecordState extends State<UpdateRecord> {
       Utils().toastMessage('CNIC must be 13 digits');
       return false;
     }
-    if (_emerContactController.text.length != 11 ||
-        _emerContact1Controller.text.length != 11 ||
-        _emerContact2Controller.text.length != 11) {
-      Utils().toastMessage('Contact number must be 11 digits');
+    if (_emerContactController.text.length != 12 ||
+        _emerContact1Controller.text.length != 12 ||
+        _emerContact2Controller.text.length != 12) {
+      Utils().toastMessage('Contact number must be correct');
       return false;
     }
     if (_fullNameController.text.isEmpty ||
@@ -474,8 +474,8 @@ class _UpdateRecordState extends State<UpdateRecord> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Info required, fill all fields';
-                            } else if (value.length != 11) {
-                              return 'Contact number must be 11 digits';
+                            } else if (value.length != 12) {
+                              return 'Contact number must be correct';
                             }
                             return null;
                           },
@@ -517,8 +517,8 @@ class _UpdateRecordState extends State<UpdateRecord> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Info required, fill all fields';
-                            } else if (value.length != 11) {
-                              return 'Contact number must be 11 digits';
+                            } else if (value.length != 12) {
+                              return 'Contact number must be correct';
                             }
                             return null;
                           },
@@ -560,8 +560,8 @@ class _UpdateRecordState extends State<UpdateRecord> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Info required, fill all fields';
-                            } else if (value.length != 11) {
-                              return 'Contact number must be 11 digits';
+                            } else if (value.length != 12) {
+                              return 'Contact number must be correct';
                             }
                             return null;
                           },

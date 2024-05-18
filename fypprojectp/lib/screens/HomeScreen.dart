@@ -495,7 +495,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-            GestureDetector(
+            /* GestureDetector(
               onTap: () {
                 checkAccidentOccur();
               },
@@ -517,7 +517,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-            ),
+            ),*/
           ],
         ),
       ),
