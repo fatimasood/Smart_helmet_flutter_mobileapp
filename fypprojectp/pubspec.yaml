@@ -70,6 +70,7 @@ dependencies:
   background_sms: ^0.0.4
   geolocator: ^11.0.0
   geocoding: ^3.0.0
+  flutter_tts: ^4.0.2
   
   
   

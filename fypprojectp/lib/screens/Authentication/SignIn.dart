@@ -23,6 +23,8 @@ class _SignInState extends State<SignIn> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  final resetEmailController = TextEditingController();
+
   bool loading = false;
   final _auth = FirebaseAuth.instance;
 
@@ -31,6 +33,140 @@ class _SignInState extends State<SignIn> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    resetEmailController.dispose();
+  }
+
+  Future<void> _resetPassword() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            "Password Update",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Color(0xff6617ff),
+                fontWeight: FontWeight.w800,
+                fontSize: 18),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Write your Email to send reset link',
+                style: TextStyle(color: Color(0xffc780ff)),
+              ),
+              const SizedBox(height: 15),
+              Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xffffffff),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x3f000000),
+                      offset: Offset(0, 4),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: TextFormField(
+                  controller: resetEmailController,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Email',
+                    hintStyle: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xffc780ff),
+                        fontStyle: FontStyle.normal),
+                    prefixIcon: Icon(
+                      Icons.mail_outline_rounded,
+                      color: Colors.grey,
+                      size: 20,
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    if (!value.endsWith('@gmail.com')) {
+                      return 'Kindly enter a proper Gmail address';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            Column(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xffc780ff),
+                    ),
+                    onPressed: () {
+                      if (resetEmailController.text.isEmpty ||
+                          !resetEmailController.text.endsWith('@gmail.com')) {
+                        Fluttertoast.showToast(
+                          msg: 'Please enter a valid Gmail address',
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.deepPurple,
+                          textColor: Colors.white54,
+                          fontSize: 16.0,
+                        );
+                        return;
+                      }
+
+                      _auth
+                          .sendPasswordResetEmail(
+                              email: resetEmailController.text.toString())
+                          .then((value) {
+                        Fluttertoast.showToast(
+                          msg: 'Password reset email sent',
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.deepPurple,
+                          textColor: Colors.white54,
+                          fontSize: 16.0,
+                        );
+                        Navigator.pop(context);
+                      }).catchError((error) {
+                        Fluttertoast.showToast(
+                          msg: error.toString(),
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.deepPurple,
+                          textColor: Colors.white54,
+                          fontSize: 16.0,
+                        );
+                      });
+                    },
+                    child: Text(
+                      "Reset",
+                      style: GoogleFonts.inter(
+                        textStyle: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xffdde6ed),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void login() {
@@ -217,13 +353,18 @@ class _SignInState extends State<SignIn> {
                   width: 10,
                   height: 20,
                 ),
-                Text(
-                  'Forget password?',
-                  style: GoogleFonts.inter(
-                    textStyle: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xff9d6bff),
+                GestureDetector(
+                  onTap: () {
+                    _resetPassword();
+                  },
+                  child: Text(
+                    'Forget password?',
+                    style: GoogleFonts.inter(
+                      textStyle: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xff9d6bff),
+                      ),
                     ),
                   ),
                 ),

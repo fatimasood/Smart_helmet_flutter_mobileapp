@@ -478,7 +478,7 @@ class _SettingsState extends State<Settings> {
                                 height: 7,
                               ),
                               Text(
-                                "Huzaifa is a Team Leader. He is a graphic Designer and a Developer. Company Named Hexler Solution's CO-FOUNDER and a successfull freelancer. In this project he work on Hardware and complete Documentation. ",
+                                "He is a graphic Designer and a Developer. Company Named Hexler Solution's CO-FOUNDER and a successfull freelancer. In this project he work on Hardware and Documentation. ",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.inter(
                                   textStyle: TextStyle(
@@ -506,7 +506,7 @@ class _SettingsState extends State<Settings> {
                                 height: 7,
                               ),
                               Text(
-                                "Huzaifa is a Team Leader. He is a graphic Designer and a Developer. Company Named Hexler Solution's CO-FOUNDER and a successfull freelancer. In this project he work on Hardware and complete Documentation. ",
+                                "Fatima is a Mobile App Developer. In this project she works on application develop on flutter framework so it is available for both android and ios mobile phones. ",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.inter(
                                   textStyle: TextStyle(

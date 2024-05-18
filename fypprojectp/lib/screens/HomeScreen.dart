@@ -296,14 +296,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey.shade300),
+                          primary: const Color(0xffc780ff),
+                        ),
                         child: Text(
                           "Close",
                           style: GoogleFonts.inter(
                             textStyle: const TextStyle(
                               fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff6617ff),
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xffdde6ed),
                             ),
                           ),
                         ),
