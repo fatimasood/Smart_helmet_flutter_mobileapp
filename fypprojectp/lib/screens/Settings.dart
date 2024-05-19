@@ -383,14 +383,12 @@ class _SettingsState extends State<Settings> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 13,
-                  ),
                 ],
+                SizedBox(
+                  height: 13,
+                ),
                 InkWell(
-                  onTap: () {
-                    _toggleTeamVisibility();
-                  },
+                  onTap: _signOut,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
@@ -402,7 +400,7 @@ class _SettingsState extends State<Settings> {
                         child: Row(
                           children: [
                             Icon(
-                              Icons.people_outline,
+                              Icons.logout_outlined,
                               color: Color(0xffa678ff),
                               size: 16.5,
                             ),
@@ -410,7 +408,7 @@ class _SettingsState extends State<Settings> {
                               width: 8.5,
                             ),
                             Text(
-                              'Our Team',
+                              'Logout',
                               style: GoogleFonts.inter(
                                 textStyle: TextStyle(
                                   fontSize: 15,
@@ -425,149 +423,6 @@ class _SettingsState extends State<Settings> {
                     ),
                   ),
                 ),
-                if (_showTeam) ...[
-                  SizedBox(height: 10),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: SingleChildScrollView(
-                      child: Container(
-                        height: 385,
-                        width: 320,
-                        color: Color(0xffede5fd),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10, left: 10, bottom: 10, right: 10),
-                          child: Column(
-                            children: [
-                              Text(
-                                'Huzaifa Hafeez',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff6617ff),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 7,
-                              ),
-                              Text(
-                                "Huzaifa is a Team Leader. He is a graphic Designer and a Developer. Company Named Hexler Solution's CO-FOUNDER and a successfull freelancer. In this project he work on Hardware and complete Documentation. ",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xffa678ff),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                'Muzammil Shoukat',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff6617ff),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 7,
-                              ),
-                              Text(
-                                "He is a graphic Designer and a Developer. Company Named Hexler Solution's CO-FOUNDER and a successfull freelancer. In this project he work on Hardware and Documentation. ",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xffa678ff),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                'Fatima Masood',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff6617ff),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 7,
-                              ),
-                              Text(
-                                "Fatima is a Mobile App Developer. In this project she works on application develop on flutter framework so it is available for both android and ios mobile phones. ",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xffa678ff),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-                SizedBox(
-                  height: 13,
-                ),
-                if (!_showTeam) ...[
-                  InkWell(
-                    onTap: _signOut,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        height: 50,
-                        color: Color(0xffede5fd),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10, left: 10, bottom: 10, right: 10),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.logout_outlined,
-                                color: Color(0xffa678ff),
-                                size: 16.5,
-                              ),
-                              SizedBox(
-                                width: 8.5,
-                              ),
-                              Text(
-                                'Logout',
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xffa678ff),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ],
             ),
           ),

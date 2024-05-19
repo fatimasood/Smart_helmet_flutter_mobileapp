@@ -25,7 +25,7 @@ class _SignsScreenState extends State<SignsScreen> {
                   style: GoogleFonts.inter(
                     textStyle: const TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w800,
                       color: Color(0xff6617ff),
                     ),
                   ),

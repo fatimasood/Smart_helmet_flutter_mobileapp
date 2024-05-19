@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fypprojectp/screens/PrivacyPolicy.dart';
 
 class CustomSidebar extends StatelessWidget {
   final int selectedIndex;
@@ -151,7 +152,7 @@ class CustomSidebar extends StatelessWidget {
               height: 40,
               child: ListTile(
                 title: Text(
-                  'About us',
+                  'About US',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
@@ -160,10 +161,11 @@ class CustomSidebar extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  // Navigate to the settings screen
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => privacypolicy()));
                 },
                 leading: Icon(
-                  Icons.info,
+                  Icons.people,
                   size: 25,
                   color: Color(0xffffffff),
                 ),
