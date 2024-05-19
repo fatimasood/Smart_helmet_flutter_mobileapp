@@ -12,10 +12,10 @@
     
 
     <application
-        android:label="fypprojectp"
+        android:label="iHELMET"
         android:name="${applicationName}"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/smarthelmeticon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
