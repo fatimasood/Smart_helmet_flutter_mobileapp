@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignsScreen extends StatefulWidget {
-  const SignsScreen({super.key});
+  const SignsScreen({Key? key}) : super(key: key);
 
   @override
   State<SignsScreen> createState() => _SignsScreenState();
@@ -13,81 +14,49 @@ class _SignsScreenState extends State<SignsScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 30, left: 15),
-              child: Row(
-                children: [
-                  Container(
-                    width: 120,
-                    height: 120,
-                    child: Image.asset('lib/assets/pic1.png'),
-                  ),
-                  Container(
-                    width: 120,
-                    height: 120,
-                    child: Image.asset('lib/assets/pic2.png'),
-                  ),
-                  Container(
-                    width: 100,
-                    height: 120,
-                    child: Image.asset('lib/assets/pic3.png'),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Row(
-                children: [
-                  Container(
-                    width: 120,
-                    height: 120,
-                    child: Image.asset('lib/assets/pic4.png'),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 7),
-                    child: Container(
-                      width: 120,
-                      height: 120,
-                      child: Image.asset('lib/assets/pic5.png'),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(
+                  'Motorcycle Safety Checklist',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff6617ff),
                     ),
                   ),
-                  Container(
-                    width: 108,
-                    height: 120,
-                    child: Image.asset('lib/assets/pic6.png'),
+                ),
+                SizedBox(height: 10),
+                Center(
+                  child: Image.asset(
+                    "lib/assets/rideimage1.png",
+                    width: 370,
+                    height: 200,
                   ),
-                ],
-              ),
+                ),
+                SizedBox(height: 10),
+                Center(
+                  child: Image.asset(
+                    "lib/assets/rideimage2.png",
+                    width: 370,
+                    height: 200,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Center(
+                  child: Image.asset(
+                    "lib/assets/rideImage3.png",
+                    width: 390,
+                    height: 260,
+                  ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Row(
-                children: [
-                  Container(
-                    width: 120,
-                    height: 120,
-                    child: Image.asset('lib/assets/pic7.png'),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 7),
-                    child: Container(
-                      width: 120,
-                      height: 120,
-                      child: Image.asset('lib/assets/pic8.png'),
-                    ),
-                  ),
-                  Container(
-                    width: 108,
-                    height: 120,
-                    child: Image.asset('lib/assets/pic9.png'),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
